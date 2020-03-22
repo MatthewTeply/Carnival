@@ -1,0 +1,26 @@
+{{ header }}
+{{ nav }}
+
+<style>
+    form {
+        display: block;
+        width: 100%;
+    }
+
+    .form-control {
+        margin-bottom: 10px;
+    }
+
+    .form-group {
+        border-bottom: 1px solid #ccc;
+    }
+</style>
+
+<div class="main-content">
+    <div class="col-lg-12 headline headline-button ">
+        <h2><a href="{{ path(entityName) }}"><i class="fas fa-arrow-left"></i></a> {{ title }}</h2>
+    </div>
+    {{ form.render() }}
+</div>
+
+{{ footer }}

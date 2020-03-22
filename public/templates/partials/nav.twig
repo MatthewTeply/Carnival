@@ -1,0 +1,61 @@
+<nav class="side-nav">
+    <div class="nav-fixed-buttons">
+        <a target="_blank" href="{{ path('../') }}">
+            <button class="go-website">
+                <span>Přejít na web</span>
+            </button>
+        </a>
+        <div class="tab">
+            <div class="tab-button-group">
+                <button class="tablinks left" onclick="openCity(event, 'custom')" id="defaultOpen">Prvky</button>
+            </div>
+            <button class="tablinks settings" onclick="openCity(event, 'settings')">
+                <img src="{{ __img__ }}icons/settings-dark.svg">
+            </button>
+        </div>
+    </div>
+
+    <div id="custom" class="tabcontent">
+        <h2>Prvky</h2>
+        <a href="{{ path('Event') }}">
+            <div class="nav-btn active">
+                <img src="{{ __img__ }}icons/products.svg">
+                <h3>Události</h3>
+            </div>
+        </a>
+    </div>
+    <div id="settings" class="tabcontent">
+        <h2>Nastavení</h2>
+        <div class="nav-btn">
+            <img src="{{ __img__ }}icons/gallery.svg">
+            <h3>Soubory</h3>
+        </div>
+        <div class="nav-btn">
+            <img src="{{ __img__ }}icons/settings.svg">
+            <h3>Nastavení</h3>
+        </div>
+        <h2>Pokročilé nastavení</h2>
+        <div class="nav-btn">
+            <img src="{{ __img__ }}icons/settings.svg">
+            <h3>Live edit</h3>
+        </div>
+    </div>
+    <div class="info-box">
+        <div class="online-user-around">
+            <div class="online-user">
+                <img src="{{ __img__ }}icons/profile.png">
+                <span>{{ user.username }}</span>
+            </div>
+        </div>
+        <div class="button-group">
+            <button class="info-btn">Profil</button>
+            <a href="{{ path('logout') }}">
+                <button class="info-btn logout">
+                    Odhlásit se
+                    <img src="{{ __img__ }}icons/logout-dark.svg" width="10px">
+                </button>
+            </a>
+        </div>
+    </div>
+    <!-- Tab content -->
+</nav>

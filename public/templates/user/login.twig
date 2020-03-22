@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <title>Carnival CMS</title>
+        <!-- Bootstrap core CSS -->
+        <link href="{{ __css__ }}bootstrap/bootstrap.css" rel="stylesheet">
+        <!-- Custom styles for this template -->
+        <link href="{{ __css__ }}style.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:400,500,600,700,800,900,300,200&subset=latin-ext,latin">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
+    </head>
+    <body>
+        <div class="login-content">
+            <form class="login-form" action="{{ path('login') }}" method="POST">
+                <div class="headline col-lg-12">
+                    <h2>Přihlášení</h2>
+                </div>
+                <div class="col-lg-12 form-input-around">
+                    <input type="text" class="form-control" placeholder="Přihlašovací jméno" name="username">
+                </div>
+                <div class="col-lg-12 form-input-around">
+                    <input type="password" class="form-control" placeholder="Heslo" name="pwd">
+                </div>
+                <div class="col-lg-12 form-input-around">
+                    <span class="forgoten-password"><a href="#">Zapomněli jste heslo? Klikněte sem.</a></span>
+                </div>
+                <div class="col-lg-12 form-input-around">
+                    <button type="submit" class="yellow-button full-width">
+                        <span>Přihlásit se</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+        <div class="login-footer">
+            <span class="version">v 1.0</span>
+            <span class="contact"><a href="#">Kontakt</a></span>
+        </div>
+        <!-- Bootstrap core JavaScript
+    ================================================== -->
+        <!-- Placed at the end of the document so the pages load faster -->
+        <script src="{{ __scripts__ }}jquery.min.js"></script>
+        <script src="{{ __scripts__ }}popper.js"></script>
+        <script src="{{ __scripts__ }}bootstrap/bootstrap.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+        <script src="{{ __scripts__ }}scripts.js"></script>
+    </body>
+</html>
+
+{#
+<form action="{{ path('login') }}" method="POST">
+    <input type="text" placeholder="Username" name="username">
+    <input type="password" placeholder="Password" name="pwd">
+    <button type="submit">Login</button>
+</form>
+#}

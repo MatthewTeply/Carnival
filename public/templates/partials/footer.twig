@@ -1,0 +1,25 @@
+<script src="{{ __scripts__ }}jquery.min.js"></script>
+<script src="{{ __scripts__ }}popper.js"></script>
+<script src="{{ __scripts__ }}bootstrap/bootstrap.min.js"></script>
+<script>
+    function openCity(evt, cityName) {
+        var i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName("tabcontent");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+        }
+        tablinks = document.getElementsByClassName("tablinks");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" active", "");
+        }
+        document.getElementById(cityName).style.display = "flex";
+        evt.currentTarget.className += " active";
+    }
+</script>
+<script>
+    // Get the element with id="defaultOpen" and click on it
+    document.getElementById("defaultOpen").click();
+</script>
+</body>
+
+</html>
