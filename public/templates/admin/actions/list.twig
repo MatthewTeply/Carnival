@@ -12,12 +12,12 @@
         <h2>{{ title }}</h2>
         <a href="{{ path(entityName) }}/new">
             <button class="add-button" id="open-form">
-                <span>Přidat {{ title }}</span>
+                <span>{% if labels.new is null %} Přidat {{ title }} {% else %} {{ labels.new }} {% endif %}</span>
             </button>
         </a>
     </div>
     {% if entities|length == 0 %}
-        <h1>Nic tu není...</h1>
+        <div class="empty-content"><p>Zatím tu nic není...</p></div>
     {% else %}
         <table class="table">
             <thead>
@@ -35,8 +35,8 @@
                             <td>{{ entity[column.name] }}</td>
                         {% endfor %}
                         <td><div class="table-buttons">
-                            <a href="{{ path(entityName) }}/edit/{{ entity.id }}"><button class="blue-button right-radius-none right-border-none">Upravit</button></a>
-                            <a href="{{ path(entityName) }}/delete/{{ entity.id }}"><button class="yellow-button left-radius-none left-border-none delete-button"><img src="/app/carnival/public/assets/images/icons/delete-dark.svg"></button></a></div>
+                            <a href="{{ path(entityName) }}/edit/{{ entity.id }}"><button class="blue-button right-radius-none right-border-none">{% if labels.edit is null %} Upravit {% else %} {{ labels.edit }} {% endif %}</button></a>
+                            <a href="{{ path(entityName) }}/delete/{{ entity.id }}"><button class="yellow-button left-radius-none left-border-none delete-button"><img src="{{ __img__ }}icons/delete-dark.svg"></button></a></div>
                         </td>
                     </tr>
                 {% endfor %}

@@ -461,7 +461,7 @@ button.yellow-button {
     color: #34157e;
     background: linear-gradient(55deg, rgb(242, 153, 74) 0%, rgb(242, 201, 76) 100%) !important;
     border: 1px solid #f2c94c;
-    padding: 15px 35px;
+    padding: 15px 25px;
     font-weight: 600;
 }
 
@@ -660,7 +660,8 @@ button.yellow-button.full-width {
 }
 
 .login-form {
-    min-width: 400px;
+    width: 90%;
+    max-width: 400px;
     padding: 85px 35px;
     border-radius: 5px;
     background-color: #34157e;
@@ -676,6 +677,10 @@ button.yellow-button.full-width {
     margin-bottom: 0;
     font-weight: 600;
     font-size: 24px;
+}
+
+.login-form button {
+    padding: 15px;
 }
 
 .login-footer {
@@ -849,4 +854,90 @@ table th, table td {
     outline: none !important;
     box-shadow: none !important;
     color: #9a74fb !important;
+}
+
+.loader svg path,
+svg rect {
+    fill: #34157e;
+}
+
+.yellow-button .loader {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    opacity: 0;
+}
+
+.yellow-button .loader.toggled {
+    opacity: 1;
+}
+
+button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.yellow-button .text {
+    position: absolute;
+    opacity: 1;
+}
+
+.yellow-button .text.toggled {
+    opacity: 0;
+}
+
+.particle {
+    opacity: 0;
+    position: absolute;
+    background-color: rgba(255, 255, 255, 0);
+    -webkit-animation: particleAnim 3s ease-in-out infinite;
+    animation: particleAnim 3s ease-in-out infinite;
+    border-radius: 100%;
+}
+
+@-webkit-keyframes particleAnim {
+    0% {
+        opacity: 0;
+        transform: translateY(-0%);
+    }
+
+    15% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+        transform: translateY(-1500%);
+    }
+}
+
+@keyframes particleAnim {
+    0% {
+        opacity: 0;
+        transform: translateY(-0%);
+    }
+
+    25% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+        transform: translateY(-1500%);
+    }
+}
+
+.empty-content {
+    margin-top: 35px;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: flex-start;
+    text-align: center;
+    flex-wrap: wrap;
+    align-content: center;
+    padding: 10px;
+    color: #9a74fb;
 }

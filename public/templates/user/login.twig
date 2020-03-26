@@ -7,14 +7,13 @@
         <meta name="description" content="">
         <meta name="author" content="">
         <title>Carnival CMS</title>
-        <!-- Bootstrap core CSS -->
         <link href="{{ __css__ }}bootstrap/bootstrap.css" rel="stylesheet">
-        <!-- Custom styles for this template -->
         <link href="{{ __css__ }}style.css" rel="stylesheet">
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:400,500,600,700,800,900,300,200&subset=latin-ext,latin">
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
     </head>
     <body>
+        <div id="particleGenerator"></div>
         <div class="login-content">
             <form class="login-form" action="{{ path('login') }}" method="POST">
                 <div class="headline col-lg-12">
@@ -26,12 +25,19 @@
                 <div class="col-lg-12 form-input-around">
                     <input type="password" class="form-control" placeholder="Heslo" name="pwd">
                 </div>
-                <div class="col-lg-12 form-input-around">
+                <div class="col-lg-6 form-input-around">
                     <span class="forgoten-password"><a href="#">Zapomněli jste heslo? Klikněte sem.</a></span>
                 </div>
-                <div class="col-lg-12 form-input-around">
+                <div class="col-lg-6 form-input-around">
                     <button type="submit" class="yellow-button full-width">
                         <span>Přihlásit se</span>
+                        <span class="loader"><div class="loader loader--style3" title="2">
+            <svg version="1.1" id="loader-1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30px" height="30px" viewbox="0 0 50 50" style="enable-background:new 0 0 50 50;" xml:space="preserve">
+                <path fill="#000" d="M43.935,25.145c0-10.318-8.364-18.683-18.683-18.683c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615c8.072,0,14.615,6.543,14.615,14.615H43.935z">
+                    <animateTransform attributetype="xml" attributename="transform" type="rotate" from="0 25 25" to="360 25 25" dur="0.6s" repeatcount="indefinite"/>
+                </path>
+            </svg>
+        </div></span>
                     </button>
                 </div>
             </form>
@@ -40,9 +46,6 @@
             <span class="version">v 1.0</span>
             <span class="contact"><a href="#">Kontakt</a></span>
         </div>
-        <!-- Bootstrap core JavaScript
-    ================================================== -->
-        <!-- Placed at the end of the document so the pages load faster -->
         <script src="{{ __scripts__ }}jquery.min.js"></script>
         <script src="{{ __scripts__ }}popper.js"></script>
         <script src="{{ __scripts__ }}bootstrap/bootstrap.min.js"></script>

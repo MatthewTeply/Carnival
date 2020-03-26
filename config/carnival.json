@@ -1,4 +1,18 @@
 {
     "entities": {
+        "User": {
+            "title": "Uživatelé",
+            "list": {
+                "fields": {
+                    "username": {
+                        "label": "Uživatelské jméno",
+                        "type": "text"
+                    }
+                }
+            },
+            "new": {
+                "label": "Vytvořit uživatele"
+            }
+        }
     }
 }
