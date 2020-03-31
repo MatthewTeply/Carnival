@@ -21,7 +21,7 @@ class ListAction extends AdminCore {
 
             $entity = new $this->className($id['id']);
 
-            $entityConfig = $this->entityConfig->list;
+            $entityConfig = $this->entityConfig->actions->list;
 
             if(isset($entityConfig->fields)) {
                 $columns = array_keys((array)$entityConfig->fields);

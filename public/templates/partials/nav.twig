@@ -17,28 +17,47 @@
 
     <div id="custom" class="tabcontent">
         <h2>Prvky</h2>
-        <a href="{{ path('Event') }}">
-            <div class="nav-btn active">
-                <img src="{{ __img__ }}icons/products.svg">
-                <h3>Události</h3>
-            </div>
-        </a>
+
+        {% for entity in entities %}
+            {% if entity.type == 'entity' %}
+                <a href="{{ path(entity.name) }}">
+                    <div class="nav-btn {{ (entity.active) ? 'active' : '' }}">
+                        {% if entity.icon is not null %}
+                            <img src="{{ __img__ }}icons/{{ entity.icon }}">
+                        {% endif %}
+                        <h3>{{ entity.title }}</h3>
+                    </div>
+                </a>
+            {% endif %}
+        {% endfor %}
     </div>
     <div id="settings" class="tabcontent">
         <h2>Nastavení</h2>
-        <div class="nav-btn">
-            <img src="{{ __img__ }}icons/gallery.svg">
-            <h3>Soubory</h3>
-        </div>
-        <div class="nav-btn">
-            <img src="{{ __img__ }}icons/settings.svg">
-            <h3>Nastavení</h3>
-        </div>
+        {% for entity in entities %}
+            {% if entity.type == 'settings' %}
+                <a href="{{ path(entity.name) }}">
+                    <div class="nav-btn {{ (entity.active) ? 'active' : '' }}">
+                        {% if entity.icon is not null %}
+                            <img src="{{ __img__ }}icons/{{ entity.icon }}">
+                        {% endif %}
+                        <h3>{{ entity.title }}</h3>
+                    </div>
+                </a>
+            {% endif %}
+        {% endfor %}
         <h2>Pokročilé nastavení</h2>
-        <div class="nav-btn">
-            <img src="{{ __img__ }}icons/settings.svg">
-            <h3>Live edit</h3>
-        </div>
+        {% for entity in entities %}
+            {% if entity.type == 'settings_advanced' %}
+                <a href="{{ path(entity.name) }}">
+                    <div class="nav-btn {{ (entity.active) ? 'active' : '' }}">
+                        {% if entity.icon is not null %}
+                            <img src="{{ __img__ }}icons/{{ entity.icon }}">
+                        {% endif %}
+                        <h3>{{ entity.title }}</h3>
+                    </div>
+                </a>
+            {% endif %}
+        {% endfor %}
     </div>
     <div class="info-box">
         <div class="online-user-around">

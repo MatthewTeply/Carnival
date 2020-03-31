@@ -3,82 +3,6 @@ body {
     font-family: Poppins;
 }
 
-nav.side-nav {
-    width: 220px;
-    left: 0;
-    position: fixed;
-    background-color: #34157e;
-    color: #fff;
-    display: flex;
-    flex-direction: row;
-    align-items: flex-start;
-    flex-wrap: wrap;
-    align-content: flex-start;
-    justify-content: space-between;
-    overflow: auto;
-    bottom: 105px;
-    border-right: 1px solid #5a33bc;
-    top: 103px;
-    padding-left: 10px;
-    padding-right: 10px;
-    padding-bottom: 25px;
-}
-
-.nav-btn {
-    width: 97px;
-    height: 90px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #4418a1;
-    margin-bottom: 5px;
-    padding: 10px;
-    border: 1px solid #4f1eba;
-    flex-direction: column;
-    color: #9a74fb;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: all 300ms ease-in-out;
-    text-align: center;
-}
-
-nav.side-nav h2 {
-    width: 100%;
-    text-align: center;
-    margin-top: 25px;
-    margin-bottom: 15px;
-    font-size: 14px;
-    text-transform: uppercase;
-    font-weight: 600;
-    color: #9a74fb;
-}
-
-nav.side-nav h3 {
-    font-size: 12px;
-    margin-bottom: 0;
-}
-
-.nav-btn img {
-    margin-bottom: 15px;
-    height: 25px;
-}
-
-nav.side-nav .info-box {
-    width: 220px;
-    position: fixed;
-    left: 0;
-    bottom: 0;
-    background-color: #34157e;
-    border-top: 1px solid #5a33bc;
-    border-right: 1px solid #5a33bc;
-    display: flex;
-    flex-direction: row;
-    padding: 15px 10px;
-    flex-wrap: wrap;
-    align-content: space-between;
-    height: 105px;
-}
-
 .main-content {
     position: relative;
     margin-left: 220px;
@@ -175,16 +99,6 @@ nav.side-nav .info-box {
     border-bottom-right-radius: 5px;
 }
 
-.nav-btn:hover {
-    background-color: #4f2ea0;
-    color: #fff;
-}
-
-.nav-btn.active {
-    background-color: #4f2ea0;
-    color: #fff;
-}
-
 .info-box div .info-btn.logout {
     background: linear-gradient(55deg, rgb(242, 153, 74) 0%, rgb(242, 201, 76) 100%) !important;
     padding-left: 12px;
@@ -259,22 +173,6 @@ button.go-website {
 
 .info-box div .info-btn.logout img {
     margin-left: 7px;
-}
-
-nav.side-nav::-webkit-scrollbar {
-    display: none;
-}
-
-.nav-fixed-buttons {
-    position: fixed;
-    width: 220px;
-    left: 0;
-    top: 0;
-    padding: 15px 10px;
-    background-color: #34157e;
-    border-right: 1px solid #5a33bc;
-    border-bottom: 1px solid #5a33bc;
-    height: 103px;
 }
 
 .tab-button-group {
@@ -785,50 +683,6 @@ form {
     border-right: none !important;
 }
 
-table {
-    color: #fff !important;
-    border-radius: 5px;
-    overflow: hidden;
-    border-collapse: separate;
-    table-layout: fixed;
-    border-spacing: 0 5px;
-    padding: 25px 0px;
-    table-layout: fixed;
-}
-
-tr {
-    border-radius: 5px;
-}
-
-.table thead tr th{
-    background-color: #34157e;
-    border: none !important;
-}
-
-.table thead tr{
-    background-color: #34157e;
-    border: none !important;
-}
-
-td {
-    background-color: #4418a1;
-    position: relative;
-    border: none !important;
-}
-
-th:first-child {
-  border-radius: 5px 0 0 5px;
-}
-th:last-child {
-  border-radius: 0 5px 5px 0;
-}
-
-td:first-child {
-  border-radius: 5px 0 0 5px;
-}
-td:last-child {
-  border-radius: 0 5px 5px 0;
-}
 
 button.yellow-button.left-radius-none.left-border-none.delete-button {
     padding: 15px 15px;

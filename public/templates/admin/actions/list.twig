@@ -35,8 +35,8 @@
                             <td>{{ entity[column.name] }}</td>
                         {% endfor %}
                         <td><div class="table-buttons">
-                            <a href="{{ path(entityName) }}/edit/{{ entity.id }}"><button class="blue-button right-radius-none right-border-none">{% if labels.edit is null %} Upravit {% else %} {{ labels.edit }} {% endif %}</button></a>
-                            <a href="{{ path(entityName) }}/delete/{{ entity.id }}"><button class="yellow-button left-radius-none left-border-none delete-button"><img src="{{ __img__ }}icons/delete-dark.svg"></button></a></div>
+                            <a href="{{ path(entityName) }}/edit?id={{ entity.id }}"><button class="blue-button right-radius-none right-border-none">{% if labels.edit is null %} Upravit {% else %} {{ labels.edit }} {% endif %}</button></a>
+                            <a href="{{ path(entityName) }}/delete?id={{ entity.id }}"><button class="yellow-button left-radius-none left-border-none delete-button"><img src="{{ __img__ }}icons/delete-dark.svg"></button></a></div>
                         </td>
                     </tr>
                 {% endfor %}

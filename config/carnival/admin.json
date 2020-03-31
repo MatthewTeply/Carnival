@@ -1,0 +1,25 @@
+{
+    "entities": {
+        "User": {
+            "title": "Uživatelé",
+            "icon": "profile.png",
+            "actions": {
+                "list": {
+                    "fields": {
+                        "username": {
+                            "label": "Uživatelské jméno",
+                            "type": "text"
+                        }
+                    }
+                },
+                "new": {
+                    "label": "Vytvořit uživatele"
+                },
+                "test": {
+
+                },
+                "edit": false
+            }
+        }
+    }
+}

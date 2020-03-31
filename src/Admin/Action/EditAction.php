@@ -11,10 +11,10 @@ use Lampion\Session\Lampion as LampionSession;
 class EditAction extends AdminCore {
 
     public function display() {
-        $entity_id = $_GET['Request']->params['id'];
+        $entity_id = $_GET['id'];
 
         $action = Url::link($this->entityName) . '/edit/' . $entity_id;
-        $entityConfig = $this->entityConfig->edit;
+        $entityConfig = $this->entityConfig->actions->edit;
 
         $form = new Form($action, 'POST');
 

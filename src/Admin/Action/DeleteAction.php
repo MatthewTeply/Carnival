@@ -8,7 +8,7 @@ use Lampion\Http\Url;
 class DeleteAction extends AdminCore {
 
     public function submit() {
-        $entity = new $this->className($_GET['Request']->params['id']);
+        $entity = new $this->className($_GET['id']);
 
         $entity->destroy();
 

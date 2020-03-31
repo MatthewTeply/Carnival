@@ -21,6 +21,8 @@ class AdminCore {
     public $entityConfig;
     public $config;
     public $title;
+    public $defaultAction;
+    public $declaredActions;
 
     public $fs;
 
@@ -28,7 +30,7 @@ class AdminCore {
         $this->view = new View(ROOT . APP . 'carnival' . TEMPLATES, 'carnival');
         $this->fs   = new FileSystem();
         
-        $this->config = json_decode(file_get_contents(ROOT . APP . 'carnival/' . CONFIG . 'carnival.json'));
+        $this->config = json_decode(file_get_contents(ROOT . APP . 'carnival/' . CONFIG . 'carnival/admin.json'));
         
         $this->entityName = explode('/', $_GET['url'])[0];
         $this->className  = 'Carnival\Entity\\' . $this->entityName;
@@ -36,7 +38,7 @@ class AdminCore {
 
         // TODO: Default action
         $action = explode('/', explode($this->entityName, $_GET['url'])[1])[1] ?? 'list';
-        
+
         $this->entityConfig = is_object($this->config) && isset($this->config->entities->{$this->entityName}) ? $this->config->entities->{$this->entityName} : null;
         
         if(isset($this->entityConfig->{$action}->title)) {
@@ -44,7 +46,7 @@ class AdminCore {
         }
 
         else {
-            if( isset($this->entityConfig->title)) {
+            if(isset($this->entityConfig->title)) {
                 $this->title = $this->entityConfig->title;
             }
 
@@ -53,11 +55,41 @@ class AdminCore {
             }
         }
 
+        if(isset($this->entityConfig->defaultAction)) {
+            $this->defaultAction = $this->entityConfig->defaultAction;
+        }
+
+        else {
+            if(isset($this->config->defaultAction)) {
+                $this->defaultAction = $this->config->defaultAction;
+            }
+
+            else {
+                $this->defaultAction = 'list';
+            }
+        }
+
+        foreach($this->entityConfig->actions as $key => $value) {
+            if(!is_object($value) && !$value) {
+                $this->declaredActions[] = '-' . $key;
+            }
+        }
+
         $args['__css__']     = WEB_ROOT . APP . 'carnival' . CSS;
         $args['__scripts__'] = WEB_ROOT . APP . 'carnival' . SCRIPTS;
         $args['__img__']     = WEB_ROOT . APP . 'carnival' . IMG;
         $args['user']        = (array)LampionSession::get('user');
         $args['title']       = $this->title;
+
+        foreach($this->config->entities as $key => $entity) {
+            $args['entities'][] = [
+                'name'   => $key,
+                'icon'   => $entity->icon ?? null,
+                'title'  => $entity->title ?? $key,
+                'active' => $this->entityName == $key ? true : false,
+                'type'   => $entity->nav_section ?? 'entity'
+            ];
+        }
 
         $this->header = $this->view->load('partials/header', $args);
         $this->nav    = $this->view->load('partials/nav'   , $args);
@@ -68,24 +100,36 @@ class AdminCore {
         # Getting all entities
         $entities = array_keys((array)$this->config->entities);
 
-        # Declaring entity actions
+        # Default actions
         $actions = [
             'list',
             'new',
-            'edit/{id}',
-            'delete/{id}',
-            'show/{id}'
+            'edit',
+            'delete',
+            'show'
         ];
+
+        foreach($actions as $action) {
+            if(!in_array($action, $this->declaredActions)) {
+                if(in_array('-' . $action, $this->declaredActions)) {
+                    unset($this->declaredActions[array_search('-' . $action, $this->declaredActions)]);
+                }
+
+                else {
+                    $this->declaredActions[] = $action;
+                }
+            }
+        }
 
         foreach($entities as $entity) {
             # Register default action
             #   TODO: configurable default action
-            $router->get($entity, 'Carnival\Admin\Action\ListAction::display');
+            $router->get($entity, 'Carnival\\Admin\Action\\' . ucfirst($this->defaultAction) . 'Action::display');
 
             # Register entity route, and all it's actions
-            foreach($actions as $action) {
-                $router->get($entity . '/' . $action, 'Carnival\\Admin\\Action\\' . ucfirst(explode('/{', $action)[0]) . 'Action::display');
-                $router->post($entity . '/' . $action, 'Carnival\\Admin\\Action\\' . ucfirst(explode('/{', $action)[0]) . 'Action::submit');
+            foreach($this->declaredActions as $action) {
+                $router->get($entity . '/' . $action, 'Carnival\\Admin\\Action\\' . ucfirst($action) . 'Action::display');
+                $router->post($entity . '/' . $action, 'Carnival\\Admin\\Action\\' . ucfirst($action) . 'Action::submit');
             }
         }
     }

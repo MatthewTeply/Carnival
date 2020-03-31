@@ -11,7 +11,7 @@ class NewAction extends AdminCore {
 
     public function display() {
         $action = Url::link($this->entityName) . '/new';
-        $entityConfig = $this->entityConfig->new;
+        $entityConfig = $this->entityConfig->actions->new;
 
         $form = new Form($action, 'POST');
 
