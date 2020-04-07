@@ -3,6 +3,7 @@
         "User": {
             "title": "Uživatelé",
             "icon": "profile.png",
+            "nav_section": "settings",
             "actions": {
                 "list": {
                     "fields": {
@@ -11,14 +12,7 @@
                             "type": "text"
                         }
                     }
-                },
-                "new": {
-                    "label": "Vytvořit uživatele"
-                },
-                "test": {
-
-                },
-                "edit": false
+                }
             }
         }
     }

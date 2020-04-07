@@ -62,7 +62,7 @@ class ListAction extends AdminCore {
         }
 
         $this->view->render('admin/actions/list', [
-            'columns'    => $columns ?? array_keys((array)$this->entityConfig->list->fields),
+            'columns'    => $columns ?? array_keys((array)$this->entityConfig->actions->list->fields),
             'entities'   => $entities,
             'title'      => $this->title,
             'entityName' => $this->entityName,
@@ -70,9 +70,12 @@ class ListAction extends AdminCore {
             'nav'        => $this->nav,
             'footer'     => $this->footer,
             'labels'     => [
-                'new'   => $this->entityConfig->new->label ?? null,
-                'edit'  => $this->entityConfig->edit->label ?? null
-            ]
+                'new'   => $this->entityConfig->actions->new->label ?? null,
+                'edit'  => $this->entityConfig->actions->edit->label ?? null
+            ],
+            'new'    => isset($this->entityConfig->actions->new) ? is_object($this->entityConfig->actions->new) : true,
+            'edit'   => isset($this->entityConfig->actions->edit) ? is_object($this->entityConfig->actions->edit) : true,
+            'delete' => isset($this->entityConfig->actions->delete) ? is_object($this->entityConfig->actions->delete) : true
         ]);
     }
 

@@ -40,7 +40,7 @@ class AdminCore {
         $action = explode('/', explode($this->entityName, $_GET['url'])[1])[1] ?? 'list';
 
         $this->entityConfig = is_object($this->config) && isset($this->config->entities->{$this->entityName}) ? $this->config->entities->{$this->entityName} : null;
-        
+
         if(isset($this->entityConfig->{$action}->title)) {
             $this->title = $this->entityConfig->{$action}->title;
         }
@@ -69,9 +69,13 @@ class AdminCore {
             }
         }
 
-        foreach($this->entityConfig->actions as $key => $value) {
-            if(!is_object($value) && !$value) {
-                $this->declaredActions[] = '-' . $key;
+        if($this->entityConfig) {
+            $this->declaredActions = [];
+    
+            foreach($this->entityConfig->actions as $key => $value) {
+                if(!is_object($value) && !$value) {
+                    $this->declaredActions[] = '-' . $key;
+                }
             }
         }
 
@@ -109,14 +113,16 @@ class AdminCore {
             'show'
         ];
 
-        foreach($actions as $action) {
-            if(!in_array($action, $this->declaredActions)) {
-                if(in_array('-' . $action, $this->declaredActions)) {
-                    unset($this->declaredActions[array_search('-' . $action, $this->declaredActions)]);
-                }
-
-                else {
-                    $this->declaredActions[] = $action;
+        if($this->declaredActions) {
+            foreach($actions as $action) {
+                if(!in_array($action, $this->declaredActions)) {
+                    if(in_array('-' . $action, $this->declaredActions)) {
+                        unset($this->declaredActions[array_search('-' . $action, $this->declaredActions)]);
+                    }
+    
+                    else {
+                        $this->declaredActions[] = $action;
+                    }
                 }
             }
         }
@@ -127,9 +133,11 @@ class AdminCore {
             $router->get($entity, 'Carnival\\Admin\Action\\' . ucfirst($this->defaultAction) . 'Action::display');
 
             # Register entity route, and all it's actions
-            foreach($this->declaredActions as $action) {
-                $router->get($entity . '/' . $action, 'Carnival\\Admin\\Action\\' . ucfirst($action) . 'Action::display');
-                $router->post($entity . '/' . $action, 'Carnival\\Admin\\Action\\' . ucfirst($action) . 'Action::submit');
+            if($this->declaredActions) {
+                foreach($this->declaredActions as $action) {
+                    $router->get($entity . '/' . $action, 'Carnival\\Admin\\Action\\' . ucfirst($action) . 'Action::display');
+                    $router->post($entity . '/' . $action, 'Carnival\\Admin\\Action\\' . ucfirst($action) . 'Action::submit');
+                }
             }
         }
     }

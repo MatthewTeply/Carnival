@@ -14,102 +14,6 @@ body {
     align-content: flex-start;
 }
 
-.online-user {
-    position: relative;
-    display: flex;
-    justify-content: center;
-    flex-direction: row;
-    align-items: center;
-}
-
-.online-user span {
-    font-size: 12px;
-    margin-left: 15Px;
-}
-
-.tab {
-    overflow: hidden;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-top: 10px;
-}
-
-.tab button {
-    float: left;
-    border: none;
-    outline: none;
-    cursor: pointer;
-    padding: 3px 18px;
-    transition: all 300ms ease-in-out;
-    background: #4418a1;
-    color: #9a74fb;
-    font-weight: 500;
-    font-size: 12px;
-    height: 24px;
-}
-
-.tab button:hover {
-    background-color: #4f2ea0;
-}
-
-.tab button.active {
-    color: #fff;
-    background: #4f2ea0;
-}
-
-.tabcontent {
-    display: none;
-    align-items: flex-start;
-    justify-content: space-between;
-    flex-direction: row;
-    flex-wrap: wrap;
-    align-content: flex-start;
-    width: 100%;
-}
-
-@keyframes fadeEffect {
-    from {
-        opacity: 0;
-    }
-
-    to {
-        opacity: 1;
-    }
-}
-
-.tab button.settings {
-    padding: 3px 9px;
-    border-radius: 5px;
-    background: linear-gradient(55deg, rgb(242, 153, 74) 0%, rgb(242, 201, 76) 100%) !important;
-    border: 1px solid #f2c94c;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.tab button.left {
-    border-top-left-radius: 5px;
-    border-bottom-left-radius: 5px;
-}
-
-.tab button.right {
-    border-top-right-radius: 5px;
-    border-bottom-right-radius: 5px;
-}
-
-.info-box div .info-btn.logout {
-    background: linear-gradient(55deg, rgb(242, 153, 74) 0%, rgb(242, 201, 76) 100%) !important;
-    padding-left: 12px;
-    padding-right: 12px;
-    color: #34157e;
-    display: flex;
-    align-items: center;
-    border-radius: 5px;
-    border: 1px solid #f2c94c;
-}
-
 .info-box div .info-btn {
     float: left;
     outline: none;
@@ -137,93 +41,12 @@ body {
     justify-content: space-between;
 }
 
-.online-user-around {
-    width: 100%;
-    position: relative;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: flex-start;
-    flex-wrap: wrap;
-    align-content: flex-start;
-    border-radius: 5px;
-    background-color: #4418a1;
-    padding: 5px;
-}
-
-.online-user img {
-    border-radius: 100%;
-    width: 25px;
-}
-
-button.go-website {
-    outline: none;
-    border-radius: 5px;
-    padding: 5px 10px;
-    color: #34157e;
-    border: 1px solid #f2c94c;
-    background: linear-gradient(55deg, rgb(242, 153, 74) 0%, rgb(242, 201, 76) 100%) !important;
-    margin-bottom: 5px;
-    width: 100%;
-}
-
-.go-website span {
-    font-weight: 500;
-}
-
 .info-box div .info-btn.logout img {
     margin-left: 7px;
 }
 
-.tab-button-group {
-    border: 1px solid #4f1eba;
-    border-radius: 5px;
-}
-
 .info-box div .info-btn:hover {
     background-color: #4f2ea0;
-}
-
-.tab button.settings img {
-    width: 13px;
-}
-
-.dashboard-box {
-    background-color: #4418a1;
-    padding: 15px;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: flex-start;
-    border-radius: 5px;
-    border: 1px solid #4f1eba;
-    min-height: 130px;
-}
-
-.dashboard-category-name {
-    font-size: 14px;
-    color: #9a74fb;
-}
-
-.dashboard-category-number {
-    font-weight: 600;
-    font-size: 34px;
-    color: #fff;
-}
-
-.dashboard-box small {
-    font-size: 50%;
-    color: #9a74fb;
-}
-
-.dashboard-box-around {
-    padding: 5px;
-}
-
-.dashboard-box .url {
-    text-decoration: none;
-    font-size: 12px;
-    color: #efb64e;
 }
 
 .main-content .headline h2 {
@@ -549,60 +372,6 @@ button.yellow-button.full-width {
     padding-right: 10px;
 }
 
-.login-content {
-    width: 100%;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.login-form {
-    width: 90%;
-    max-width: 400px;
-    padding: 85px 35px;
-    border-radius: 5px;
-    background-color: #34157e;
-    border: 1px solid #5a33bc;
-}
-
-.login-form .headline {
-    padding: 10px 5px;
-}
-
-.login-form .headline h2 {
-    color: #fff;
-    margin-bottom: 0;
-    font-weight: 600;
-    font-size: 24px;
-}
-
-.login-form button {
-    padding: 15px;
-}
-
-.login-footer {
-    position: absolute;
-    width: 100%;
-    bottom: 0;
-    right: 0;
-    left: 0;
-    padding: 15px 25px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-direction: row;
-}
-
-.version {
-    color: #fff;
-}
-
-.login-footer .contact {
-    color: #fff;
-    font-weight: 500;
-}
-
 a {
     color: inherit;
 }
@@ -610,11 +379,6 @@ a {
 a:hover {
     color: inherit;
     text-decoration: none;
-}
-
-.forgoten-password {
-    color: #efb64e;
-    font-size: 12px;
 }
 
 .added-form-box:hover {
@@ -657,24 +421,6 @@ form {
     margin: 0px;
 }
 
-.table-buttons {
-    width: auto;
-    height: 55px;
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-}
-
-.table-buttons button.yellow-button, button.blue-button {
-    height: 100%;
-}
-
-.table-buttons button.blue-button {
-    background-color: #34157e;
-    color: #9a74fb;
-}
-
 .left-border-none {
     border-left: none !important;
 }
@@ -695,11 +441,6 @@ button.yellow-button.left-radius-none.left-border-none.delete-button {
     border-radius: 5px;
     padding:7px;
     font-size: 13px;
-}
-
-table th, table td {
-    vertical-align: middle !important;
-    padding: 15px;
 }
 
 .form-control:focus {
@@ -739,59 +480,4 @@ button {
 
 .yellow-button .text.toggled {
     opacity: 0;
-}
-
-.particle {
-    opacity: 0;
-    position: absolute;
-    background-color: rgba(255, 255, 255, 0);
-    -webkit-animation: particleAnim 3s ease-in-out infinite;
-    animation: particleAnim 3s ease-in-out infinite;
-    border-radius: 100%;
-}
-
-@-webkit-keyframes particleAnim {
-    0% {
-        opacity: 0;
-        transform: translateY(-0%);
-    }
-
-    15% {
-        opacity: 1;
-    }
-
-    100% {
-        opacity: 0;
-        transform: translateY(-1500%);
-    }
-}
-
-@keyframes particleAnim {
-    0% {
-        opacity: 0;
-        transform: translateY(-0%);
-    }
-
-    25% {
-        opacity: 1;
-    }
-
-    100% {
-        opacity: 0;
-        transform: translateY(-1500%);
-    }
-}
-
-.empty-content {
-    margin-top: 35px;
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    align-items: flex-start;
-    justify-content: flex-start;
-    text-align: center;
-    flex-wrap: wrap;
-    align-content: center;
-    padding: 10px;
-    color: #9a74fb;
 }

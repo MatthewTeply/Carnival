@@ -1,6 +1,8 @@
 {{ header }}
 {{ nav }}
 
+<link href="{{ __css__ }}/actions/list.css" rel="stylesheet">
+
 <style>
  .list-table, .list-table .btn {
     font-size: 14px !important;
@@ -10,11 +12,13 @@
 <div class="main-content">
     <div class="col-lg-12 headline headline-button ">
         <h2>{{ title }}</h2>
-        <a href="{{ path(entityName) }}/new">
-            <button class="add-button" id="open-form">
-                <span>{% if labels.new is null %} Přidat {{ title }} {% else %} {{ labels.new }} {% endif %}</span>
-            </button>
-        </a>
+        {% if new %}
+            <a href="{{ path(entityName) }}/new">
+                <button class="add-button" id="open-form">
+                    <span>{% if labels.new is null %} Přidat {{ title }} {% else %} {{ labels.new }} {% endif %}</span>
+                </button>
+            </a>
+        {% endif %}
     </div>
     {% if entities|length == 0 %}
         <div class="empty-content"><p>Zatím tu nic není...</p></div>
@@ -35,8 +39,12 @@
                             <td>{{ entity[column.name] }}</td>
                         {% endfor %}
                         <td><div class="table-buttons">
-                            <a href="{{ path(entityName) }}/edit?id={{ entity.id }}"><button class="blue-button right-radius-none right-border-none">{% if labels.edit is null %} Upravit {% else %} {{ labels.edit }} {% endif %}</button></a>
-                            <a href="{{ path(entityName) }}/delete?id={{ entity.id }}"><button class="yellow-button left-radius-none left-border-none delete-button"><img src="{{ __img__ }}icons/delete-dark.svg"></button></a></div>
+                            {% if edit %}
+                                <a href="{{ path(entityName) }}/edit?id={{ entity.id }}"><button class="blue-button right-radius-none right-border-none">{% if labels.edit is null %} Upravit {% else %} {{ labels.edit }} {% endif %}</button></a>
+                            {% endif %}
+                            {% if delete %}
+                                <a href="{{ path(entityName) }}/delete?id={{ entity.id }}"><button class="yellow-button left-radius-none left-border-none delete-button"><img src="{{ __img__ }}icons/delete-dark.svg"></button></a></div>
+                            {% endif %}
                         </td>
                     </tr>
                 {% endfor %}
