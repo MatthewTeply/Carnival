@@ -27,6 +27,10 @@ class AdminCore {
     public $fs;
 
     public function __construct() {
+
+        /**
+         * Initial config
+         */
         $this->view = new View(ROOT . APP . 'carnival' . TEMPLATES, 'carnival');
         $this->fs   = new FileSystem();
         
@@ -36,11 +40,30 @@ class AdminCore {
         $this->className  = 'Carnival\Entity\\' . $this->entityName;
         $this->table      = strtolower($this->entityName);
 
-        // TODO: Default action
-        $action = explode('/', explode($this->entityName, $_GET['url'])[1])[1] ?? 'list';
-
         $this->entityConfig = is_object($this->config) && isset($this->config->entities->{$this->entityName}) ? $this->config->entities->{$this->entityName} : null;
 
+        /**
+         * Setting the defualt action
+         */
+        if(isset($this->entityConfig->default_action)) {
+            $this->defaultAction = $this->entityConfig->default_action;
+        }
+
+        else {
+            if(isset($this->config->defaultAction)) {
+                $this->defaultAction = $this->config->defaultAction;
+            }
+
+            else {
+                $this->defaultAction = 'list';
+            }
+        }
+
+        $action = explode('/', explode($this->entityName, $_GET['url'])[1])[1] ?? $this->defaultAction;
+
+        /**
+         * Setting title
+         */
         if(isset($this->entityConfig->{$action}->title)) {
             $this->title = $this->entityConfig->{$action}->title;
         }
@@ -55,20 +78,9 @@ class AdminCore {
             }
         }
 
-        if(isset($this->entityConfig->defaultAction)) {
-            $this->defaultAction = $this->entityConfig->defaultAction;
-        }
-
-        else {
-            if(isset($this->config->defaultAction)) {
-                $this->defaultAction = $this->config->defaultAction;
-            }
-
-            else {
-                $this->defaultAction = 'list';
-            }
-        }
-
+        /**
+         * Getting declared actions
+         */
         if($this->entityConfig) {
             $this->declaredActions = [];
     
@@ -79,12 +91,15 @@ class AdminCore {
             }
         }
 
+        /**
+         * Setting twig variables and partials
+         */
         $args['__css__']     = WEB_ROOT . APP . 'carnival' . CSS;
         $args['__scripts__'] = WEB_ROOT . APP . 'carnival' . SCRIPTS;
         $args['__img__']     = WEB_ROOT . APP . 'carnival' . IMG;
         $args['user']        = (array)LampionSession::get('user');
         $args['title']       = $this->title;
-
+        
         foreach($this->config->entities as $key => $entity) {
             $args['entities'][] = [
                 'name'   => $key,
@@ -105,7 +120,7 @@ class AdminCore {
         $entities = array_keys((array)$this->config->entities);
 
         # Default actions
-        $actions = [
+        $defaultActions = [
             'list',
             'new',
             'edit',
@@ -113,8 +128,9 @@ class AdminCore {
             'show'
         ];
 
+        # Check for declared actions in carnival.json
         if($this->declaredActions) {
-            foreach($actions as $action) {
+            foreach($defaultActions as $action) {
                 if(!in_array($action, $this->declaredActions)) {
                     if(in_array('-' . $action, $this->declaredActions)) {
                         unset($this->declaredActions[array_search('-' . $action, $this->declaredActions)]);
@@ -127,13 +143,13 @@ class AdminCore {
             }
         }
 
+        # If there are no declared actions for entity, use the default ones
         else {
-            $this->declaredActions = $actions;
+            $this->declaredActions = $defaultActions;
         }
 
         foreach($entities as $entity) {
             # Register default action
-            #   TODO: configurable default action
             $router->get($entity, 'Carnival\\Admin\Action\\Admin\\' . ucfirst($this->defaultAction) . 'Action::display');
 
             # Register entity route, and all it's actions

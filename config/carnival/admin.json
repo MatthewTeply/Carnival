@@ -4,6 +4,7 @@
             "title": "Uživatelé",
             "icon": "profile.png",
             "nav_section": "settings",
+            "default_action": "new",
             "actions": {
                 "list": {
                     "fields": {
