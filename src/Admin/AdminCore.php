@@ -127,16 +127,20 @@ class AdminCore {
             }
         }
 
+        else {
+            $this->declaredActions = $actions;
+        }
+
         foreach($entities as $entity) {
             # Register default action
             #   TODO: configurable default action
-            $router->get($entity, 'Carnival\\Admin\Action\\' . ucfirst($this->defaultAction) . 'Action::display');
+            $router->get($entity, 'Carnival\\Admin\Action\\Admin\\' . ucfirst($this->defaultAction) . 'Action::display');
 
             # Register entity route, and all it's actions
             if($this->declaredActions) {
                 foreach($this->declaredActions as $action) {
-                    $router->get($entity . '/' . $action, 'Carnival\\Admin\\Action\\' . ucfirst($action) . 'Action::display');
-                    $router->post($entity . '/' . $action, 'Carnival\\Admin\\Action\\' . ucfirst($action) . 'Action::submit');
+                    $router->get($entity . '/' . $action, 'Carnival\\Admin\\Action\\Admin\\' . ucfirst($action) . 'Action::display');
+                    $router->post($entity . '/' . $action, 'Carnival\\Admin\\Action\\Admin\\' . ucfirst($action) . 'Action::submit');
                 }
             }
         }
