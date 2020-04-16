@@ -1,6 +1,6 @@
 <?php
 
-namespace Carnival\Admin\Action;
+namespace Carnival\Admin\Action\Admin;
 
 use Error;
 use Carnival\Admin\AdminCore;
