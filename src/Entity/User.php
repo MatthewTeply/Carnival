@@ -2,36 +2,32 @@
 
 namespace Carnival\Entity;
 
-use Lampion\Entity\Entity;
+use Lampion\Debug\Console;
 
-class User extends Entity
+class User
 {
     # Public:
     public $id;
     public $username;
     public $role;
+    public $pwd;
 
-    # Protected:
-    protected $pwd;
-
-    public function __construct($id = null) {
-        return $this->init($id);
-    }
-
-    public function setPassword(string $pwd) {
+    public function setPwd(string $pwd) {
         $this->pwd = password_hash($pwd, PASSWORD_DEFAULT);
+
+        Console::log('Password: ' . $this->pwd);
     }
 
-    public function getPassword() {
+    public function getPwd() {
         return $this->pwd;
     }
 
-    public function persist() {
-        $this->save();
-    }
+    public function getRole() {
+        if(empty($role)) {
+            $this->role = '["ROLE_USER"]';
+        }
 
-    public function destroy() {
-        $this->delete();
+        return $this->role;
     }
 
     public function __toString() {

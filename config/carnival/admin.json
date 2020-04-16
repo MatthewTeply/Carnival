@@ -12,6 +12,15 @@
                             "type": "text"
                         }
                     }
+                },
+                "new": {
+                    "title": "Nový uživatel",
+                    "label": "Nový uživatel",
+                    "action_label": "Vytvořit"
+                },
+                "edit": {
+                    "title": "Úprava uživatele",
+                    "action_label": "Upravit"
                 }
             }
         }

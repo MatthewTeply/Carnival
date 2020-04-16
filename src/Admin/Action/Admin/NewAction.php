@@ -3,41 +3,58 @@
 namespace Carnival\Admin\Action\Admin;
 
 use Carnival\Admin\AdminCore;
+use Lampion\Debug\Console;
 use Lampion\Http\Url;
 use Lampion\Form\Form;
 use Lampion\Session\Lampion as LampionSession;
 
 class NewAction extends AdminCore {
 
+    public $action;
+    public $form;
+
+    public function __construct() {
+        parent::__construct();
+
+        $this->action = Url::link($this->entityName) . '/new';
+        $this->entityConfig = $this->entityConfig->actions->new;
+
+        $this->form = new Form($this->action, 'POST');
+    }
+
     public function display() {
-        $action = Url::link($this->entityName) . '/new';
-        $entityConfig = $this->entityConfig->actions->new;
 
-        $form = new Form($action, 'POST');
-
-        foreach($entityConfig->fields as $fieldName => $field) {
-            $form->field($field->type, [
-                'name'  => $fieldName,
-                'label' => $field->label ?? null,
-                'attr'  => [
-                    'id'          => $field->id ?? null,
-                    'class'       => $field->class ?? null,
-                    'placeholder' => $field->label ?? null
-                ]
+        # If fields are defined, use them
+        if(isset($this->entityConfig->fields)) {
+            foreach($this->entityConfig->fields as $fieldName => $field) {
+                $this->form->field($field->type, [
+                    'name'  => $fieldName,
+                    'label' => $field->label ?? null,
+                    'attr'  => [
+                        'id'          => $field->id ?? null,
+                        'class'       => $field->class ?? null,
+                        'placeholder' => $field->label ?? null
+                    ]
+                ]);
+            }
+            
+            $action_label = $this->entityConfig->action_label ?? null;
+    
+            $this->form->field('button', [
+                'name'  => $this->entityName . '_submit',
+                'label' => $action_label ?? 'Submit',
+                'class' => 'yellow-button',
+                'type'  => 'submit'
             ]);
         }
 
-        $action_label = $entityConfig->action_label ?? null;
-
-        $form->field('button', [
-            'name'  => $this->entityName . '_submit',
-            'label' => $action_label ?? 'Submit',
-            'class' => 'yellow-button',
-            'type'  => 'submit'
-        ]);
-
+        # If fields are not defined, automatically construct the form
+        else {
+            $this->constructForm($this->form);
+        }
+        
         $this->view->render('admin/actions/new', [
-            'form'       => $form,
+            'form'       => $this->form,
             'title'      => $this->title,
             'entityName' => $this->entityName,
             'header'     => $this->header,
@@ -47,9 +64,7 @@ class NewAction extends AdminCore {
     }
 
     public function submit() {
-        $entityConfig = $this->entityConfig->new;
-
-        $fields = array_keys((array)$entityConfig->fields);
+        $fields = $this->entityConfig->fields ?? array_keys((array)$this->entityColumns);
 
         $entity = new $this->className();
 
@@ -65,7 +80,7 @@ class NewAction extends AdminCore {
             }
         }
 
-        $entity->persist();
+        $this->em->persist($entity);
 
         Url::redirect($this->entityName, [
             'success' => 'new'

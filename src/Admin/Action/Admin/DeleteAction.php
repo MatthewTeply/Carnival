@@ -3,14 +3,15 @@
 namespace Carnival\Admin\Action\Admin;
 
 use Carnival\Admin\AdminCore;
+use Carnival\Entity\User;
 use Lampion\Http\Url;
 
 class DeleteAction extends AdminCore {
 
-    public function submit() {
-        $entity = new $this->className($_GET['id']);
+    public function display() {
+        $entity = $this->em->find(User::class, $_GET['id']);
 
-        $entity->destroy();
+        $this->em->destroy($entity);
 
         Url::redirect($this->entityName, [
             'success' => 'delete'

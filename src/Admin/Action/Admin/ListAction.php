@@ -10,7 +10,7 @@ class ListAction extends AdminCore {
 
     public function display() {
         # If entity's name is reserved in SQL, try entity prefix
-        $ids = Query::select(Query::tableExists($this->table) ? $this->table : 'entity_' . $this->table, ['id']);
+        $ids = Query::select($this->table, ['id']);
 
         $entities = [];
 
@@ -19,7 +19,7 @@ class ListAction extends AdminCore {
                 continue;
             }
 
-            $entity = new $this->className($id['id']);
+            $entity = $this->em->find($this->className, $id['id']);
 
             $entityConfig = $this->entityConfig->actions->list;
 
