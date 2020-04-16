@@ -1,17 +1,17 @@
 {
     "entities": {
         "User": {
-            "create": {
-                
-            },
-            "read": {
-                
-            },
-            "update": {
-                
-            },
-            "delete": {
+            "actions": {
+                "create": false,
+                "read": {
+                    
+                },
+                "update": {
+                    
+                },
+                "delete": {
 
+                } 
             }
         }
     }

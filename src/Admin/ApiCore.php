@@ -15,7 +15,13 @@ class ApiCore {
     }
 
     public function registerRoutes(Router $router) {
-        
+        foreach ($this->entities as $entity) {
+        	$entityConfig = $this->configy->entities->$entity;
+
+			foreach($entityConfig->actions as $action) {
+                
+            }        	
+        }
     }
 
 }

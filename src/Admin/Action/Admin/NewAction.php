@@ -1,42 +1,27 @@
 <?php
 
-namespace Carnival\Admin\Action;
+namespace Carnival\Admin\Action\Admin;
 
 use Carnival\Admin\AdminCore;
 use Lampion\Http\Url;
 use Lampion\Form\Form;
-use Lampion\Misc\Util;
 use Lampion\Session\Lampion as LampionSession;
 
-class EditAction extends AdminCore {
+class NewAction extends AdminCore {
 
     public function display() {
-        $entity_id = $_GET['id'];
-
-        $action = Url::link($this->entityName) . '/edit/' . $entity_id;
-        $entityConfig = $this->entityConfig->actions->edit;
+        $action = Url::link($this->entityName) . '/new';
+        $entityConfig = $this->entityConfig->actions->new;
 
         $form = new Form($action, 'POST');
 
-        $entity = new $this->className($entity_id);
-
         foreach($entityConfig->fields as $fieldName => $field) {
-            if(Util::validateJson(htmlspecialchars_decode($entity->$fieldName))) {
-                $value = json_decode(htmlspecialchars_decode($entity->$fieldName), true);
-            }
-
-            else {
-                $value = $entity->$fieldName;
-            }
-
-            $form
-            ->field($field->type, [
-                'name' => $fieldName,
+            $form->field($field->type, [
+                'name'  => $fieldName,
                 'label' => $field->label ?? null,
-                'value' => $value,
-                'attr' => [
-                    'id' => $field->id ?? null,
-                    'class' => $field->class ?? null,
+                'attr'  => [
+                    'id'          => $field->id ?? null,
+                    'class'       => $field->class ?? null,
                     'placeholder' => $field->label ?? null
                 ]
             ]);
@@ -51,7 +36,7 @@ class EditAction extends AdminCore {
             'type'  => 'submit'
         ]);
 
-        $this->view->render('admin/actions/edit', [
+        $this->view->render('admin/actions/new', [
             'form'       => $form,
             'title'      => $this->title,
             'entityName' => $this->entityName,
@@ -64,23 +49,18 @@ class EditAction extends AdminCore {
     public function submit() {
         $entityConfig = $this->entityConfig->new;
 
-        $fields =$entityConfig->fields;
+        $fields = array_keys((array)$entityConfig->fields);
 
-        $entity = new $this->className($_GET['Request']->params['id']);
+        $entity = new $this->className();
 
-        foreach($fields as $key => $field) {
-            if($field->type == 'boolean') {
-                if(!isset($_POST[$key])) {
-                    $_POST[$key] = 'false';
-                }
-            }
-
-            $entity->$key = $_POST[$key];
+        # Post
+        foreach($fields as $field) {
+            $entity->$field = $_POST[$field];
         }
 
         # Files
         foreach($_FILES as $key => $file) {
-            if(!empty($file['name'])) {
+            if(!empty($file)) {
                 $entity->$key = APP . LampionSession::get('app') . STORAGE . $this->fs->upload($file, '');
             }
         }
@@ -88,7 +68,7 @@ class EditAction extends AdminCore {
         $entity->persist();
 
         Url::redirect($this->entityName, [
-            'success' => 'edit'
+            'success' => 'new'
         ]);
     }
 
