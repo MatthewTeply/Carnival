@@ -28,7 +28,7 @@ class EditAction extends AdminCore {
     }
 
     public function display() {
-        $entity = new $this->className($this->entityId);
+        $entity = $this->em->find($this->className, $this->entityId);
 
         if(isset($this->entityConfig->fields)) {
             foreach($this->entityConfig->fields as $fieldName => $field) {

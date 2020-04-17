@@ -10,6 +10,14 @@
                         "username": {
                             "label": "Uživatelské jméno",
                             "type": "text"
+                        },
+                        "pwd": {
+                            "label": "Heslo",
+                            "type": "text"
+                        },
+                        "role": {
+                            "label": "Oprávnění",
+                            "type": "text"
                         }
                     }
                 },

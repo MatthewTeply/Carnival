@@ -40,15 +40,29 @@
                         {% endfor %}
                         <td><div class="table-buttons">
                             {% if edit %}
-                                <a href="{{ path(entityName) }}/edit?id={{ entity.id }}"><button class="blue-button right-radius-none right-border-none">{% if labels.edit is null %} Upravit {% else %} {{ labels.edit }} {% endif %}</button></a>
+                                <a href="{{ path(entityName) }}/edit?id={{ entity.id }}" class="link">{{ labels.edit }}</a>
                             {% endif %}
                             {% if delete %}
-                                <a href="{{ path(entityName) }}/delete?id={{ entity.id }}"><button class="yellow-button left-radius-none left-border-none delete-button"><img src="{{ __img__ }}icons/delete-dark.svg"></button></a></div>
+                                <a href="{{ path(entityName) }}/delete?id={{ entity.id }}" class="link text-danger">{{ labels.delete }}</a>
                             {% endif %}
                         </td>
                     </tr>
                 {% endfor %}
             </tbody>
+            <tfoot>
+                <tr>
+                    <td>
+                        {{ resultsCount }} Výsledků
+                    </td>
+                    <td colspan="{{ entities|first|length - 2 }}"></td>
+                    <td class="text-right list-pagination">
+                        <a href="{{ path(entityName) }}/list?page={{ page - 1 }}" {{ (page == 1) ? 'class="disabled"' : '' }}>Previous</a>
+                         | 
+                        <a href="{{ path(entityName) }}/list?page={{ page + 1 }}" {{ (page == pagesCount) ? 'class="disabled"' : '' }}>Next</a>
+                        ({{ page }} / {{ pagesCount }})
+                    </td>
+                </tr>
+            </tfoot>
         </table>
     {% endif %}
 </div>

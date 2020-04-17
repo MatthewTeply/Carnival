@@ -8,8 +8,6 @@ use Lampion\View\View;
 use Lampion\Session\Lampion as LampionSession;
 use Lampion\Database\Query;
 use Lampion\Debug\Console;
-
-use Carnival\Entity\User;
 use Lampion\Entity\EntityManager;
 
 class AdminCore {
@@ -90,7 +88,7 @@ class AdminCore {
 
         # Check for declared actions in carnival.json
         if(!empty($this->declaredActions)) {
-            foreach($defaultActions as $this->action) {
+            foreach($defaultActions as $action) {
                 if(!in_array($action, $this->declaredActions)) {
 
                     # If -*action* is declared, remove that action from defaultActions
@@ -196,9 +194,7 @@ class AdminCore {
     }
 
     public function constructForm(&$form, $entity = null) {
-        $user = new User();
-
-        $user->doTest();
+        Console::log($entity);
 
         if($entity) {
             $form->field('number', [

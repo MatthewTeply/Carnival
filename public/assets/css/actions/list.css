@@ -14,47 +14,37 @@
 
 table {
     color: #fff !important;
-    border-radius: 5px;
+    border-radius: 5px; 
     overflow: hidden;
     border-collapse: separate;
     table-layout: fixed;
     border-spacing: 0 5px;
-    padding: 25px 0px;
     table-layout: fixed;
+    border-collapse: unset;
+    border-spacing: 0;
+    margin-top: 10px;
+    font-size: 14px !important;
 }
 
-tr {
-    border-radius: 5px;
+.table thead tr th, .table tfoot tr td {
+    background-color: #34157e;
+    border: none !important;
+    padding: 10px 20px !important;
 }
 
-.table thead tr th{
+.table thead tr, .table tfoot tr {
     background-color: #34157e;
     border: none !important;
 }
 
-.table thead tr{
-    background-color: #34157e;
-    border: none !important;
+.table td {
+    padding: 0 20px !important;
+    border-top: 1px solid #34157e;
 }
 
 td {
     background-color: #4418a1;
     position: relative;
-    border: none !important;
-}
-
-th:first-child {
-  border-radius: 5px 0 0 5px;
-}
-th:last-child {
-  border-radius: 0 5px 5px 0;
-}
-
-td:first-child {
-  border-radius: 5px 0 0 5px;
-}
-td:last-child {
-  border-radius: 0 5px 5px 0;
 }
 
 table th, table td {
@@ -71,6 +61,15 @@ table th, table td {
     justify-content: flex-end;
 }
 
+.table-buttons .link {
+    margin-left: 10px;
+    color: #f2c94c;
+}
+
+.table-buttons .link:hover {
+    opacity: .9;
+}
+
 .table-buttons button.yellow-button, button.blue-button {
     height: 100%;
 }
@@ -78,4 +77,13 @@ table th, table td {
 .table-buttons button.blue-button {
     background-color: #34157e;
     color: #9a74fb;
+}
+
+.table tfoot .list-pagination a {
+    margin: 0 5px;
+}
+
+.table tfoot .list-pagination .disabled {
+    opacity: .5;
+    pointer-events: none;
 }
