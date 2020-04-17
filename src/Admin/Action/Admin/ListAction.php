@@ -8,15 +8,8 @@ use Lampion\Database\Query;
 use Lampion\Debug\Console;
 
 class ListAction extends AdminCore {
-
-    public function __construct() {
-        parent::__construct();
-
-        $this->entityConfig = $this->entityConfig->actions->list;
-    }
-
     public function display() {
-        $limit = $this->entityConfig->limit ?? 25;
+        $limit = $this->entityConfig->actions->list->limit ?? 25;
 
         # If entity's name is reserved in SQL, try entity prefix
         $ids = Query::raw('SELECT id FROM ' . $this->table . ' LIMIT ' . $limit . ' OFFSET ' . (isset($_GET['page']) ? ($_GET['page'] - 1) * $limit : 0));
@@ -34,11 +27,11 @@ class ListAction extends AdminCore {
 
             $entity = $this->em->find($this->className, $id['id']);
 
-            if(isset($this->entityConfig->fields)) {
-                $columns = array_keys((array)$this->entityConfig->fields);
+            if(isset($this->entityConfig->actions->list->fields)) {
+                $columns = array_keys((array)$this->entityConfig->actions->list->fields);
 
                 foreach($columns as $column) {
-                    $type = $this->entityConfig->fields->$column->type ?? null;
+                    $type = $this->entityConfig->actions->list->fields->$column->type ?? null;
                     $methodName = 'get' . ucfirst($column);
 
                     # Check if column has a getter defined in entity
@@ -65,7 +58,7 @@ class ListAction extends AdminCore {
             foreach($columns as $col_key => $column) {
                 $columns[$col_key] = [
                     'name' => $column,
-                    'label' => $this->entityConfig->fields->$column->label ?? $column
+                    'label' => $this->entityConfig->actions->list->fields->$column->label ?? $column
                 ];
             }
 
