@@ -85,7 +85,7 @@ class ListAction extends AdminCore {
         $this->view->render('admin/actions/list', [
             'columns'      => $columns ?? array_keys((array)$this->entityConfig->actions->list->fields),
             'entities'     => $entities,
-            'resultsCount' => sizeof($entities),
+            'resultsCount' => $entityCount,
             'page'         => $_GET['page'] ?? 1,
             'pagesCount'   => floor($entityCount / $limit) > 0 ? floor($entityCount / $limit) : 1,
             'title'        => $this->title,
