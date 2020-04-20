@@ -2,13 +2,13 @@
 
 namespace Carnival\Admin\Action\Admin;
 
-use Carnival\Admin\AdminCore;
-use Lampion\Debug\Console;
+use Carnival\Admin\Core\Admin\AdminController;
 use Lampion\Http\Url;
 use Lampion\Form\Form;
 use Lampion\Session\Lampion as LampionSession;
+use Lampion\Language\Translator;
 
-class NewAction extends AdminCore {
+class NewAction extends AdminController {
 
     public $action;
     public $form;
@@ -17,7 +17,7 @@ class NewAction extends AdminCore {
         parent::__construct();
 
         $this->action = Url::link($this->entityName) . '/new';
-        $this->entityConfig = $this->entityConfig->actions->new;
+        $this->entityConfig = $this->entityConfig->actions->new ?? null;
 
         $this->form = new Form($this->action, 'POST');
     }
@@ -42,7 +42,7 @@ class NewAction extends AdminCore {
     
             $this->form->field('button', [
                 'name'  => $this->entityName . '_submit',
-                'label' => $action_label ?? 'Submit',
+                'label' => $this->translator->read('entity/' . $this->entityName)->get($action_label) ?? $this->translator->read('global')->get('Submit'),
                 'class' => 'yellow-button',
                 'type'  => 'submit'
             ]);

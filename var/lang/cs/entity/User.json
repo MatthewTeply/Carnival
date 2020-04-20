@@ -1,0 +1,7 @@
+{
+    "User"    : "Uživatel",
+    "id"      : "#",
+    "username": "Uživatelské jméno",
+    "pwd"     : "Heslo",
+    "role"    : "Oprávnění"
+}

@@ -1,0 +1,41 @@
+.table i.fas {
+    margin-right: 5px;
+}
+
+.middle-col {
+    text-align: center;
+    font-size: 18px;
+    width: 50px;
+}
+
+.table tfoot .btn-yellow {
+    font-size: 13px;
+    padding: 8px 15px;
+}
+
+form {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.actions-col {
+    width: 140px !important;
+}
+
+.actions-col .btn-danger {
+    font-size: 13px;
+}
+
+.add-row-row .btn {
+    margin: 10px;
+}
+
+.form-input-around {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.form-control {
+    margin: 10px !important;
+}

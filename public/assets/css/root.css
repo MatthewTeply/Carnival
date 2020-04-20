@@ -4,6 +4,10 @@ body {
     font-size: 14px;
 }
 
+.btn {
+    font-size: 14px;
+}
+
 .main-content {
     position: relative;
     margin-left: 220px;
@@ -84,8 +88,6 @@ body {
 
 input.form-control {
     border-radius: 5px;
-    border: 1px solid #4f1eba;
-    background-color: #4418a1;
     padding: 15px;
     height: auto;
     color: #fff;
@@ -98,11 +100,15 @@ input.form-control::placeholder {
 
 textarea.form-control {
     border-radius: 5px;
-    border: 1px solid #4f1eba;
-    background-color: #4418a1;
     padding: 15px;
     height: auto;
     color: #fff;
+}
+
+.form-control {
+    font-size: 14px;
+    background-color: rgba(255, 255, 255, .1);
+    border: 1px solid transparent;
 }
 
 textarea.form-control::placeholder {
@@ -177,25 +183,20 @@ button.add-button span {
     font-size: 18px;
 }
 
-button.yellow-button {
+button.btn-yellow {
     outline: none;
     border-radius: 5px;
     color: #34157e;
     background: linear-gradient(55deg, rgb(242, 153, 74) 0%, rgb(242, 201, 76) 100%) !important;
     border: 1px solid #f2c94c;
-    padding: 15px 25px;
-    font-weight: 600;
-}
-
-button.yellow-button span {
     font-weight: 500;
 }
 
-button.yellow-button img {
+button.btn-yellow img {
     width: 16px;
 }
 
-button.blue-button {
+button.btn-blue {
     outline: none;
     background-color: #4418a1;
     border-radius: 5px;
@@ -205,7 +206,7 @@ button.blue-button {
     color: #fff;
 }
 
-button.blue-button span {
+button.btn-blue span {
     font-weight: 500;
     color: #9a74fb;
     font-size: 12px;
@@ -220,11 +221,11 @@ button.blue-button span {
     padding-right: 0;
 }
 
-button.blue-button.edit {
+button.btn-blue.edit {
     background-color: #4f2ea0;
 }
 
-button.blue-button.edit span {
+button.btn-blue.edit span {
     color: #fff;
 }
 
@@ -343,7 +344,7 @@ button.blue-button.edit span {
     border-bottom-right-radius: 0px !important;
 }
 
-.added-form-box-buttons .yellow-button {
+.added-form-box-buttons .btn-yellow {
     height: 100%;
     padding-left: 9px;
     padding-right: 9px;
@@ -362,7 +363,7 @@ button.blue-button.edit span {
     font-style: italic;
 }
 
-button.yellow-button.full-width {
+button.btn-yellow.full-width {
     padding-top: 15px;
     padding-bottom: 15px;
     width: 100%;
@@ -400,21 +401,21 @@ form {
 
 .card-header {
     color: #fff;
-    border:none;
-    background-color: transparent;
-    padding:10px;
-    font-weight: 600;
+    background-color: #34157e;
 }
 
 .card {
-    background-color: transparent;
-    border:none;
     border-radius: 5px;
-    padding:0px;
+    border: 1px solid #34157e;
 }
 
 .card-body {
-    padding:0px;
+    background-color: #4418a1;
+    color: #fff;
+}
+
+.card-body .table {
+    border: 1px solid #34157e;
 }
 
 .form-group {
@@ -431,7 +432,7 @@ form {
 }
 
 
-button.yellow-button.left-radius-none.left-border-none.delete-button {
+button.btn-yellow.left-radius-none.left-border-none.delete-button {
     padding: 15px 15px;
 }
 
@@ -457,14 +458,14 @@ svg rect {
     fill: #34157e;
 }
 
-.yellow-button .loader {
+.btn-yellow .loader {
     position: absolute;
     width: 30px;
     height: 30px;
     opacity: 0;
 }
 
-.yellow-button .loader.toggled {
+.btn-yellow .loader.toggled {
     opacity: 1;
 }
 
@@ -474,11 +475,41 @@ button {
     justify-content: center;
 }
 
-.yellow-button .text {
+.btn-yellow .text {
     position: absolute;
     opacity: 1;
 }
 
-.yellow-button .text.toggled {
+.btn-yellow .text.toggled {
     opacity: 0;
+}
+
+select.form-control {
+    color: #fff !important;
+    font-size: 14px !important;
+    padding: 15px !important;
+}
+
+.autocomplete-result-list {
+    background: #4418a1;
+    border-width: 0 1px 1px 1px;
+    border-style: solid;
+    border-color: #9a74fb !important;
+    transform: translateY(-14px);
+    list-style: none;
+    padding: 0;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    margin: 0 10px;
+}
+
+.autocomplete-result-list li {
+    background-color: rgba(255, 255, 255, .1);
+    border-top: #4418a1;
+    padding: 10px;
+    padding: 10px;
+}
+
+.autocomplete-result-list li:hover {
+    background-color: rgba(255, 255, 255, .2);
 }

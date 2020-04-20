@@ -61,6 +61,18 @@ table th, table td {
     justify-content: flex-end;
 }
 
+.table th .table-buttons {
+    height: auto;
+}
+
+.table th .table-buttons .btn {
+    font-weight: bold;
+}
+
+.table .table-buttons .btn {
+    padding: 0;
+}
+
 .table-buttons .link {
     margin-left: 10px;
     color: #f2c94c;
@@ -86,4 +98,33 @@ table th, table td {
 .table tfoot .list-pagination .disabled {
     opacity: .5;
     pointer-events: none;
+}
+
+.table tbody th {
+    background-color: #230a5d;
+    border-top: none;
+}
+
+.modal form {
+    display: block;
+    width: 100% !important;
+}
+
+.modal form .modal-header, .modal form .modal-body, .modal form .modal-footer {
+    width: 100% !important;
+}
+
+.modal form .form-control {
+    border: 1px solid #ccc;
+    color: #000;
+    margin: 0 !important;
+}
+
+.modal form .form-control:focus {
+    background-color: #fff;
+    color: #000 !important;
+}
+
+.modal form .form-control::placeholder {
+    color: #ddd;
 }

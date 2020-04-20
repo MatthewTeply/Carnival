@@ -2,12 +2,11 @@
 
 namespace Carnival\Admin\Action\Admin;
 
+use Carnival\Admin\Core\Admin\AdminController;
 use Error;
-use Carnival\Admin\AdminCore;
 use Lampion\Database\Query;
-use Lampion\Debug\Console;
 
-class ListAction extends AdminCore {
+class ListAction extends AdminController {
     public function display() {
         $limit = $this->entityConfig->actions->list->limit ?? 25;
 
@@ -16,9 +15,8 @@ class ListAction extends AdminCore {
 
         $entityCount = Query::select($this->table, ['COUNT(*)'])[0]['COUNT(*)'];
 
-        Console::log($ids);
-
         $entities = [];
+        $columns  = [];
 
         foreach($ids as $key => $id) {
             if(!isset($id['id'])) {
@@ -64,7 +62,16 @@ class ListAction extends AdminCore {
 
             foreach($columns as $column) {
                 try {
-                    $entities[$key][$column['name']] = $entity->{$column['name']};
+                    $methodName = 'get' . ucfirst($column['name']);
+
+                    # Check if column has a getter defined in entity
+                    if(method_exists($entity, $methodName)) {
+                        $entities[$key][$column['name']] = $entity->$methodName();
+                    }
+
+                    else {
+                        $entities[$key][$column['name']] = $entity->{$column['name']};
+                    }
                 }
 
                 catch(Error $e) {
@@ -87,12 +94,12 @@ class ListAction extends AdminCore {
             'nav'          => $this->nav,
             'footer'       => $this->footer,
             'labels'       => [
-                'new'      => $this->entityConfig->actions->new->label ?? null,
-                'delete'   => $this->entityConfig->actions->delete->label ?? 'Smazat',
-                'edit'     => $this->entityConfig->actions->edit->label ?? 'Upravit'
+                'new'      => $this->entityConfig->actions->new->label    ?? null,
+                'delete'   => $this->entityConfig->actions->delete->label ?? null,
+                'edit'     => $this->entityConfig->actions->edit->label   ?? null
             ],
-            'new'    => isset($this->entityConfig->actions->new) ? is_object($this->entityConfig->actions->new) : true,
-            'edit'   => isset($this->entityConfig->actions->edit) ? is_object($this->entityConfig->actions->edit) : true,
+            'new'    => isset($this->entityConfig->actions->new)    ? is_object($this->entityConfig->actions->new)    : true,
+            'edit'   => isset($this->entityConfig->actions->edit)   ? is_object($this->entityConfig->actions->edit)   : true,
             'delete' => isset($this->entityConfig->actions->delete) ? is_object($this->entityConfig->actions->delete) : true
         ]);
     }

@@ -4,12 +4,12 @@
     <div class="nav-fixed-buttons">
         <a target="_blank" href="{{ path('../') }}">
             <button class="go-website">
-                <span>Přejít na web</span>
+                <span>{{ 'Go to website'|trans('global') }}</span>
             </button>
         </a>
         <div class="tab">
             <div class="tab-button-group">
-                <button class="tablinks left" onclick="openCity(event, 'custom')" id="defaultOpen">Prvky</button>
+                <button class="tablinks left" onclick="openCity(event, 'custom')" id="defaultOpen">{{ 'Entities'|trans('global') }}</button>
             </div>
             <button class="tablinks settings" onclick="openCity(event, 'settings')">
                 <img src="{{ __img__ }}icons/settings-dark.svg">
@@ -18,7 +18,7 @@
     </div>
 
     <div id="custom" class="tabcontent">
-        <h2>Prvky</h2>
+        <h2>{{ 'Entities'|trans('global') }}</h2>
 
         {% for entity in entities %}
             {% if entity.type == 'entity' %}
@@ -34,7 +34,7 @@
         {% endfor %}
     </div>
     <div id="settings" class="tabcontent">
-        <h2>Nastavení</h2>
+        <h2>{{ 'Settings'|trans('global') }}</h2>
         {% for entity in entities %}
             {% if entity.type == 'settings' %}
                 <a href="{{ path(entity.name) }}">
@@ -47,7 +47,7 @@
                 </a>
             {% endif %}
         {% endfor %}
-        <h2>Pokročilé nastavení</h2>
+        <h2>{{ 'Advanced Settings'|trans('global') }}</h2>
         {% for entity in entities %}
             {% if entity.type == 'settings_advanced' %}
                 <a href="{{ path(entity.name) }}">
@@ -69,10 +69,10 @@
             </div>
         </div>
         <div class="button-group">
-            <button class="info-btn">Profil</button>
+            <button class="info-btn">{{ 'Profile'|trans('global') }}</button>
             <a href="{{ path('logout') }}">
                 <button class="info-btn logout">
-                    Odhlásit se
+                    {{ 'Logout'|trans('global') }}
                     <img src="{{ __img__ }}icons/logout-dark.svg" width="10px">
                 </button>
             </a>

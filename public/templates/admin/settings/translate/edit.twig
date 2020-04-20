@@ -1,0 +1,79 @@
+{{ header }}
+{{ nav }}
+
+<link href="{{ __css__ }}/actions/list.css" rel="stylesheet">
+<link href="{{ __css__ }}/settings/translate.css" rel="stylesheet">
+
+<div class="main-content">
+    <div class="col-lg-12 headline headline-button ">
+        <h2>{{ 'Translations'|trans('settings/translate') }}</h2>
+    </div>
+
+    <form action="{{ path('translate') }}/edit" method="POST">
+        <input type="hidden" name="translationFile" value="{{ translationFile }}">
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>{{ 'Keyword'|trans('settings/translate') }}</th>
+                    <th class="middle-col"></th>
+                    <th>{{ 'Translation'|trans('settings/translate') }}</th>
+                    <th class="actions-col"></th>
+                </tr>
+            </thead>
+            <tbody id="app">
+                <tr v-for="(item, key) in items">
+                    <td>
+                        <input type="text" class="form-control" v-bind:name="'items[' + key + '][keyword]'" v-model="item.keyword">
+                    </td>
+                    <td class="middle-col">
+                        <i class="fas fa-long-arrow-alt-right"></i>
+                    </td>
+                    <td>
+                        <input type="text" class="form-control" v-bind:name="'items[' + key + '][translation]'" v-model="item.translation">
+                    </td>
+                    <td class="actions-col">
+                        <button type="button" class="btn btn-danger delete-row" @click="deleteRow(key)"><i class="fas fa-minus-circle"></i> {{ 'Delete'|trans('global') }}</button>
+                    </td>
+                </tr>
+                <tr class="add-row-row">
+                    <td colspan="4">
+                        <button type="button" class="btn btn-primary" @click="addRow"><i class="fas fa-plus-circle"></i> {{ 'New'|trans('global') }}</button>
+                    </td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="4">
+                        <button type="submit" class="btn btn-yellow float-right"><i class="fas fa-pencil-alt"></i> {{ 'Edit'|trans('global') }}</button>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </form>
+</div>
+
+<script src="{{ __scripts__ }}vue.js"></script>
+<script>
+    const app = new Vue({
+        el: '#app',
+        delimiters: ['${', '}'],
+        data: {
+            items: JSON.parse('{{ items|json_encode|raw }}')
+        },
+
+        methods: {
+            addRow() {
+                this.items.push({
+                    keyword: '',
+                    translation: ''
+                });
+            },
+            deleteRow(index) {
+                this.items.splice(index,1)
+            }
+        }
+    })
+</script>
+
+{{ footer }}

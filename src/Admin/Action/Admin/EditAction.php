@@ -2,15 +2,14 @@
 
 namespace Carnival\Admin\Action\Admin;
 
-use Carnival\Admin\AdminCore;
-use Carnival\Entity\User;
-use Lampion\Debug\Console;
+use Carnival\Admin\Core\Admin\AdminController;
 use Lampion\Http\Url;
 use Lampion\Form\Form;
+use Lampion\Language\Translator;
 use Lampion\Misc\Util;
 use Lampion\Session\Lampion as LampionSession;
 
-class EditAction extends AdminCore {
+class EditAction extends AdminController {
 
     public $action;
     public $form;
@@ -22,7 +21,7 @@ class EditAction extends AdminCore {
         $this->entityId = $_GET['id'];
 
         $this->action = Url::link($this->entityName) . '/edit?id=' . $this->entityId;
-        $this->entityConfig = $this->entityConfig->actions->edit;
+        $this->entityConfig = $this->entityConfig->actions->edit ?? null;
 
         $this->form = new Form($this->action, 'POST');
     }
@@ -56,7 +55,7 @@ class EditAction extends AdminCore {
 
             $this->form->field('button', [
                 'name'  => $this->entityName . '_submit',
-                'label' => $action_label ?? 'Submit',
+                'label' => $this->translator->read('entity/' . $this->entityName)->get($action_label) ?? $this->translator->read('global')->get('Submit'),
                 'class' => 'yellow-button',
                 'type'  => 'submit'
             ]);
@@ -78,7 +77,7 @@ class EditAction extends AdminCore {
 
     public function submit() {
         $fields = $this->entityConfig->fields ?? $this->entityColumns;
-        $entity = $this->em->find(User::class, $_GET['id']);
+        $entity = $this->em->find($this->className, $_GET['id']);
 
         foreach($fields as $key => $field) {
             if($field->type == 'boolean') {

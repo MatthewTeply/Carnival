@@ -1,0 +1,162 @@
+{{ header }}
+{{ nav }}
+
+<link href="{{ __css__ }}/actions/list.css" rel="stylesheet">
+<link href="{{ __css__ }}/settings/translate.css" rel="stylesheet">
+
+<style>
+    .list-table,
+    .list-table .btn {
+        font-size: 14px !important;
+    }
+</style>
+
+<div class="main-content">
+    <div class="col-lg-12 headline headline-button ">
+        <h2>{{ 'Translations'|trans('settings/translate') }}</h2>
+        <a href="{{ path('translate') }}/new">
+            <button class="add-button" id="open-form">
+                <span>{{ 'New'|trans('global') }}</span>
+            </button>
+        </a>
+    </div>
+
+    {% if sections|length == 0 %}
+
+    <div class="empty-content">
+        <p>Zatím tu nic není...</p>
+    </div>
+
+    {% else %}
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>{{ 'Filename'|trans('settings/translate') }}</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for sectionKey, section in sections %}
+                <tr>
+                    <th><i class="fas fa-folder-open"></i>
+                        {{ (section.name|trans('settings/translate') == '') ? 'Uncategorized'|trans('settings/translate') : section.name|trans('settings/translate') }}</th>
+                    <th>
+                        <div class="table-buttons">
+                            <button type="button" data-toggle="modal" data-target="#edit-section-modal-{{ sectionKey }}" class="btn link">{{ 'Edit'|trans('global') }}</button>
+                            <button type="button" data-toggle="modal" data-target="#delete-section-modal-{{ sectionKey }}" class="btn link text-danger">{{ 'Delete'|trans('global') }}</button>
+                        </div>
+                    </th>
+                </tr>
+
+                {% for itemKey, item in section.items %}
+                    <tr>
+                        <td><i class="fas fa-file-alt"></i> {{ item.name }}</td>
+                        <td>
+                            <div class="table-buttons">
+                                <a href="{{ path('translate') }}/edit?dir={{ section.name }}&filename={{ item.name }}"
+                                    class="link">{{ 'Edit'|trans('global') }}</a>
+
+                                <button type="button" data-toggle="modal" data-target="#delete-item-modal-{{ sectionKey }}-{{ itemKey }}" class="btn link text-danger">{{ 'Delete'|trans('global') }}</button>
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+            {% endfor %}
+        </tbody>
+        {#
+            <tfoot>
+                <tr>
+                    <td>
+                        {{ resultsCount }} {{ 'Results'|trans }}
+                    </td>
+                    <td colspan="{{ columns|length - 1 }}"></td>
+                    <td class="text-right list-pagination">
+                        <a href="{{ path(entityName) }}/list?page={{ page - 1 }}" {{ (page == 1) ? 'class="disabled"' : '' }}>{{ 'Previous'|trans }}</a>
+                         | 
+                        <a href="{{ path(entityName) }}/list?page={{ page + 1 }}" {{ (page == pagesCount) ? 'class="disabled"' : '' }}>{{ 'Next'|trans }}</a>
+                        ({{ page }} / {{ pagesCount }})
+                    </td>
+                </tr>
+            </tfoot>
+            #}
+    </table>
+
+    {% endif %}
+</div>
+
+{% for sectionKey, section in sections %}
+    {% for itemKey, item in section.items %}
+
+        <!-- Item delete modal -->
+        <div class="modal fade" id="delete-item-modal-{{ sectionKey }}-{{ itemKey }}" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="delete-item-modal-{{ sectionKey }}-{{ itemKey }}Label">{{ 'Delete'|trans('global') }} {{ item.name }}</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        {{ 'Are you sure you want to delete'|trans('action/list') }} {{ item.name }}?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ 'Close'|trans('global') }}</button>
+                        <a href="{{ path('translate') }}/delete?path={{ section.name }}/{{ item.name }}"class="link text-danger">
+                            <button type="button" class="btn btn-danger">{{ 'Delete'|trans('global') }}</button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        {% endfor %}
+
+            <!-- Section delete modal -->
+            <div class="modal fade" id="delete-section-modal-{{ sectionKey }}" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="delete-section-modal-{{ sectionKey }}Label">{{ 'Delete'|trans('global') }} {{ (section.name|trans('settings/translate') == '') ? 'Uncategorized'|trans('settings/translate') : section.name|trans('settings/translate') }}</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            {{ 'Are you sure you want to delete'|trans('action/list') }} {{ (section.name|trans('settings/translate') == '') ? 'Uncategorized'|trans('settings/translate') : section.name|trans('settings/translate') }}?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ 'Close'|trans('global') }}</button>
+                            <a href="{{ path('translate') }}/delete?path={{ section.name }}"class="link text-danger">
+                                <button type="button" class="btn btn-danger">{{ 'Delete'|trans('global') }}</button>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section edit modal -->
+            <div class="modal fade" id="edit-section-modal-{{ sectionKey }}" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <form class="modal-content" action="{{ path('translate') }}/editSection" method="POST">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="edit-section-modal-{{ sectionKey }}Label">{{ 'Edit'|trans('global') }} {{ section.name|trans('settings/translate') }}</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <input type="hidden" name="from" value="{{ section.name }}">
+                            <input type="text" name="to" class="form-control" placeholder="{{ 'New name'|trans('action/list') }}" value="{{ section.name }}">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ 'Close'|trans('global') }}</button>
+                            <button type="submit" class="btn btn-primary">{{ 'Edit'|trans('global') }}</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        {% endfor %}
+
+{{ footer }}
