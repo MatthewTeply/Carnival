@@ -5,7 +5,6 @@ namespace Carnival\Admin\Action\Admin;
 use Carnival\Admin\Core\Admin\AdminController;
 use Lampion\Http\Url;
 use Lampion\Form\Form;
-use Lampion\Language\Translator;
 use Lampion\Misc\Util;
 use Lampion\Session\Lampion as LampionSession;
 
@@ -38,8 +37,8 @@ class EditAction extends AdminController {
                 else {
                     $value = $entity->$fieldName;
                 }
-    
-                $this->form->field($field->type, [
+
+                $options = [
                     'name' => $fieldName,
                     'label' => $field->label ?? null,
                     'value' => $value,
@@ -48,7 +47,15 @@ class EditAction extends AdminController {
                         'class' => $field->class ?? null,
                         'placeholder' => $field->label ?? null
                     ]
-                ]);
+                ];
+
+                if(isset($field->field_options)) {
+                    foreach($field->field_options as $key => $value) {
+                        $options[$key] = $value;
+                    }
+                }
+    
+                $this->form->field($field->type, $options);
             }
 
             $action_label = $this->entityConfig->action_label ?? null;

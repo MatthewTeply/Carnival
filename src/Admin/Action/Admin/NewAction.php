@@ -3,6 +3,7 @@
 namespace Carnival\Admin\Action\Admin;
 
 use Carnival\Admin\Core\Admin\AdminController;
+use Lampion\Debug\Console;
 use Lampion\Http\Url;
 use Lampion\Form\Form;
 use Lampion\Session\Lampion as LampionSession;
@@ -23,11 +24,10 @@ class NewAction extends AdminController {
     }
 
     public function display() {
-
         # If fields are defined, use them
         if(isset($this->entityConfig->fields)) {
             foreach($this->entityConfig->fields as $fieldName => $field) {
-                $this->form->field($field->type, [
+                $options = [
                     'name'  => $fieldName,
                     'label' => $field->label ?? null,
                     'attr'  => [
@@ -35,7 +35,15 @@ class NewAction extends AdminController {
                         'class'       => $field->class ?? null,
                         'placeholder' => $field->label ?? null
                     ]
-                ]);
+                ];
+
+                if(isset($field->field_options)) {
+                    foreach($field->field_options as $key => $value) {
+                        $options[$key] = $value;
+                    }
+                }
+
+                $this->form->field($field->type, $options);
             }
             
             $action_label = $this->entityConfig->action_label ?? null;
@@ -64,7 +72,9 @@ class NewAction extends AdminController {
     }
 
     public function submit() {
-        $fields = $this->entityConfig->fields ?? array_keys((array)$this->entityColumns);
+        Console::log($_POST);
+
+        $fields = array_keys($this->entityConfig->fields) ?? array_keys((array)$this->entityColumns);
 
         $entity = new $this->className();
 

@@ -1,0 +1,5 @@
+<select name="{{ name }}[value][]" multiple="multiple">
+    {% for choice in choices|toArray %}
+        <option {{ choice.key in value ? 'selected' : '' }} value="{{ choice.key }}">{{ choice.value }}</option>
+    {% endfor %}
+</select>

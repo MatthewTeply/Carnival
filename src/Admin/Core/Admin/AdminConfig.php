@@ -51,17 +51,23 @@ class AdminConfig {
     }
 
     protected function configColumns() {
-        $columns = Query::raw('DESCRIBE `' . $this->table . '`');
+        $columns  = Query::raw('DESCRIBE `' . $this->table . '`');
+        $metadata = $this->em->metadata($this->className);
 
         foreach($columns as $column) {
+            if($column['Field'] == 'id') {
+                continue;
+            }
+
             preg_match_all('/[a-zA-Z]+/', $column['Type'], $type);
             preg_match_all('/\d+/', $column['Type'], $length);
 
             $this->entityColumns[$column['Field']] = new \stdClass();
 
+            // TODO: Maybe assign metadata values before doing regex? Could save a bit of comp time.
             $this->entityColumns[$column['Field']]->name   = $column['Field'];
-            $this->entityColumns[$column['Field']]->type   = $type[0][0];
-            $this->entityColumns[$column['Field']]->length = $length[0][0] ?? null;
+            $this->entityColumns[$column['Field']]->type   = $metadata->{$column['Field']}->type   ?? $type[0][0];
+            $this->entityColumns[$column['Field']]->length = $metadata->{$column['Field']}->length ?? $length[0][0] ?? null;
         }
     }
 

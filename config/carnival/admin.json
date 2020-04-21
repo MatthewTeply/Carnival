@@ -24,11 +24,53 @@
                 "new": {
                     "title": "Nový uživatel",
                     "label": "Nový uživatel",
-                    "action_label": "Vytvořit"
+                    "action_label": "Vytvořit",
+                    "fields": {
+                        "username": {
+                            "label": "Uživatelské jméno",
+                            "type": "string"
+                        },
+                        "pwd": {
+                            "label": "Heslo",
+                            "type": "string"
+                        },
+                        "role": {
+                            "label": "Oprávnění",
+                            "type": "json",
+                            "field_options": {
+                                "choices": {
+                                    "ROLE_ADMIN": "Administrátor",
+                                    "ROLE_MODERATOR": "Moderátor",
+                                    "ROLE_AUTHOR": "Autor"
+                                }
+                            }
+                        }
+                    }
                 },
                 "edit": {
                     "title": "Úprava uživatele",
-                    "action_label": "Upravit"
+                    "action_label": "Upravit",
+                    "fields": {
+                        "username": {
+                            "label": "Uživatelské jméno",
+                            "type": "string"
+                        },
+                        "pwd": {
+                            "label": "Heslo",
+                            "type": "string"
+                        },
+                        "role": {
+                            "label": "Oprávnění",
+                            "type": "json",
+                            "field_options": {
+                                "choices": {
+                                    "ROLE_ADMIN": "Administrátor",
+                                    "ROLE_MODERATOR": "Moderátor",
+                                    "ROLE_AUTHOR": "Autor"
+                                }
+                            }
+                        }
+                    }
                 }
             }
         },
