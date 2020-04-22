@@ -93,8 +93,11 @@ class ListAction extends AdminController {
         }
 
         $this->view->render('admin/actions/list', [
+            'entity'       => $this->entityConfig,
+            'user'         => $this->user,
+            'action'       => $this->entityConfig->actions->{$this->action},
             'columns'      => $columns ?? array_keys((array)$this->entityConfig->actions->list->fields),
-            'entities'     => $entities,
+            'listEntities' => $entities,
             'resultsCount' => $entityCount,
             'page'         => $_GET['page'] ?? 1,
             'pagesCount'   => floor($entityCount / $limit) > 0 ? floor($entityCount / $limit) : 1,

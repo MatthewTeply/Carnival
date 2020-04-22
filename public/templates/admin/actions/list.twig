@@ -1,6 +1,6 @@
 {{ header }}
 {{ nav }}
-
+    
 <link href="{{ __css__ }}admin/actions/list.css" rel="stylesheet">
 
 <style>
@@ -12,7 +12,8 @@
 <div class="main-content">
     <div class="col-lg-12 headline headline-button ">
         <h2>{{ title ?? entityName|trans('entity/' ~ entityName) }}</h2>
-        {% if new %}
+
+        {% if new and user|hasPermission('new') %}
             <a href="{{ path(entityName) }}/new">
                 <button class="add-button" id="open-form">
                     <span>{{ labels.new ?? 'New'|trans('global') }}</span>
@@ -21,7 +22,7 @@
         {% endif %}
     </div>
 
-    {% if entities|length == 0 %}
+    {% if listEntities|length == 0 %}
         <div class="empty-content"><p>Zatím tu nic není...</p></div>
     {% else %}
         <table class="table">
@@ -34,17 +35,17 @@
                 </tr>
             </thead>
             <tbody>
-                {% for entity in entities %}
+                {% for listEntity in listEntities %}
                     <tr>
                         {% for column in columns %}
-                            <td>{{ entity[column.name] }}</td>
+                            <td>{{ listEntity[column.name] }}</td>
                         {% endfor %}
                         <td><div class="table-buttons">
-                            {% if edit %}
-                                <a href="{{ path(entityName) }}/edit?id={{ entity.id }}" class="link">{{ labels.edit ?? 'Edit'|trans('global') }}</a>
+                            {% if edit and user|hasPermission('edit') %}
+                                <a href="{{ path(entityName) }}/edit?id={{ listEntity.id }}" class="link">{{ labels.edit ?? 'Edit'|trans('global') }}</a>
                             {% endif %}
-                            {% if delete %}
-                                <button data-toggle="modal" data-target="#delete-entity-modal-{{ entity.id }}" class="btn link text-danger">{{ 'Delete'|trans('global') }}</button>
+                            {% if delete and user|hasPermission('delete') %}
+                                <button data-toggle="modal" data-target="#delete-entity-modal-{{ listEntity.id }}" class="btn link text-danger">{{ 'Delete'|trans('global') }}</button>
                             {% endif %}
                         </td>
                     </tr>
@@ -70,14 +71,14 @@
     {% endif %}
 </div>
 
-{% for entity in entities %}
+{% for listEntity in listEntities %}
 
     <!-- Entity delete modal -->
-    <div class="modal fade" id="delete-entity-modal-{{ entity.id }}" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal fade" id="delete-entity-modal-{{ listEntity.id }}" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="delete-entity-modal-{{ entity.id }}Label">{{ 'Delete'|trans('global') }}</h5>
+                    <h5 class="modal-title" id="delete-entity-modal-{{ listEntity.id }}Label">{{ 'Delete'|trans('global') }}</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -87,7 +88,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ 'Close'|trans('global') }}</button>
-                    <a href="{{ path(entityName) }}/delete?id={{ entity.id }}"class="link text-danger">
+                    <a href="{{ path(entityName) }}/delete?id={{ listEntity.id }}"class="link text-danger">
                         <button type="button" class="btn btn-danger">{{ 'Delete'|trans('global') }}</button>
                     </a>
                 </div>

@@ -2,6 +2,7 @@
 
 namespace Carnival\Admin\Core\Admin;
 
+use Carnival\Entity\User;
 use Lampion\Session\Lampion as LampionSession;
 use Lampion\Database\Query;
 use Lampion\Debug\Console;
@@ -18,6 +19,13 @@ class AdminConfig {
         $args['title']       = $this->title;
         
         foreach($this->config->entities as $key => $entity) {
+            # Check if entity's list action has set permission
+            if(isset($entity->actions->list->permission)) {
+                if(!$this->user->hasPermission($entity->actions->list->permission)) {
+                    continue;
+                }
+            }
+
             $args['entities'][] = [
                 'name'   => $key,
                 'icon'   => $entity->icon ?? null,
@@ -29,6 +37,20 @@ class AdminConfig {
 
         $this->view->setFilter('trans', function($key, $path) {
             return $this->translator->read($path)->get($key);
+        });
+
+        $this->view->setFilter('hasPermission', function(User $user, $action = null) {
+            if(!$action) {
+                $action = $this->action;
+            }
+
+            if(isset($this->entityConfig->actions->{$action}->permission)) {
+                return $user->hasPermission($this->entityConfig->actions->{$action}->permission);
+            }
+
+            else {
+                return $user->hasPermission($this->entityConfig->permission);
+            }
         });
 
         $this->header = $this->view->load('partials/header', $args);
@@ -91,4 +113,29 @@ class AdminConfig {
         }
     }
 
+    protected function configPermissions() {
+        $permissions = null;
+
+        # Check entity's permission
+        if(isset($this->entityConfig->permission)) {
+            $permissions = $this->entityConfig->permission;
+        }
+
+        # Check action's permission, action permission overwrites entity's permission
+        if(isset($this->declaredActions[$this->action]->permission)) {
+            $permissions = $this->declaredActions[$this->action]->permission;
+        }
+
+        # Check user's permission
+        if(!$this->user->hasPermission($permissions)) {
+            # If user doesn't have sufficent privileges, display error
+            $this->view->render('admin/errors/actionDenied', [
+                'header' => $this->header,
+                'nav'    => $this->nav,
+                'footer' => $this->footer
+            ]);
+
+            exit();
+        }
+    }
 }

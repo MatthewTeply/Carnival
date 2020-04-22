@@ -5,7 +5,6 @@ namespace Carnival\Admin\Controller\Settings;
 use Carnival\Admin\Core\Admin\AdminController;
 use Lampion\Application\Application;
 use Lampion\Core\FileSystem;
-use Lampion\Debug\Console;
 use Lampion\Http\Url;
 use Lampion\Language\Translator;
 use Lampion\Session\Lampion as LampionSession;
@@ -30,8 +29,6 @@ class TranslateController extends AdminController {
 
         foreach($sections as $key => $section) {
             $sections[$key]['items'] = $this->fs->ls($section['name'] . '/')['files'];
-        
-            Console::log($sections[$key]['items']);
         }
 
         $sections[] = [

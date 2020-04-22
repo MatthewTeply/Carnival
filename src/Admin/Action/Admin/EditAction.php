@@ -64,7 +64,7 @@ class EditAction extends AdminController {
             $this->form->field('button', [
                 'name'  => $this->entityName . '_submit',
                 'label' => $this->translator->read('entity/' . $this->entityName)->get($action_label) ?? $this->translator->read('global')->get('Submit'),
-                'class' => 'yellow-button',
+                'class' => 'btn-yellow',
                 'type'  => 'submit'
             ]);
         }

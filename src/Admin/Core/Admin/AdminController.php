@@ -93,18 +93,7 @@ class AdminController extends AdminConfig {
         # Setting twig variables and partials
         $this->configTwig();
 
-        # Check user's permission
-        if(!$this->checkPermission($this->user)) {
-
-            # If user doesn't have sufficent privileges, display error
-            $this->view->render('admin/errors/actionDenied', [
-                'header' => $this->header,
-                'nav'    => $this->nav,
-                'footer' => $this->footer
-            ]);
-
-            exit();
-        }
+        $this->configPermissions();
     }
 
     public function constructForm(&$form, $entity = null) {
@@ -137,42 +126,5 @@ class AdminController extends AdminConfig {
             'class' => 'btn btn-yellow',
             'type'  => 'submit'
         ]);
-    }
-
-    public function checkPermission(User $user) {
-        $roles = json_decode($user->role);
-        
-        $permissions = null;
-
-        # Check entity's permission
-        if(isset($this->entityConfig->permission)) {
-            $permissions = $this->entityConfig->permission;
-        }
-
-        # Check action's permission, action permission overwrites entity's permission
-        if(isset($this->declaredActions[$this->action]->permission)) {
-            $permissions = $this->declaredActions[$this->action]->permission;
-        }
-
-        $accessAllowed = false; 
-
-        if(!$permissions) {
-            return true;
-        }
-
-        if(in_array('ROLE_USER', $permissions)) {
-            return true;
-        }
-
-        else {
-            foreach($permissions as $permission) {
-                if(in_array($permission, $roles)) {
-                    $accessAllowed = true;
-                    break;
-                }
-            }
-        }
-
-        return $accessAllowed;
     }
 }
