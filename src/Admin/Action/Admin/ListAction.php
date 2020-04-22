@@ -100,7 +100,7 @@ class ListAction extends AdminController {
             'listEntities' => $entities,
             'resultsCount' => $entityCount,
             'page'         => $_GET['page'] ?? 1,
-            'pagesCount'   => floor($entityCount / $limit) > 0 ? floor($entityCount / $limit) : 1,
+            'pagesCount'   => ceil($entityCount/$limit),
             'title'        => $this->title,
             'entityName'   => $this->entityName,
             'header'       => $this->header,
