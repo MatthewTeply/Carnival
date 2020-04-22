@@ -1,5 +1,7 @@
-<select name="{{ name }}[value][]" multiple="multiple">
-    {% for choice in choices|toArray %}
-        <option {{ choice.key in value ? 'selected' : '' }} value="{{ choice.key }}">{{ choice.value }}</option>
-    {% endfor %}
-</select>
+<div class="col-lg-12 form-input-around">
+    <select name="{{ name }}[value][]" multiple="multiple" class="form-control {{ attr.class }}" id="{{ attr.id }}">
+        {% for choice in choices|toArray %}
+            <option {{ choice.key in value ? 'selected' : '' }} value="{{ choice.key }}">{{ choice.value }}</option>
+        {% endfor %}
+    </select>
+</div>

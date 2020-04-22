@@ -27,14 +27,16 @@ class NewAction extends AdminController {
         # If fields are defined, use them
         if(isset($this->entityConfig->fields)) {
             foreach($this->entityConfig->fields as $fieldName => $field) {
+                $attr = $field->attr;
+
+                if(!isset($attr->placeholder)) {
+                    $attr->placeholder = $field->label;
+                }
+
                 $options = [
                     'name'  => $fieldName,
                     'label' => $field->label ?? null,
-                    'attr'  => [
-                        'id'          => $field->id ?? null,
-                        'class'       => $field->class ?? null,
-                        'placeholder' => $field->label ?? null
-                    ]
+                    'attr'  => $attr
                 ];
 
                 if(isset($field->field_options)) {
@@ -51,8 +53,11 @@ class NewAction extends AdminController {
             $this->form->field('button', [
                 'name'  => $this->entityName . '_submit',
                 'label' => $this->translator->read('entity/' . $this->entityName)->get($action_label) ?? $this->translator->read('global')->get('Submit'),
-                'class' => 'yellow-button',
-                'type'  => 'submit'
+                'class' => 'btn btn-yellow',
+                'type'  => 'submit',
+                'attr'  => [
+                    'class' => 'btn btn-yellow'
+                ]
             ]);
         }
 
@@ -72,9 +77,7 @@ class NewAction extends AdminController {
     }
 
     public function submit() {
-        Console::log($_POST);
-
-        $fields = array_keys($this->entityConfig->fields) ?? array_keys((array)$this->entityColumns);
+        $fields = array_keys((array)$this->entityConfig->fields) ?? array_keys((array)$this->entityColumns);
 
         $entity = new $this->className();
 

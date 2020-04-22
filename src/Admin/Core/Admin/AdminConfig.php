@@ -26,6 +26,14 @@ class AdminConfig {
                 }
             }
 
+            else {
+                if(isset($entity->permission)) {
+                    if(!$this->user->hasPermission($entity->permission)) {
+                        continue;
+                    }
+                }
+            }
+
             $args['entities'][] = [
                 'name'   => $key,
                 'icon'   => $entity->icon ?? null,
@@ -49,7 +57,7 @@ class AdminConfig {
             }
 
             else {
-                return $user->hasPermission($this->entityConfig->permission);
+                return @$user->hasPermission($this->entityConfig->permission);
             }
         });
 

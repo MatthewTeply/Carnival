@@ -31,20 +31,30 @@
                     "fields": {
                         "username": {
                             "label": "Uživatelské jméno",
-                            "type": "string"
+                            "type": "string",
+                            "attr": {
+                                "class": "col-lg-12"
+                            }
                         },
                         "pwd": {
                             "label": "Heslo",
-                            "type": "string"
+                            "type": "string",
+                            "attr": {
+                                "class": "col-lg-12"
+                            }
                         },
                         "role": {
                             "label": "Oprávnění",
                             "type": "json",
+                            "attr": {
+                                "class": "col-lg-12"
+                            },
                             "field_options": {
                                 "choices": {
                                     "ROLE_ADMIN": "Administrátor",
                                     "ROLE_MODERATOR": "Moderátor",
-                                    "ROLE_AUTHOR": "Autor"
+                                    "ROLE_AUTHOR": "Autor",
+                                    "ROLE_USER": "Uživatel"
                                 }
                             }
                         }
@@ -69,7 +79,8 @@
                                 "choices": {
                                     "ROLE_ADMIN": "Administrátor",
                                     "ROLE_MODERATOR": "Moderátor",
-                                    "ROLE_AUTHOR": "Autor"
+                                    "ROLE_AUTHOR": "Autor",
+                                    "ROLE_USER": "Uživatel"
                                 }
                             }
                         }
@@ -80,8 +91,10 @@
         "Article": {
             "title": "Články",
             "icon": "blog.svg",
+            "permission": ["ROLE_ADMIN", "ROLE_AUTHOR"],
             "actions": {
                 "list": {
+                    "permission": ["ROLE_USER"],
                     "fields": {
                         "title": {
                             "type": "string",
@@ -95,6 +108,7 @@
             "title": "Překlady",
             "icon": "text-document.svg",
             "nav_section": "settings",
+            "permission": ["ROLE_ADMIN"],
             "actions": {
                 "list": {
                     "controller": "Carnival\\Admin\\Controller\\Settings\\TranslateController::list"

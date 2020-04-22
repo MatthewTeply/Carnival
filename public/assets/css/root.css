@@ -86,7 +86,7 @@ body {
     flex-direction: row;
 }
 
-input.form-control {
+.form-control {
     border-radius: 5px;
     padding: 15px;
     height: auto;
@@ -94,14 +94,7 @@ input.form-control {
     margin:0px;
 }
 
-input.form-control::placeholder {
-    color: #fff;
-}
-
-textarea.form-control {
-    border-radius: 5px;
-    padding: 15px;
-    height: auto;
+.form-control::placeholder {
     color: #fff;
 }
 
@@ -109,10 +102,6 @@ textarea.form-control {
     font-size: 14px;
     background-color: rgba(255, 255, 255, .1);
     border: 1px solid transparent;
-}
-
-textarea.form-control::placeholder {
-    color: #fff;
 }
 
 .form-around.toggled {
@@ -512,4 +501,25 @@ select.form-control {
 
 .autocomplete-result-list li:hover {
     background-color: rgba(255, 255, 255, .2);
+}
+
+select[multiple].form-control {
+    padding: 4px !important;
+}
+
+select[multiple].form-control option {
+    padding: 5px;
+}
+
+select[multiple].form-control option:nth-child(odd) {
+    background-color: rgba(255, 255, 255, .1);
+}
+
+select[multiple].form-control option:nth-child(even) {
+    background-color: rgba(255, 255, 255, .2);
+}
+
+.form-field-breaker {
+    flex-basis: 100%;
+    height: 0;
 }
