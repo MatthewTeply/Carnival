@@ -2,6 +2,9 @@
 
 <nav class="side-nav">
     <div class="nav-fixed-buttons">
+        <div class="logo">
+            {{ logo|raw }}
+        </div>
         <a target="_blank" href="{{ path('../') }}">
             <button class="go-website">
                 <span>{{ 'Go to website'|trans('global') }}</span>

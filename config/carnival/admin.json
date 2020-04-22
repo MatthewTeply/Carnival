@@ -1,4 +1,5 @@
 {
+    "logo": "CARNIVAL",
     "entities": {
         "User": {
             "title": "Uživatelé",

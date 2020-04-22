@@ -10,6 +10,7 @@ use Lampion\Debug\Console;
 
 class ListAction extends AdminController {
     public function display() {
+        // TODO: Default limit, currently fixed to 25
         $limit = $this->entityConfig->actions->list->limit ?? 25;
 
         # If entity's name is reserved in SQL, try entity prefix

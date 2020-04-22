@@ -1,3 +1,16 @@
+.logo {
+    text-align: center;
+    margin: -10px;
+    margin-top: -15px;
+    padding: 5px;
+    margin-bottom: 15px;
+    font-size: 20px;
+    font-weight: 800;
+    border-bottom: 3px solid #5a33bc;
+    background: linear-gradient(55deg, rgb(242, 153, 74) 0%, rgb(242, 201, 76) 100%) !important;
+    text-shadow: 1px 1px 0 #34157e;
+}
+
 nav.side-nav {
     width: 220px;
     left: 0;
@@ -97,7 +110,6 @@ nav.side-nav::-webkit-scrollbar {
     background-color: #34157e;
     border-right: 1px solid #5a33bc;
     border-bottom: 1px solid #5a33bc;
-    height: 103px;
 }
 
 .online-user {

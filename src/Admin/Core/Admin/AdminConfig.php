@@ -17,6 +17,7 @@ class AdminConfig {
         $args['__img__']     = WEB_ROOT . APP . 'carnival' . IMG;
         $args['user']        = (array)LampionSession::get('user');
         $args['title']       = $this->title;
+        $args['logo']        = $this->config->logo;
         
         foreach($this->config->entities as $key => $entity) {
             # Check if entity's list action has set permission
