@@ -2,13 +2,13 @@
     text-align: center;
     margin: -10px;
     margin-top: -15px;
-    padding: 5px;
+    padding: 10px 5px;
     margin-bottom: 15px;
     font-size: 20px;
     font-weight: 800;
-    border-bottom: 3px solid #5a33bc;
-    background: linear-gradient(55deg, rgb(242, 153, 74) 0%, rgb(242, 201, 76) 100%) !important;
-    text-shadow: 1px 1px 0 #34157e;
+    border-bottom: 1px solid #5a33bc;
+    background: #34157e;
+    color: rgb(242, 201, 76);
 }
 
 nav.side-nav {
