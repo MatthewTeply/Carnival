@@ -4,20 +4,23 @@
             "title": "Uživatelé",
             "icon": "profile.png",
             "nav_section": "settings",
+            "permission": ["ROLE_ADMIN"],
             "actions": {
                 "list": {
+                    "permission": ["ROLE_ADMIN", "ROLE_USER"],
                     "fields": {
                         "username": {
                             "label": "Uživatelské jméno",
-                            "type": "text"
+                            "type": "string"
                         },
                         "pwd": {
                             "label": "Heslo",
-                            "type": "text"
+                            "type": "string"
                         },
                         "role": {
                             "label": "Oprávnění",
-                            "type": "text"
+                            "type": "json",
+                            "template": "json"
                         }
                     }
                 },
@@ -57,7 +60,7 @@
                         },
                         "pwd": {
                             "label": "Heslo",
-                            "type": "string"
+                            "type": "password"
                         },
                         "role": {
                             "label": "Oprávnění",
@@ -81,7 +84,7 @@
                 "list": {
                     "fields": {
                         "title": {
-                            "type": "text",
+                            "type": "string",
                             "label": "Title"
                         }
                     }

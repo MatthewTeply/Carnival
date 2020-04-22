@@ -1,0 +1,10 @@
+{{ header }}
+{{ nav }}
+
+<link rel="stylesheet" href="{{ __css__ }}admin/errors/actionDenied.css">
+
+<div class="main-content">
+    <p class="error-msg"><i class="fas fa-lock"></i> {{ 'You don\'t have sufficient privileges to access this action!'|trans('errors/actionDenied') }}</p>
+</div>
+
+{{ footer }}

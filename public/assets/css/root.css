@@ -441,8 +441,8 @@ button.btn-yellow.left-radius-none.left-border-none.delete-button {
     background: linear-gradient(55deg, rgb(242, 153, 74) 0%, rgb(242, 201, 76) 100%) !important;
     border: 1px solid #f2c94c;
     border-radius: 5px;
-    padding:7px;
-    font-size: 13px;
+    padding: 4px;
+    font-size: 11px;
 }
 
 .form-control:focus {

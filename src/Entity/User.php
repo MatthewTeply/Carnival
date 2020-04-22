@@ -2,6 +2,8 @@
 
 namespace Carnival\Entity;
 
+use Lampion\Debug\Console;
+
 class User
 {
     /** @var(type="int", length=11) */
@@ -17,14 +19,22 @@ class User
     public $pwd;
 
     public function setPwd(string $pwd) {
-        if(!password_verify($pwd, $this->pwd) && !empty($pwd)) {
-            $this->pwd = password_hash($pwd, PASSWORD_DEFAULT);
+        if(!empty($pwd)) {
+            if(!password_verify($pwd, $this->pwd)) {
+                return password_hash($pwd, PASSWORD_DEFAULT);
+            }
         }
     }
 
     public function getRole() {
-        if(empty($this->role)) {
-            $this->role = '["ROLE_USER"]';
+        $role = json_decode($this->role, true);
+
+        if(is_array($role)) {
+            if(!in_array('ROLE_USER', $role) || empty($role)) {
+                $role[] = 'ROLE_USER';
+            }
+
+            $this->role = json_encode($role);
         }
 
         return $this->role;

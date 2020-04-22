@@ -31,20 +31,6 @@ class AdminConfig {
             return $this->translator->read($path)->get($key);
         });
 
-        /*
-        $this->view->setFilter('transEntity', function($key) {
-            return $this->translator->read('entity/' . strtolower($this->entityName))->get($key);
-        });
-
-        $this->view->setFilter('transGlobal', function($key) {
-            return $this->translator->read('global')->get($key);
-        });
-
-        $this->view->setFilter('trans', function($key, $test="") {
-            return $this->translator->read('action/' . $this->action)->get($key) . $test;
-        });
-        */ 
-
         $this->header = $this->view->load('partials/header', $args);
         $this->nav    = $this->view->load('partials/nav'   , $args);
         $this->footer = $this->view->load('partials/footer', $args);

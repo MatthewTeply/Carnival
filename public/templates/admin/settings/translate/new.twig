@@ -1,8 +1,8 @@
 {{ header }}
 {{ nav }}
 
-<link href="{{ __css__ }}/actions/list.css" rel="stylesheet">
-<link href="{{ __css__ }}/settings/translate.css" rel="stylesheet">
+<link href="{{ __css__ }}admin/actions/list.css" rel="stylesheet">
+<link href="{{ __css__ }}admin/settings/translate.css" rel="stylesheet">
 
 <div class="main-content" id="app">
     <div class="col-lg-12 headline headline-button ">
@@ -97,7 +97,7 @@
         search: input => {
             if (input.length < 1) { return [] }
 
-            let sections = JSON.parse('{{ sections|json_encode|raw }}');
+            let sections = JSON.parse(`{{ sections|json_encode|raw }}`);
 
             return sections.filter(section => {
                 return section.toLowerCase().startsWith(input.toLowerCase())

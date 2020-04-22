@@ -1,0 +1,33 @@
+.main-content {
+    background: repeating-linear-gradient(
+        45deg,
+        #2a0e6b,
+        #2a0e6b 10px,
+        #34157e 10px,
+        #34157e 20px
+    );
+    height: 100%;
+    position: relative;
+}
+
+.main-content .error-msg {
+    text-align: center;
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%);
+    color: #fff;
+    background-color: #34157e;
+    padding: 20px;
+    border-radius: 5px;
+    border: 1px solid #5a33bc;
+    box-shadow: 0 0 10px rgba(90, 51, 188, .5);
+    font-size: 16px;
+}
+
+.main-content .error-msg i {
+    color: rgb(242, 201, 76);
+    display: block;
+    font-size: 30px;
+    margin-bottom: 15px;
+}

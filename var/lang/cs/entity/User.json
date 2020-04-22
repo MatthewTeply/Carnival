@@ -1,7 +1,1 @@
-{
-    "User"    : "Uživatel",
-    "id"      : "#",
-    "username": "Uživatelské jméno",
-    "pwd"     : "Heslo",
-    "role"    : "Oprávnění"
-}
+{"User":"U\u017eivatel","id":"#","username":"U\u017eivatelsk\u00e9 jm\u00e9no","pwd":"Heslo","role":"Opr\u00e1vn\u011bn\u00ed","ROLE_ADMIN":"Administr\u00e1tor","ROLE_MODERATOR":"Moder\u00e1tor","ROLE_AUTHOR":"Autor","ROLE_USER":"U\u017eivatel"}

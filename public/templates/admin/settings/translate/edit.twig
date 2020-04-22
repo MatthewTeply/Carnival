@@ -1,8 +1,8 @@
 {{ header }}
 {{ nav }}
 
-<link href="{{ __css__ }}/actions/list.css" rel="stylesheet">
-<link href="{{ __css__ }}/settings/translate.css" rel="stylesheet">
+<link href="{{ __css__ }}admin/actions/list.css" rel="stylesheet">
+<link href="{{ __css__ }}admin/settings/translate.css" rel="stylesheet">
 
 <div class="main-content">
     <div class="col-lg-12 headline headline-button ">
@@ -59,7 +59,7 @@
         el: '#app',
         delimiters: ['${', '}'],
         data: {
-            items: JSON.parse('{{ items|json_encode|raw }}')
+            items: JSON.parse(`{{ items|json_encode|raw }}`)
         },
 
         methods: {

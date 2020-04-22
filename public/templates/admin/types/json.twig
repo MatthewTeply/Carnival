@@ -1,0 +1,3 @@
+{% for item in value|json_decode %}
+    <div class="badge badge-success">{{ item|trans('entity/' ~ entityName) }}</div>
+{% endfor %}

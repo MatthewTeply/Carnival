@@ -44,8 +44,16 @@ class ListAction extends AdminController {
                     }
 
                     if($type) {
-                        $entity->{$column} = $this->view->load('admin/types/' . $type, [
-                            'value' => $value
+                        $template = $type;
+
+                        # Check if custom template is defined in field's config
+                        if(isset($this->entityConfig->actions->list->fields->{$column}->template)) {
+                            $this->entityConfig->actions->list->fields->{$column}->template;
+                        }
+
+                        $entity->{$column} = $this->view->load('admin/types/' . $template, [
+                            'value'      => $value,
+                            'entityName' => $this->entityName
                         ]);
                     }
                 }

@@ -19,7 +19,7 @@ class AdminCore {
 
     public function __construct() {
         $this->config = json_decode(file_get_contents(ROOT . APP . 'carnival/' . CONFIG . 'carnival/admin.json'));
-        
+
         $this->entityName = explode('/', $_GET['url'])[0];
         $this->className  = 'Carnival\Entity\\' . $this->entityName;
         
