@@ -6,11 +6,41 @@ use Carnival\Entity\User;
 use Lampion\Session\Lampion as LampionSession;
 use Lampion\Database\Query;
 use Lampion\Debug\Console;
+use Lampion\Application\Application;
+use Lampion\Core\FileSystem;
 
 class AdminConfig {
 
     protected $translator;
 
+    protected function configEntity() {
+        $this->entityConfigDir = ROOT . APP . Application::name() . '/' . CONFIG . 'carnival/admin/entity/';
+
+        # Adding config fron entity files to main config file's entities
+        foreach($this->fs->ls('config/carnival/admin/entity/')['files'] as $file) {
+            $entityName = ucfirst(explode('.' . $file['extension'], $file['name'])[0]);
+
+            $this->config->entities->{$entityName} = json_decode(file_get_contents($this->entityConfigDir . $file['name']))->{$entityName};
+        }
+
+        $this->entityConfig = is_object($this->config) && isset($this->config->entities->{$this->entityName}) ? $this->config->entities->{$this->entityName} : null;
+
+        # Getting declared actions
+        if(isset($this->entityConfig->actions)) {
+            $this->declaredActions = [];
+    
+            foreach($this->entityConfig->actions as $key => $value) {
+                if(!is_object($value) && !$value) {
+                    $this->declaredActions[] = '-' . $key;
+                }
+
+                else {
+                    $this->declaredActions[$key] = $value;
+                }
+            }
+        }
+    }
+    
     protected function configTwig() {
         $args['__css__']     = WEB_ROOT . APP . 'carnival' . CSS;
         $args['__scripts__'] = WEB_ROOT . APP . 'carnival' . SCRIPTS;
@@ -103,12 +133,12 @@ class AdminConfig {
             }
         }
 
-        return explode('/', explode($this->entityName, $_GET['url'])[1])[1] ?? $this->defaultAction;
+        $this->action = explode('/', explode($this->entityName, $_GET['url'])[1])[1] ?? $this->defaultAction;
     }
 
-    protected function configTitle($action) {
-        if(isset($this->entityConfig->actions->{$action}->title)) {
-            $this->title = $this->entityConfig->actions->{$action}->title;
+    protected function configTitle() {
+        if(isset($this->entityConfig->actions->{$this->action}->title)) {
+            $this->title = $this->entityConfig->actions->{$this->action}->title;
         }
 
         else {

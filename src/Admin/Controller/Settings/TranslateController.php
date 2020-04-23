@@ -76,7 +76,7 @@ class TranslateController extends AdminController {
 
         $this->fs->write($_POST['translationFile'], json_encode($items));
 
-        Url::redirect('translate', [
+        Url::redirect('Translate', [
             'edit' => 'success'
         ]);
     }
@@ -108,7 +108,7 @@ class TranslateController extends AdminController {
 
         $this->fs->write($dir . $filename . '.json', json_encode($items));
 
-        Url::redirect('translate', [
+        Url::redirect('Translate', [
             'new' => 'success'
         ]);
     }
@@ -120,7 +120,7 @@ class TranslateController extends AdminController {
             $code = 'success';
         } 
 
-        Url::redirect('translate', [
+        Url::redirect('Translate', [
             'delete' => $code
         ]);
     }
@@ -132,7 +132,7 @@ class TranslateController extends AdminController {
             $code = 'success';
         }
 
-        Url::redirect('translate', [
+        Url::redirect('Translate', [
             'editSection' => $code
         ]);
     }

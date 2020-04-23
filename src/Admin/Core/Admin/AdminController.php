@@ -3,6 +3,7 @@
 namespace Carnival\Admin\Core\Admin;
 
 use Carnival\Entity\User;
+use Lampion\Application\Application;
 use Lampion\View\View;
 use Lampion\Core\FileSystem;
 use Lampion\Entity\EntityManager;
@@ -22,6 +23,7 @@ class AdminController extends AdminConfig {
     # Config
     public $config;
     public $entityConfig;
+    public $entityConfigDir;
 
     # Entity
     public $entityName;
@@ -43,8 +45,8 @@ class AdminController extends AdminConfig {
         $this->config = json_decode(file_get_contents(ROOT . APP . 'carnival/' . CONFIG . 'carnival/admin.json'));
 
         # Initial config
-        $this->view = new View(ROOT . APP . 'carnival' . TEMPLATES, 'carnival');
-        $this->fs   = new FileSystem();
+        $this->view = new View(ROOT . APP . Application::name() . TEMPLATES, 'carnival');
+        $this->fs   = new FileSystem(ROOT . APP . Application::name() . '/');
         $this->em   = new EntityManager();
 
         $userArray = (array)LampionSession::get('user');
@@ -67,32 +69,18 @@ class AdminController extends AdminConfig {
         $this->configColumns();
 
         # Entity config
-        $this->entityConfig = is_object($this->config) && isset($this->config->entities->{$this->entityName}) ? $this->config->entities->{$this->entityName} : null;
-
-        # Getting declared actions
-        if(isset($this->entityConfig->actions)) {
-            $this->declaredActions = [];
-    
-            foreach($this->entityConfig->actions as $key => $value) {
-                if(!is_object($value) && !$value) {
-                    $this->declaredActions[] = '-' . $key;
-                }
-
-                else {
-                    $this->declaredActions[$key] = $value;
-                }
-            }
-        }
+        $this->configEntity();
 
         # Setting the defualt action
-        $this->action = $this->configDefaultAction();
+        $this->configDefaultAction();
 
         # Setting title
-        $this->configTitle($this->action);
+        $this->configTitle();
 
         # Setting twig variables and partials
         $this->configTwig();
 
+        # Setting permission
         $this->configPermissions();
     }
 

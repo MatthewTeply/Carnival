@@ -1,0 +1,91 @@
+{
+    "User": {
+        "title": "Uživatelé",
+        "icon": "profile.png",
+        "nav_section": "settings",
+        "permission": ["ROLE_ADMIN"],
+        "actions": {
+            "list": {
+                "permission": ["ROLE_ADMIN", "ROLE_USER"],
+                "fields": {
+                    "username": {
+                        "label": "Uživatelské jméno",
+                        "type": "string"
+                    },
+                    "pwd": {
+                        "label": "Heslo",
+                        "type": "string",
+                        "permission": ["ROLE_ADMIN"]
+                    },
+                    "role": {
+                        "label": "Oprávnění",
+                        "type": "json",
+                        "template": "json"
+                    }
+                }
+            },
+            "new": {
+                "title": "Nový uživatel",
+                "label": "Nový uživatel",
+                "action_label": "Vytvořit",
+                "fields": {
+                    "username": {
+                        "label": "Uživatelské jméno",
+                        "type": "string",
+                        "attr": {
+                            "class": "col-lg-12"
+                        }
+                    },
+                    "pwd": {
+                        "label": "Heslo",
+                        "type": "string",
+                        "attr": {
+                            "class": "col-lg-12"
+                        }
+                    },
+                    "role": {
+                        "label": "Oprávnění",
+                        "type": "json",
+                        "attr": {
+                            "class": "col-lg-12"
+                        },
+                        "field_options": {
+                            "choices": {
+                                "ROLE_ADMIN": "Administrátor",
+                                "ROLE_MODERATOR": "Moderátor",
+                                "ROLE_AUTHOR": "Autor",
+                                "ROLE_USER": "Uživatel"
+                            }
+                        }
+                    }
+                }
+            },
+            "edit": {
+                "title": "Úprava uživatele",
+                "action_label": "Upravit",
+                "fields": {
+                    "username": {
+                        "label": "Uživatelské jméno",
+                        "type": "string"
+                    },
+                    "pwd": {
+                        "label": "Heslo",
+                        "type": "password"
+                    },
+                    "role": {
+                        "label": "Oprávnění",
+                        "type": "json",
+                        "field_options": {
+                            "choices": {
+                                "ROLE_ADMIN": "Administrátor",
+                                "ROLE_MODERATOR": "Moderátor",
+                                "ROLE_AUTHOR": "Autor",
+                                "ROLE_USER": "Uživatel"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

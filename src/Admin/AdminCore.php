@@ -2,23 +2,30 @@
 
 namespace Carnival\Admin;
 
+use Carnival\Admin\Core\Admin\AdminConfig;
+use Lampion\Core\FileSystem;
 use Lampion\Core\Router;
 use Lampion\Database\Query;
 use Lampion\Debug\Console;
+use Lampion\Application\Application;
 
-class AdminCore {
+class AdminCore extends AdminConfig {
 
     public $className;
     public $entityName;
+    public $entityConfigDir;
     public $table;
     public $entityConfig;
     public $config;
     public $defaultAction;
     public $declaredActions;
     public $action;
+    public $fs;
 
     public function __construct() {
         $this->config = json_decode(file_get_contents(ROOT . APP . 'carnival/' . CONFIG . 'carnival/admin.json'));
+
+        $this->fs = new FileSystem(ROOT . APP . Application::name() . '/');
 
         $this->entityName = explode('/', $_GET['url'])[0];
         $this->className  = 'Carnival\Entity\\' . $this->entityName;
@@ -26,10 +33,11 @@ class AdminCore {
         $this->table      = strtolower($this->entityName);
         $this->table      = Query::tableExists($this->table) ? $this->table : 'entity_' . $this->table;
 
-        $this->entityConfig = is_object($this->config) && isset($this->config->entities->{$this->entityName}) ? $this->config->entities->{$this->entityName} : null;
+        # Setting entity variables
+        $this->configEntity();
 
         # Setting the defualt action
-        $this->action = $this->configDefaultAction();
+        $this->configDefaultAction();
 
         # Getting declared actions
         if(isset($this->entityConfig->actions)) {
@@ -112,23 +120,5 @@ class AdminCore {
                 }
             }
         }
-    }
-
-    private function configDefaultAction() {
-        if(isset($this->entityConfig->default_action)) {
-            $this->defaultAction = $this->entityConfig->default_action;
-        }
-
-        else {
-            if(isset($this->config->defaultAction)) {
-                $this->defaultAction = $this->config->defaultAction;
-            }
-
-            else {
-                $this->defaultAction = 'list';
-            }
-        }
-
-        return explode('/', explode($this->entityName, $_GET['url'])[1])[1] ?? $this->defaultAction;
     }
 }

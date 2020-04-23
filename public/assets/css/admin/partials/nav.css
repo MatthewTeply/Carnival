@@ -250,3 +250,10 @@ button.go-website {
 .tab button.settings img {
     width: 13px;
 }
+
+.tablink-entities {
+    width: 100%;
+    margin-right: 10px;
+    border-radius: 5px;
+    border: 1px solid #4f1eba;
+}

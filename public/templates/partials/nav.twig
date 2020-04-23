@@ -11,9 +11,11 @@
             </button>
         </a>
         <div class="tab">
+            <!--
             <div class="tab-button-group">
-                <button class="tablinks left" onclick="openCity(event, 'custom')" id="defaultOpen">{{ 'Entities'|trans('global') }}</button>
             </div>
+            -->
+            <button class="tablinks tablink-entities" onclick="openCity(event, 'custom')" id="defaultOpen">{{ 'Entities'|trans('global') }}</button>
             <button class="tablinks settings" onclick="openCity(event, 'settings')">
                 <img src="{{ __img__ }}icons/settings-dark.svg">
             </button>

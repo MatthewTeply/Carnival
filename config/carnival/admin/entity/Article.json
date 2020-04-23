@@ -1,0 +1,18 @@
+{
+    "Article": {
+        "title": "Články",
+        "icon": "blog.svg",
+        "permission": ["ROLE_ADMIN", "ROLE_AUTHOR"],
+        "actions": {
+            "list": {
+                "permission": ["ROLE_USER"],
+                "fields": {
+                    "title": {
+                        "type": "string",
+                        "label": "Title"
+                    }
+                }
+            }
+        }
+    }
+}

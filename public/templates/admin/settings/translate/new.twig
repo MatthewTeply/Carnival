@@ -14,7 +14,7 @@
             <div>{{ 'Translation'|trans('settings/translate') }}: <b v-text="filename"></b></div>
         </div>
         <div class="card-body">
-            <form action="{{ path('translate') }}/new" method="POST">
+            <form action="{{ path('Translate') }}/new" method="POST">
                 <b>{{ 'Filename'|trans('settings/translate') }}</b>
                 <input type="text" name="filename" class="form-control" placeholder="{{ 'Filename'|trans('settings/translate') }}" v-model="filename">
 

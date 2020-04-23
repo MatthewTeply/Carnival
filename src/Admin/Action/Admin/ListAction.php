@@ -28,28 +28,27 @@ class ListAction extends AdminController {
 
             $entity = $this->em->find($this->className, $id['id']);
 
+            # If fields are set in entity's list action
             if(isset($this->entityConfig->actions->list->fields)) {
                 $columns = array_keys((array)$this->entityConfig->actions->list->fields);
 
-                foreach($columns as $column) {
-                    $type = $this->entityConfig->actions->list->fields->$column->type ?? null;
-                    $methodName = 'get' . ucfirst($column);
+                foreach($columns as $colKey => $column) {
+                    $permission = $this->entityConfig->actions->list->fields->{$column}->permission ?? null;
 
-                    # Check if column has a getter defined in entity
-                    if(method_exists($entity, $methodName)) {
-                        $value = $entity->$methodName();
+                    if(!$this->user->hasPermission($permission)) {
+                        unset($columns[$colKey]);
+                        continue;
                     }
 
-                    else {
-                        $value = $entity->{$column};
-                    }
+                    $type = $this->entityConfig->actions->list->fields->{$column}->type ?? null;
+                    $value = $entity->{$column};
 
                     if($type) {
                         $template = $type;
 
                         # Check if custom template is defined in field's config
                         if(isset($this->entityConfig->actions->list->fields->{$column}->template)) {
-                            $this->entityConfig->actions->list->fields->{$column}->template;
+                            $template = $this->entityConfig->actions->list->fields->{$column}->template;
                         }
 
                         $entity->{$column} = $this->view->load('admin/types/' . $template, [
@@ -72,22 +71,7 @@ class ListAction extends AdminController {
             }
 
             foreach($columns as $column) {
-                try {
-                    $methodName = 'get' . ucfirst($column['name']);
-
-                    # Check if column has a getter defined in entity
-                    if(method_exists($entity, $methodName)) {
-                        $entities[$key][$column['name']] = $entity->$methodName();
-                    }
-
-                    else {
-                        $entities[$key][$column['name']] = $entity->{$column['name']};
-                    }
-                }
-
-                catch(Error $e) {
-                    // TODO: Error handling
-                }
+                $entities[$key][$column['name']] = $entity->{$column['name']};
             }
 
             $entities[$key]['id'] = $entity->id;
