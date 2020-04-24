@@ -67,17 +67,19 @@ class NewAction extends AdminController {
         }
         
         $this->view->render('admin/actions/new', [
-            'form'       => $this->form,
-            'title'      => $this->title,
-            'entityName' => $this->entityName,
-            'header'     => $this->header,
-            'nav'        => $this->nav,
-            'footer'     => $this->footer
+            'form'        => $this->form,
+            'title'       => $this->title,
+            'entityName'  => $this->entityName,
+            'header'      => $this->header,
+            'nav'         => $this->nav,
+            'footer'      => $this->footer,
+            'icon'        => $this->config->entities->{$this->entityName}->icon ?? null,
+            'description' => $this->config->entities->{$this->entityName}->description ?? null
         ]);
     }
 
     public function submit() {
-        $fields = array_keys((array)$this->entityConfig->fields) ?? array_keys((array)$this->entityColumns);
+        $fields = isset($this->entityConfig->fields) ? array_keys((array)$this->entityConfig->fields) : array_keys((array)$this->entityColumns);
 
         $entity = new $this->className();
 

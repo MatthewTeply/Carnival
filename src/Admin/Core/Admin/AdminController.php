@@ -93,12 +93,15 @@ class AdminController extends AdminConfig {
             ]);
         }
 
+        Console::log($entity);
+
         foreach($this->entityColumns as $column) {
             $form->field($column->type, [
-                'name'  => $column->name,
-                'type'  => $column->type,
-                'label' => $column->name,
-                'value' => $entity->{$column->name} ?? null,
+                'name'     => $column->name,
+                'type'     => $column->type,
+                'label'    => $column->name,
+                'value'    => $entity->{$column->name} ?? null,
+                'metadata' => $column->metadata,
                 'attr'  => [
                     'class'       => 'col-lg-12',
                     'placeholder' => $this->translator->read('entity/' . strtolower($this->entityName))->get($column->name)
@@ -111,8 +114,10 @@ class AdminController extends AdminConfig {
         $form->field('button', [
             'name'  => $this->entityName . '_submit',
             'label' => $action_label ?? 'Submit',
-            'class' => 'btn btn-yellow',
-            'type'  => 'submit'
+            'type'  => 'submit',
+            'attr' => [
+                'class' => 'btn btn-yellow'
+            ]
         ]);
     }
 }

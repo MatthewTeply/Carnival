@@ -10,11 +10,24 @@ use Lampion\Debug\Console;
 
 class ListAction extends AdminController {
     public function display() {
+        $metadata = $this->em->metadata($this->className);
+
         // TODO: Default limit, currently fixed to 25
         $limit = $this->entityConfig->actions->list->limit ?? 25;
 
+        $sortBy    = $this->entityConfig->actions->list->sortBy ?? null;
+        $sortOrder = $this->entityConfig->actions->list->sortOrder ?? null;
+
+        $sortBy    = $_GET['sortBy'] ?? $sortBy;
+        $sortOrder = $_GET['sortOrder'] ?? $sortOrder;
+
+        $sortBy = $metadata->{$sortBy}->mappedBy ?? $sortBy; 
+
+        $sortString = $sortBy ? ' ORDER BY ' . $sortBy . ' ' . $sortOrder : null;
+        $queryString = 'SELECT id FROM ' . $this->table . $sortString . ' LIMIT ' . $limit . ' OFFSET ' . (isset($_GET['page']) ? ($_GET['page'] - 1) * $limit : 0);
+
         # If entity's name is reserved in SQL, try entity prefix
-        $ids = Query::raw('SELECT id FROM ' . $this->table . ' LIMIT ' . $limit . ' OFFSET ' . (isset($_GET['page']) ? ($_GET['page'] - 1) * $limit : 0));
+        $ids = Query::raw($queryString);
 
         $entityCount = Query::select($this->table, ['COUNT(*)'])[0]['COUNT(*)'];
 
@@ -66,7 +79,8 @@ class ListAction extends AdminController {
             foreach($columns as $col_key => $column) {
                 $columns[$col_key] = [
                     'name' => $column,
-                    'label' => $this->entityConfig->actions->list->fields->$column->label ?? $column
+                    'label' => $this->entityConfig->actions->list->fields->$column->label ?? $column,
+                    'sortOrder' => $sortOrder == 'DESC' ? 'ASC' : 'DESC'
                 ];
             }
 
@@ -80,7 +94,7 @@ class ListAction extends AdminController {
         $this->view->render('admin/actions/list', [
             'entity'       => $this->entityConfig,
             'user'         => $this->user,
-            'action'       => $this->entityConfig->actions->{$this->action},
+            'action'       => $this->entityConfig->actions->list,
             'columns'      => $columns ?? array_keys((array)$this->entityConfig->actions->list->fields),
             'listEntities' => $entities,
             'resultsCount' => $entityCount,
@@ -96,9 +110,12 @@ class ListAction extends AdminController {
                 'delete'   => $this->entityConfig->actions->delete->label ?? null,
                 'edit'     => $this->entityConfig->actions->edit->label   ?? null
             ],
-            'new'    => isset($this->entityConfig->actions->new)    ? is_object($this->entityConfig->actions->new)    : true,
-            'edit'   => isset($this->entityConfig->actions->edit)   ? is_object($this->entityConfig->actions->edit)   : true,
-            'delete' => isset($this->entityConfig->actions->delete) ? is_object($this->entityConfig->actions->delete) : true
+            'sortBy'      => $_GET['sortBy'] ?? $sortBy,
+            'sortOrder'   => $sortOrder,
+            'description' => $this->entityConfig->description ?? null,
+            'new'         => isset($this->entityConfig->actions->new)    ? is_object($this->entityConfig->actions->new)    : true,
+            'edit'        => isset($this->entityConfig->actions->edit)   ? is_object($this->entityConfig->actions->edit)   : true,
+            'delete'      => isset($this->entityConfig->actions->delete) ? is_object($this->entityConfig->actions->delete) : true
         ]);
     }
 

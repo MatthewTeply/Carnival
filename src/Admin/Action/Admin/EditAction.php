@@ -40,14 +40,10 @@ class EditAction extends AdminController {
                 }
 
                 $options = [
-                    'name' => $fieldName,
+                    'name'  => $fieldName,
                     'label' => $field->label ?? null,
                     'value' => $value,
-                    'attr' => [
-                        'id' => $field->id ?? null,
-                        'class' => $field->class ?? null,
-                        'placeholder' => $field->label ?? null
-                    ]
+                    'attr'  => $field->attr ?? null
                 ];
 
                 if(isset($field->field_options)) {
@@ -64,8 +60,10 @@ class EditAction extends AdminController {
             $this->form->field('button', [
                 'name'  => $this->entityName . '_submit',
                 'label' => $this->translator->read('entity/' . $this->entityName)->get($action_label) ?? $this->translator->read('global')->get('Submit'),
-                'class' => 'btn-yellow',
-                'type'  => 'submit'
+                'type'  => 'submit',
+                'attr' => [
+                    'class' => 'btn btn-yellow'
+                ]
             ]);
         }
 
@@ -74,12 +72,14 @@ class EditAction extends AdminController {
         }
 
         $this->view->render('admin/actions/edit', [
-            'form'       => $this->form,
-            'title'      => $this->title,
-            'entityName' => $this->entityName,
-            'header'     => $this->header,
-            'nav'        => $this->nav,
-            'footer'     => $this->footer
+            'form'        => $this->form,
+            'title'       => $this->title,
+            'entityName'  => $this->entityName,
+            'header'      => $this->header,
+            'nav'         => $this->nav,
+            'footer'      => $this->footer,
+            'icon'        => $this->config->entities->{$this->entityName}->icon ?? null,
+            'description' => $this->config->entities->{$this->entityName}->description ?? null
         ]);
     }
 

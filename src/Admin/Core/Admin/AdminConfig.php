@@ -7,7 +7,6 @@ use Lampion\Session\Lampion as LampionSession;
 use Lampion\Database\Query;
 use Lampion\Debug\Console;
 use Lampion\Application\Application;
-use Lampion\Core\FileSystem;
 
 class AdminConfig {
 
@@ -48,6 +47,8 @@ class AdminConfig {
         $args['user']        = (array)LampionSession::get('user');
         $args['title']       = $this->title;
         $args['logo']        = $this->config->logo;
+        $args['breadcrumbs'] = explode('/', $_GET['url']);
+        $args['entityName']  = $this->entityName;
         
         foreach($this->config->entities as $key => $entity) {
             # Check if entity's list action has set permission
@@ -92,6 +93,10 @@ class AdminConfig {
             }
         });
 
+        $this->view->setFilter('getClass', function($object) {
+            return get_class($object);
+        });
+
         $this->header = $this->view->load('partials/header', $args);
         $this->nav    = $this->view->load('partials/nav'   , $args);
         $this->footer = $this->view->load('partials/footer', $args);
@@ -99,23 +104,55 @@ class AdminConfig {
 
     protected function configColumns() {
         $columns  = Query::raw('DESCRIBE `' . $this->table . '`');
-        $metadata = $this->em->metadata($this->className);
+        $metadata = $this->em->metadata($this->className) ?? [];
 
+        foreach($columns as $key => $column) {
+            $columns[$column['Field']] = $column;
+            unset($columns[$key]);
+        }
+
+        /*
         foreach($columns as $column) {
-            if($column['Field'] == 'id') {
+            if($column['Field'] === 'id') {
                 continue;
             }
 
             preg_match_all('/[a-zA-Z]+/', $column['Type'], $type);
             preg_match_all('/\d+/', $column['Type'], $length);
 
-            $this->entityColumns[$column['Field']] = new \stdClass();
+            $colName = $metadata->{$column['Field']}->mappedBy ?? $column['Field'];
+
+            $this->entityColumns[$colName] = new \stdClass();
 
             // TODO: Maybe assign metadata values before doing regex? Could save a bit of comp time.
-            $this->entityColumns[$column['Field']]->name   = $column['Field'];
-            $this->entityColumns[$column['Field']]->type   = $metadata->{$column['Field']}->type   ?? $type[0][0];
-            $this->entityColumns[$column['Field']]->length = $metadata->{$column['Field']}->length ?? $length[0][0] ?? null;
+            $this->entityColumns[$colName]->name   = $column['Field'];
+            $this->entityColumns[$colName]->type   = $metadata->{$column['Field']}->type   ?? $type[0][0];
+            $this->entityColumns[$colName]->length = $metadata->{$column['Field']}->length ?? $length[0][0] ?? null;
         }
+        */
+
+        foreach($metadata as $key => $value) {
+            if($key === 'id') {
+                continue;
+            }
+
+            $column  = $columns[$value->mappedBy ?? $key] ?? null;
+
+            if(!$column) {
+                continue;
+            }
+
+            preg_match_all('/[a-zA-Z]+/', $column['Type'], $type);
+            preg_match_all('/\d+/', $column['Type'], $length);
+
+            $this->entityColumns[$key] = new \stdClass();
+
+            // TODO: Maybe assign metadata values before doing regex? Could save a bit of comp time.
+            $this->entityColumns[$key]->name     = $key;
+            $this->entityColumns[$key]->type     = $value->type   ?? $type[0][0];
+            $this->entityColumns[$key]->length   = $value->length ?? $length[0][0] ?? null;
+            $this->entityColumns[$key]->metadata = $value ?? null;
+        } 
     }
 
     protected function configDefaultAction() {
@@ -169,9 +206,14 @@ class AdminConfig {
         if(!$this->user->hasPermission($permissions)) {
             # If user doesn't have sufficent privileges, display error
             $this->view->render('admin/errors/actionDenied', [
-                'header' => $this->header,
-                'nav'    => $this->nav,
-                'footer' => $this->footer
+                'header'      => $this->header,
+                'nav'         => $this->nav,
+                'footer'      => $this->footer,
+                'entityName'  => $this->entityName,
+                'title'       => $this->title,
+                'icon'        => $this->entityConfig->icon ?? null,
+                'description' => $this->entityConfig->description ?? null,
+                'user'        => $this->user
             ]);
 
             exit();

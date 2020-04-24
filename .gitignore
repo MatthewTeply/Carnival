@@ -1,5 +1,2 @@
 
 .DS_STORE
-
-# Testing files
-src/Entity/Article.php

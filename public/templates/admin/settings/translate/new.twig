@@ -6,7 +6,17 @@
 
 <div class="main-content" id="app">
     <div class="col-lg-12 headline headline-button ">
-        <h2>{{ 'Translations'|trans('settings/translate') }}</h2>
+        <div style="background-image: url('{{ __img__ }}icons/text-document.svg')" class="icon"></div>
+        <p class="title">
+            {{ 'Translations'|trans('settings/translate') }}
+            <span class="description">{{ description is not null ? description : 'Manage'|trans('global') ~ ' ' ~ 'Translations'|trans('settings/translate') }}</span>
+        </p>
+
+        <a href="{{ path('Translate') }}/list">
+            <button class="btn btn-link close-button" id="open-form">
+                <span><i class="fas fa-times"></i></span>
+            </button>
+        </a>
     </div>
 
     <div class="card">

@@ -1,15 +1,39 @@
 <link href="{{ __css__ }}admin/partials/nav.css" rel="stylesheet">
 
+<header class="header">
+    <div></div>
+    <div class="breadcrumbs">
+        <span>
+            {% set breadcrumbUrl = path('') %}
+    
+            {% for breadcrumb in breadcrumbs %}
+                {% set breadcrumbUrl = breadcrumbUrl ~ breadcrumb ~ '/' %}
+    
+                <a href="{{ breadcrumbUrl }}">{{ breadcrumb|trans('partials/nav') }}</a>
+            {% endfor %}
+        </span>
+    </div>
+    <div class="online-user-around">
+        <div class="online-user">
+            <img src="{{ __img__ }}icons/profile.png">
+            <span>{{ user.username }}</span>
+        </div>
+    </div>
+</header>
+
 <nav class="side-nav">
     <div class="nav-fixed-buttons">
         <div class="logo">
-            {{ logo|raw }}
+            <a href="{{ path('') }}">
+                {{ logo|raw }}
+            </a>
         </div>
         <a target="_blank" href="{{ path('../') }}">
             <button class="go-website">
                 <span>{{ 'Go to website'|trans('global') }}</span>
             </button>
         </a>
+        {#
         <div class="tab">
             <!--
             <div class="tab-button-group">
@@ -20,6 +44,37 @@
                 <img src="{{ __img__ }}icons/settings-dark.svg">
             </button>
         </div>
+        #}
+    </div>
+
+    <div class="body">
+        <h2>{{ 'Entities'|trans('global') }}</h2>
+        {% for entity in entities %}
+            {% if entity.type == 'entity' %}
+                <a href="{{ path(entity.name) }}">
+                    <div class="nav-btn {{ (entity.active) ? 'active' : '' }}">
+                        {% if entity.icon is not null %}
+                            <img src="{{ __img__ }}icons/{{ entity.icon }}">
+                        {% endif %}
+                        <p>{{ entity.title }}</p>
+                    </div>
+                </a>
+            {% endif %}
+        {% endfor %}
+
+        <h2>{{ 'Settings'|trans('global') }}</h2>
+        {% for entity in entities %}
+            {% if entity.type == 'settings' %}
+                <a href="{{ path(entity.name) }}">
+                    <div class="nav-btn {{ (entity.active) ? 'active' : '' }}">
+                        {% if entity.icon is not null %}
+                            <img src="{{ __img__ }}icons/{{ entity.icon }}">
+                        {% endif %}
+                        <p>{{ entity.title }}</p>
+                    </div>
+                </a>
+            {% endif %}
+        {% endfor %}
     </div>
 
     <div id="custom" class="tabcontent">
@@ -66,6 +121,8 @@
             {% endif %}
         {% endfor %}
     </div>
+
+    {#
     <div class="info-box">
         <div class="online-user-around">
             <div class="online-user">
@@ -84,4 +141,10 @@
         </div>
     </div>
     <!-- Tab content -->
+    #}
+    <div class="info-box">
+        &copy; 2019 - 2020 Matyáš Teplý
+        <br>
+        {{ 'Version'|trans('partials/nav') }} 0.8.0
+    </div>
 </nav>

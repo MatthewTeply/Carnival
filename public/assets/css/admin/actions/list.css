@@ -14,7 +14,6 @@
 
 table {
     color: #fff !important;
-    border-radius: 5px; 
     overflow: hidden;
     border-collapse: separate;
     table-layout: fixed;
@@ -22,28 +21,37 @@ table {
     table-layout: fixed;
     border-collapse: unset;
     border-spacing: 0;
-    margin-top: 10px;
     font-size: 14px !important;
+    margin-bottom: 0 !important;
 }
 
 .table thead tr th, .table tfoot tr td {
-    background-color: #34157e;
-    border: none !important;
+    background-color: #32127a;
+    border-top: none;
     padding: 10px 20px !important;
 }
 
+.table thead tr th {
+    border-bottom: 1px solid #5a33bc;
+}
+
+.table tfoot tr td {
+    border-top: 1px solid #5a33bc;
+}
+
 .table thead tr, .table tfoot tr {
-    background-color: #34157e;
+    background-color: #32127a;
     border: none !important;
 }
 
 .table td {
     padding: 0 20px !important;
-    border-top: 1px solid #34157e;
+    border: none;
+    border-bottom: 1px solid #32127a;
 }
 
 td {
-    background-color: #4418a1;
+    background-color: #4316a3;
     position: relative;
 }
 
@@ -127,4 +135,36 @@ table th, table td {
 
 .modal form .form-control::placeholder {
     color: #ddd;
+}
+
+.list-sort-order-arrow {
+    transition: .3s;
+    margin-left: 5px;
+    font-size: 16px;
+    color: rgba(255, 255, 255, .1);
+}
+
+.list-sort-order-arrow.active {
+    color: rgb(242, 201, 76);
+}
+
+.table thead tr th a.active {
+    color: rgb(242, 201, 76);
+}
+
+.table thead tr th a:hover {
+    color: rgb(242, 201, 76);
+}
+
+.table thead tr th a:hover .list-sort-order-arrow {
+    color: rgba(255, 255, 255, .6);
+}
+
+.table thead tr th a:hover .list-sort-order-arrow.active {
+    color: rgb(242, 201, 76);
+}
+
+.table thead tr th a:hover .list-sort-order-arrow, .table thead tr th a:focus .list-sort-order-arrow {
+    transition: .3s;
+    transform: rotate(180deg);
 }
