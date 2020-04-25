@@ -45,24 +45,23 @@ table {
 }
 
 .table td {
-    padding: 0 20px !important;
+    padding: 10px 20px;
     border: none;
     border-bottom: 1px solid #32127a;
-}
-
-td {
     background-color: #4316a3;
     position: relative;
 }
 
-table th, table td {
+.table tbody tr:last-of-type td {
+    border: none;
+}
+
+.table th, .table td {
     vertical-align: middle !important;
-    padding: 15px;
 }
 
 .table-buttons {
     width: auto;
-    height: 55px;
     position: relative;
     display: flex;
     align-items: center;
@@ -99,13 +98,27 @@ table th, table td {
     color: #9a74fb;
 }
 
-.table tfoot .list-pagination a {
-    margin: 0 5px;
-}
-
 .table tfoot .list-pagination .disabled {
     opacity: .5;
     pointer-events: none;
+}
+
+.table tfoot .list-pagination .btn {
+    background-color: #4418a1;
+    color: #fff;
+    border-color: #4f1eba;
+}
+
+.table tfoot .list-pagination .page-counter {
+    background: none;
+}
+
+.table tfoot .list-pagination .btn .fas.fa-arrow-left {
+    margin-right: 5px;
+}
+
+.table tfoot .list-pagination .btn .fas.fa-arrow-right {
+    margin-left: 5px;
 }
 
 .table tbody th {
@@ -166,5 +179,11 @@ table th, table td {
 
 .table thead tr th a:hover .list-sort-order-arrow, .table thead tr th a:focus .list-sort-order-arrow {
     transition: .3s;
-    transform: rotate(180deg);
+}
+
+.list-type-image {
+    border-radius: 3px;
+    background-color: #fff;
+    padding: 1px;
+    cursor: zoom-in;
 }

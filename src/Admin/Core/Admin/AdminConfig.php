@@ -41,9 +41,15 @@ class AdminConfig {
     }
     
     protected function configTwig() {
-        $args['__css__']     = WEB_ROOT . APP . 'carnival' . CSS;
-        $args['__scripts__'] = WEB_ROOT . APP . 'carnival' . SCRIPTS;
-        $args['__img__']     = WEB_ROOT . APP . 'carnival' . IMG;
+        $this->twigArgs['__css__']     = WEB_ROOT . APP . Application::name() . CSS;
+        $this->twigArgs['__scripts__'] = WEB_ROOT . APP . Application::name() . SCRIPTS;
+        $this->twigArgs['__img__']     = WEB_ROOT . APP . Application::name() . IMG;
+        $this->twigArgs['__storage__'] = WEB_ROOT . APP . Application::name() . STORAGE;
+
+        $args['__css__']     = $this->twigArgs['__css__'];
+        $args['__scripts__'] = $this->twigArgs['__scripts__'];
+        $args['__img__']     = $this->twigArgs['__img__'];
+        $args['__storage__'] = $this->twigArgs['__storage__'];
         $args['user']        = (array)LampionSession::get('user');
         $args['title']       = $this->title;
         $args['logo']        = $this->config->logo;

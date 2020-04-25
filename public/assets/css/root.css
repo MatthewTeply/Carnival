@@ -9,7 +9,7 @@ body {
     );*/
     font-family: Poppins;
     font-size: 14px;
-    background-color: #462598;
+    background-color: #542db1;
 }
 
 .btn {
@@ -17,7 +17,7 @@ body {
 }
 
 .main-content {
-    --mc-margin: 15px;
+    --mc-margin: 25px;
     
     margin: var(--mc-margin);
     position: relative;
@@ -27,7 +27,7 @@ body {
     flex-wrap: wrap;
     align-content: flex-start;
     background-color: #4418a1;
-    border-radius: 3px;
+    border-radius: 5px;
     overflow-y: scroll;
     border: 1px solid #5a33bc;
 }
@@ -85,12 +85,14 @@ body {
 }
 
 .main-content .headline .icon {
-    height: 35px;
-    width: 35px;
+    height: 30px;
+    width: 30px;
     opacity: .8;
-    background-size: 30px 30px;
+    background-size: 28px 28px;
     background-repeat: no-repeat;
     background-position: center;
+    margin-right: 10px;
+    margin-left: 5px;
 }
 
 .main-content .headline .title {
@@ -99,7 +101,6 @@ body {
     font-size: 14px;
     font-weight: bold;
     margin-right: auto;
-    margin-left: 10px;
 }
 
 .main-content .headline .description {

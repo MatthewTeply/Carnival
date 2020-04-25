@@ -35,9 +35,9 @@
                     <tr>
                         {% for column in columns %}
                             <th>
-                                <a class="{{ sortBy == column.name ? 'active' : '' }}" href="{{ path(entityName) }}/list?sortBy={{ column.name }}&sortOrder={{ column.sortOrder }}">
+                                <a class="{{ sortBy == column.name ? 'active' : '' }}" href="{{ path(entityName) }}/list?sortBy={{ column.name }}&sortOrder={{ sortBy == column.name ? column.sortOrder : 'DESC' }}">
                                     {{ column.label|trans('entity/' ~ entityName) }} 
-                                    <i class="list-sort-order-arrow {{ sortBy == column.name ? 'active' : '' }} fas fa-angle-{{ sortOrder == 'DESC' ? 'down' : 'up'  }}"></i>
+                                    <i class="list-sort-order-arrow {{ sortBy == column.name ? 'active fas fa-sort-' ~ (sortOrder == 'DESC' ? 'down' : 'up') : 'fas fa-sort' }}"></i>
                                 </a>
                             </th>
                         {% endfor %}
@@ -72,10 +72,11 @@
                             <td colspan="{{ columns|length - 1 }}"></td>
                         {% endif %}
                         <td class="text-right list-pagination">
-                            <a href="{{ path(entityName) }}/list?page={{ page - 1 }}" {{ (page == 1) ? 'class="disabled"' : '' }}>{{ 'Previous'|trans('action/list') }}</a>
-                             | 
-                            <a href="{{ path(entityName) }}/list?page={{ page + 1 }}" {{ (page == pagesCount) ? 'class="disabled"' : '' }}>{{ 'Next'|trans('action/list') }}</a>
-                            ({{ page }} / {{ pagesCount }})
+                            <div class="btn-group" role="group" aria-label="Basic example">
+                                <a href="{{ path(entityName) }}/list?page={{ page - 1 }}" {{ (page == 1) ? 'class="btn disabled"' : 'class="btn"' }}><i class="fas fa-arrow-left"></i> {{ 'Previous'|trans('action/list') }}</a>
+                                <div class="btn page-counter">{{ page }} / {{ pagesCount }}</div>
+                                <a href="{{ path(entityName) }}/list?page={{ page + 1 }}" {{ (page == pagesCount) ? 'class="btn disabled"' : 'class="btn"' }}>{{ 'Next'|trans('action/list') }} <i class="fas fa-arrow-right"></i></a>
+                            </div>
                         </td>
                     </tr>
                 </tfoot>

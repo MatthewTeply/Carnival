@@ -1,26 +1,5 @@
 <link href="{{ __css__ }}admin/partials/nav.css" rel="stylesheet">
 
-<header class="header">
-    <div></div>
-    <div class="breadcrumbs">
-        <span>
-            {% set breadcrumbUrl = path('') %}
-    
-            {% for breadcrumb in breadcrumbs %}
-                {% set breadcrumbUrl = breadcrumbUrl ~ breadcrumb ~ '/' %}
-    
-                <a href="{{ breadcrumbUrl }}">{{ breadcrumb|trans('partials/nav') }}</a>
-            {% endfor %}
-        </span>
-    </div>
-    <div class="online-user-around">
-        <div class="online-user">
-            <img src="{{ __img__ }}icons/profile.png">
-            <span>{{ user.username }}</span>
-        </div>
-    </div>
-</header>
-
 <nav class="side-nav">
     <div class="nav-fixed-buttons">
         <div class="logo">
@@ -122,11 +101,14 @@
         {% endfor %}
     </div>
 
-    {#
     <div class="info-box">
         <div class="online-user-around">
             <div class="online-user">
-                <img src="{{ __img__ }}icons/profile.png">
+                {% if user.img != '' %}
+                    <img src="{{ __storage__ ~ user.img }}">
+                {% else %}
+                    <img src="{{ __img__ }}icons/profile.png">
+                {% endif %}
                 <span>{{ user.username }}</span>
             </div>
         </div>
@@ -140,11 +122,5 @@
             </a>
         </div>
     </div>
-    <!-- Tab content -->
-    #}
-    <div class="info-box">
-        &copy; 2019 - 2020 Matyáš Teplý
-        <br>
-        {{ 'Version'|trans('partials/nav') }} 0.8.0
-    </div>
+
 </nav>

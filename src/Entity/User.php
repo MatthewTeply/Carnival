@@ -18,6 +18,9 @@ class User
     /** @var(type="varchar", length=255) */
     public $pwd;
 
+    /** @var(type="file") */
+    public $img;
+
     public function setPwd(string $pwd) {
         if(!empty($pwd)) {
             if(!password_verify($pwd, $this->pwd)) {

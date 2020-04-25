@@ -39,6 +39,9 @@ class AdminController extends AdminConfig {
     public $header;
     public $nav;
     public $footer;
+
+    # Twig
+    public $twigArgs;
     
     public function __construct() {
         # Getting config file's JSON, and turning it into an object

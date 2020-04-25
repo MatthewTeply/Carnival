@@ -64,10 +64,16 @@ class ListAction extends AdminController {
                             $template = $this->entityConfig->actions->list->fields->{$column}->template;
                         }
 
-                        $entity->{$column} = $this->view->load('admin/types/' . $template, [
-                            'value'      => $value,
-                            'entityName' => $this->entityName
-                        ]);
+                        $args['__css__']     = $this->twigArgs['__css__'];
+                        $args['__scripts__'] = $this->twigArgs['__scripts__'];
+                        $args['__img__']     = $this->twigArgs['__img__'];
+                        $args['__storage__'] = $this->twigArgs['__storage__'];
+                        $args['value']       = $value;
+                        $args['entityName']  = $this->entityName;
+                        $args['rowIndex']    = $key;
+                        $args['colIndex']    = $colKey;
+
+                        $entity->{$column} = $this->view->load('admin/types/' . $template, $args);
                     }
                 }
             }

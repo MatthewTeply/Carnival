@@ -11,6 +11,10 @@
                 "sortOrder": "ASC",
                 "permission": ["ROLE_USER"],
                 "fields": {
+                    "img": {
+                        "label": "Profilový obrázek",
+                        "type": "image"
+                    },
                     "username": {
                         "label": "Uživatelské jméno",
                         "type": "string"
@@ -60,6 +64,13 @@
                                 "ROLE_USER": "Uživatel"
                             }
                         }
+                    },
+                    "img": {
+                        "label": "Profilový obrázek",
+                        "type": "file",
+                        "attr": {
+                            "class": "col-lg-12"
+                        }
                     }
                 }
             },
@@ -88,6 +99,13 @@
                                 "ROLE_AUTHOR": "Autor",
                                 "ROLE_USER": "Uživatel"
                             }
+                        }
+                    },
+                    "img": {
+                        "label": "Profilový obrázek",
+                        "type": "file",
+                        "attr": {
+                            "class": "col-lg-12"
                         }
                     }
                 }

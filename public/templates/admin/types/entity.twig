@@ -1,1 +1,5 @@
-<a href="{{ path(value|getClass|split('Entity\\')[1]) }}/show?id={{ value.id }}"><div class="badge badge-success">{{ value }}</div></a>
+{% if value %}
+    <a href="{{ path(value|getClass|split('Entity\\')[1]) }}/show?id={{ value.id }}"><div class="badge badge-success">{{ value }}</div></a>
+{% else %}
+    <div class="badge badge-light">NULL</div>
+{% endif %}
