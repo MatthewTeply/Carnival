@@ -7,11 +7,20 @@ use Lampion\User\Auth;
 
 use Carnival\Admin\AdminCore;
 use Carnival\Entity\Liveedit;
+use Lampion\Core\Cookie;
 use Lampion\Database\Query;
 
 $router = new Router();
 
-if(Auth::isLoggedIn()) {
+// TODO: Remove this, idiot
+$_SESSION['Lampion']['lang'] = 'cs';
+
+$token = null;
+
+if(isset($_POST['authToken'])) { $token = $_POST['authToken']; }
+if(isset($_GET['authToken']))  { $token = $_GET['authToken']; }
+
+if(Auth::isLoggedIn($token)) {
     $ac = new AdminCore();
     $ac->registerRoutes($router);
     

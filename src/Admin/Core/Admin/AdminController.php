@@ -52,10 +52,8 @@ class AdminController extends AdminConfig {
         $this->fs   = new FileSystem(ROOT . APP . Application::name() . '/');
         $this->em   = new EntityManager();
 
-        $userArray = (array)LampionSession::get('user');
-
         # Getting currently logged in user
-        $this->user = $this->em->find(User::class, $userArray['id']);
+        $this->user = $this->em->find(User::class, unserialize(LampionSession::get('user'))->id);
 
         # Setting up the translator
         $this->translator = new Translator(LampionSession::get('lang'));
