@@ -37,6 +37,7 @@
     border-bottom: 1px solid #4f1eba;
     width: 100%;
     padding: 10px;
+    overflow: hidden;
 }
 
 .logo a {
@@ -333,4 +334,9 @@ button.go-website {
 .side-nav .body {
     width: 100%;
     margin-top: 95px;
+}
+
+.page-loading {
+    display: none;
+    font-size: 30px;
 }

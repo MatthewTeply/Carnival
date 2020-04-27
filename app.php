@@ -9,6 +9,7 @@ use Carnival\Admin\AdminCore;
 use Carnival\Entity\Liveedit;
 use Lampion\Core\Cookie;
 use Lampion\Database\Query;
+use Lampion\Http\Url;
 
 $router = new Router();
 
@@ -66,7 +67,15 @@ $router
     ->get('logout', function(Request $req, Response $res) {
         Auth::logout();
 
-        $res->redirect('login');
+        if(Request::isAjax()) {
+            $res->json([
+                'redirect' => Url::link('login')
+            ]);
+        }
+
+        else {
+            $res->redirect('login');
+        }
     })
     ->post("login", "Carnival\Controller\User\LoginController::login")
     ->listen();

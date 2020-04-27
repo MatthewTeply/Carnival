@@ -103,9 +103,11 @@ class AdminConfig {
             return get_class($object);
         });
 
-        $this->header = $this->view->load('partials/header', $args);
-        $this->nav    = $this->view->load('partials/nav'   , $args);
-        $this->footer = $this->view->load('partials/footer', $args);
+        if(!$this->ajax) {
+            $this->header = $this->view->load('partials/header', $args);
+            $this->nav    = $this->view->load('partials/nav'   , $args);
+            $this->footer = $this->view->load('partials/footer', $args);
+        }
     }
 
     protected function configColumns() {
@@ -211,7 +213,7 @@ class AdminConfig {
         # Check user's permission
         if(!$this->user->hasPermission($permissions)) {
             # If user doesn't have sufficent privileges, display error
-            $this->view->render('admin/errors/actionDenied', [
+            $template = $this->view->load('admin/errors/actionDenied', [
                 'header'      => $this->header,
                 'nav'         => $this->nav,
                 'footer'      => $this->footer,
@@ -221,6 +223,14 @@ class AdminConfig {
                 'description' => $this->entityConfig->description ?? null,
                 'user'        => $this->user
             ]);
+
+            if(method_exists($this, 'renderTemplate')) {
+                $this->renderTemplate($template);
+            }
+
+            else {
+                echo $template;
+            }
 
             exit();
         }

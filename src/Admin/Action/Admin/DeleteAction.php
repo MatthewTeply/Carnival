@@ -14,9 +14,19 @@ class DeleteAction extends AdminController {
 
         $this->em->destroy($entity);
 
-        Url::redirect($this->entityName, [
-            'success' => 'delete'
-        ]);
+        if(!$this->ajax) {
+            Url::redirect($this->entityName, [
+                'success' => 'delete'
+            ]);
+        }
+
+        else {
+            echo json_encode([
+                'href' => Url::link($this->entityName, [
+                    'success' => 'delete'
+                ])
+            ]);
+        }
     }
 
 }

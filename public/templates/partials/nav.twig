@@ -3,9 +3,12 @@
 <nav class="side-nav">
     <div class="nav-fixed-buttons">
         <div class="logo">
-            <a href="{{ path('') }}">
+            <a class="logo-inner" href="{{ path('') }}">
                 {{ logo|raw }}
             </a>
+            <div class="page-loading">
+                <img src="{{ __img__ }}icons/loading50.gif" style="height: 30px;">
+            </div>
         </div>
         <a target="_blank" href="{{ path('../') }}">
             <button class="go-website">
@@ -124,3 +127,9 @@
     </div>
 
 </nav>
+
+<input type="hidden" id="meta-webroot" value="{{ webroot }}">
+<input type="hidden" id="meta-appName" value="{{ app.name }}">
+<input type="hidden" id="meta-appIsDefault" value="{{ app.isDefault }}">
+
+<div id="carnival-container">

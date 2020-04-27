@@ -97,7 +97,7 @@ class ListAction extends AdminController {
             $entities[$key]['id'] = $entity->id;
         }
 
-        $this->view->render('admin/actions/list', [
+        $template = $this->view->load('admin/actions/list', [
             'entity'       => $this->entityConfig,
             'user'         => $this->user,
             'action'       => $this->entityConfig->actions->list,
@@ -123,6 +123,8 @@ class ListAction extends AdminController {
             'edit'        => isset($this->entityConfig->actions->edit)   ? is_object($this->entityConfig->actions->edit)   : true,
             'delete'      => isset($this->entityConfig->actions->delete) ? is_object($this->entityConfig->actions->delete) : true
         ]);
+
+        $this->renderTemplate($template);
     }
 
 }

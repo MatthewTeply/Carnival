@@ -8,6 +8,7 @@ use Lampion\Http\Url;
 use Lampion\Form\Form;
 use Lampion\Session\Lampion as LampionSession;
 use Lampion\Language\Translator;
+use Lampion\User\Auth;
 
 class NewAction extends AdminController {
 
@@ -20,7 +21,7 @@ class NewAction extends AdminController {
         $this->action = Url::link($this->entityName) . '/new';
         $this->entityConfig = $this->entityConfig->actions->new ?? null;
 
-        $this->form = new Form($this->action, 'POST');
+        $this->form = new Form($this->action, 'POST', true);
     }
 
     public function display() {
@@ -66,7 +67,7 @@ class NewAction extends AdminController {
             $this->constructForm($this->form);
         }
         
-        $this->view->render('admin/actions/new', [
+        $template = $this->view->load('admin/actions/new', [
             'form'        => $this->form,
             'title'       => $this->title,
             'entityName'  => $this->entityName,
@@ -76,6 +77,8 @@ class NewAction extends AdminController {
             'icon'        => $this->config->entities->{$this->entityName}->icon ?? null,
             'description' => $this->config->entities->{$this->entityName}->description ?? null
         ]);
+
+        $this->renderTemplate($template);
     }
 
     public function submit() {

@@ -9,6 +9,7 @@ use Lampion\Core\FileSystem;
 use Lampion\Entity\EntityManager;
 use Lampion\Database\Query;
 use Lampion\Debug\Console;
+use Lampion\Http\Request;
 use Lampion\Language\Translator;
 use Lampion\Session\Lampion as LampionSession;
 
@@ -42,10 +43,16 @@ class AdminController extends AdminConfig {
 
     # Twig
     public $twigArgs;
+
+    # Ajax
+    public $ajax;
     
     public function __construct() {
         # Getting config file's JSON, and turning it into an object
         $this->config = json_decode(file_get_contents(ROOT . APP . 'carnival/' . CONFIG . 'carnival/admin.json'));
+
+        # Is request ajax?
+        $this->ajax = Request::isAjax();
 
         # Initial config
         $this->view = new View(ROOT . APP . Application::name() . TEMPLATES, 'carnival');
@@ -94,8 +101,6 @@ class AdminController extends AdminConfig {
             ]);
         }
 
-        Console::log($entity);
-
         foreach($this->entityColumns as $column) {
             $form->field($column->type, [
                 'name'     => $column->name,
@@ -120,5 +125,20 @@ class AdminController extends AdminConfig {
                 'class' => 'btn btn-yellow'
             ]
         ]);
+    }
+
+    public function renderTemplate($template) {
+        if($this->ajax) {
+            $returnArr = [
+                'template' => htmlspecialchars($template),
+                'title'    => $this->title
+            ];
+
+            echo json_encode($returnArr);
+        }
+
+        else {
+            echo $template;
+        }
     }
 }

@@ -68,10 +68,7 @@
                         <td>
                             {{ resultsCount }} {{ 'Results'|trans('action/list') }}
                         </td>
-                        {% if (columns|length - 1) > 0 %}
-                            <td colspan="{{ columns|length - 1 }}"></td>
-                        {% endif %}
-                        <td class="text-right list-pagination">
+                        <td class="text-right list-pagination" colspan="{{ (columns|length - 1) > 0 ? columns|length : 1 }}">
                             <div class="btn-group" role="group" aria-label="Basic example">
                                 <a href="{{ path(entityName) }}/list?page={{ page - 1 }}" {{ (page == 1) ? 'class="btn disabled"' : 'class="btn"' }}><i class="fas fa-arrow-left"></i> {{ 'Previous'|trans('action/list') }}</a>
                                 <div class="btn page-counter">{{ page }} / {{ pagesCount }}</div>
@@ -102,7 +99,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ 'Close'|trans('global') }}</button>
-                    <a href="{{ path(entityName) }}/delete?id={{ listEntity.id }}"class="link text-danger">
+                    <a href="{{ path(entityName) }}/delete?id={{ listEntity.id }}" class="link text-danger" data-dismiss="modal">
                         <button type="button" class="btn btn-danger">{{ 'Delete'|trans('global') }}</button>
                     </a>
                 </div>

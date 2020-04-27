@@ -36,12 +36,12 @@ class TranslateController extends AdminController {
             'items' => $dirRead['files']
         ];
 
-        $this->view->render('admin/settings/translate/list', [
+        $this->renderTemplate($this->view->load('admin/settings/translate/list', [
             'sections'     => $sections,
             'header'       => $this->header,
             'nav'          => $this->nav,
             'footer'       => $this->footer,
-        ]);
+        ]));
     }
 
     public function editGet() {
@@ -58,13 +58,13 @@ class TranslateController extends AdminController {
             $i++;
         }
 
-        $this->view->render('admin/settings/translate/edit', [
+        $this->renderTemplate($this->view->load('admin/settings/translate/edit', [
             'translationFile' => $translationFile .  '.json',
             'items'           => $items,
             'header'          => $this->header,
             'nav'             => $this->nav,
             'footer'          => $this->footer,
-        ]);
+        ]));
     }
 
     public function editPost() {
@@ -88,12 +88,12 @@ class TranslateController extends AdminController {
             $sections[] = $section['name'];
         }
 
-        $this->view->render('admin/settings/translate/new', [
+        $this->renderTemplate($this->view->load('admin/settings/translate/new', [
             'sections'        => $sections,
             'header'          => $this->header,
             'nav'             => $this->nav,
             'footer'          => $this->footer
-        ]);
+        ]));
     }
 
     public function newPost() {

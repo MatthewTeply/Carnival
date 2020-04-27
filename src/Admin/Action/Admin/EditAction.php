@@ -71,7 +71,7 @@ class EditAction extends AdminController {
             $this->constructForm($this->form, $entity);
         }
 
-        $this->view->render('admin/actions/edit', [
+        $template = $this->view->load('admin/actions/edit', [
             'form'        => $this->form,
             'title'       => $this->title,
             'entityName'  => $this->entityName,
@@ -81,6 +81,8 @@ class EditAction extends AdminController {
             'icon'        => $this->config->entities->{$this->entityName}->icon ?? null,
             'description' => $this->config->entities->{$this->entityName}->description ?? null
         ]);
+
+        $this->renderTemplate($template);
     }
 
     public function submit() {
