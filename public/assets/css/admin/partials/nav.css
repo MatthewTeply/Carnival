@@ -163,7 +163,7 @@ nav.side-nav .info-box {
     color: #fff;
 }
 
-.nav-btn.active {
+.nav-btn.active, .nav-btn:focus {
     background: #4f2ea0;
     color: #fff;
 }

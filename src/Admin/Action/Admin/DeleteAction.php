@@ -21,7 +21,7 @@ class DeleteAction extends AdminController {
         }
 
         else {
-            echo json_encode([
+            $this->response->json([
                 'href' => Url::link($this->entityName, [
                     'success' => 'delete'
                 ])

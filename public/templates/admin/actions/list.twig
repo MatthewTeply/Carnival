@@ -70,9 +70,9 @@
                         </td>
                         <td class="text-right list-pagination" colspan="{{ (columns|length - 1) > 0 ? columns|length : 1 }}">
                             <div class="btn-group" role="group" aria-label="Basic example">
-                                <a href="{{ path(entityName) }}/list?page={{ page - 1 }}" {{ (page == 1) ? 'class="btn disabled"' : 'class="btn"' }}><i class="fas fa-arrow-left"></i> {{ 'Previous'|trans('action/list') }}</a>
+                                <a href="{{ path(entityName) }}/list?page={{ page - 1 }}{{ sortString }}" {{ (page == 1) ? 'class="btn disabled"' : 'class="btn"' }}><i class="fas fa-arrow-left"></i> {{ 'Previous'|trans('action/list') }}</a>
                                 <div class="btn page-counter">{{ page }} / {{ pagesCount }}</div>
-                                <a href="{{ path(entityName) }}/list?page={{ page + 1 }}" {{ (page == pagesCount) ? 'class="btn disabled"' : 'class="btn"' }}>{{ 'Next'|trans('action/list') }} <i class="fas fa-arrow-right"></i></a>
+                                <a href="{{ path(entityName) }}/list?page={{ page + 1 }}{{ sortString }}" {{ (page == pagesCount) ? 'class="btn disabled"' : 'class="btn"' }}>{{ 'Next'|trans('action/list') }} <i class="fas fa-arrow-right"></i></a>
                             </div>
                         </td>
                     </tr>

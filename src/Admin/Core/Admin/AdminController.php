@@ -10,6 +10,7 @@ use Lampion\Entity\EntityManager;
 use Lampion\Database\Query;
 use Lampion\Debug\Console;
 use Lampion\Http\Request;
+use Lampion\Http\Response;
 use Lampion\Language\Translator;
 use Lampion\Session\Lampion as LampionSession;
 
@@ -46,6 +47,7 @@ class AdminController extends AdminConfig {
 
     # Ajax
     public $ajax;
+    public $response;
     
     public function __construct() {
         # Getting config file's JSON, and turning it into an object
@@ -53,6 +55,8 @@ class AdminController extends AdminConfig {
 
         # Is request ajax?
         $this->ajax = Request::isAjax();
+
+        $this->response = new Response();
 
         # Initial config
         $this->view = new View(ROOT . APP . Application::name() . TEMPLATES, 'carnival');
@@ -129,16 +133,14 @@ class AdminController extends AdminConfig {
 
     public function renderTemplate($template) {
         if($this->ajax) {
-            $returnArr = [
+            $this->response->json($returnArr = [
                 'template' => htmlspecialchars($template),
                 'title'    => $this->title
-            ];
-
-            echo json_encode($returnArr);
+            ]);
         }
 
         else {
-            echo $template;
+            $this->response->send($template);
         }
     }
 }

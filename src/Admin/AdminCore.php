@@ -8,6 +8,7 @@ use Lampion\Core\Router;
 use Lampion\Database\Query;
 use Lampion\Debug\Console;
 use Lampion\Application\Application;
+use Lampion\Http\Response;
 
 class AdminCore extends AdminConfig {
 
@@ -21,11 +22,14 @@ class AdminCore extends AdminConfig {
     public $declaredActions;
     public $action;
     public $fs;
+    public $response;
 
     public function __construct() {
         $this->config = json_decode(file_get_contents(ROOT . APP . 'carnival/' . CONFIG . 'carnival/admin.json'));
 
         $this->fs = new FileSystem(ROOT . APP . Application::name() . '/');
+
+        $this->response = new Response();
 
         $this->entityName = explode('/', $_GET['url'])[0];
         $this->className  = 'Carnival\Entity\\' . $this->entityName;
@@ -105,18 +109,16 @@ class AdminCore extends AdminConfig {
             # Register entity route, and all it's actions
             if($this->declaredActions) {
                 foreach($this->declaredActions as $action) {
+                    $actionClassGet  = 'Carnival\\Admin\\Action\\Admin\\' . ucfirst($action)  . 'Action::display';
+                    $actionClassPost = 'Carnival\\Admin\\Action\\Admin\\' . ucfirst($action)  . 'Action::submit';
+                    
                     if(isset($this->entityConfig->actions->$action->controller)) {
-                        $actionCustomClassGet = $this->entityConfig->actions->$action->controller  . 'Get';
-                        $actionCustomClassPost = $this->entityConfig->actions->$action->controller . 'Post';
+                        $actionClassGet  = $this->entityConfig->actions->$action->controller  . 'Get';
+                        $actionClassPost = $this->entityConfig->actions->$action->controller . 'Post';
                     }
 
-                    else {
-                        $actionClassGet = 'Carnival\\Admin\\Action\\Admin\\' . ucfirst($action)  . 'Action::display';
-                        $actionClassPost = 'Carnival\\Admin\\Action\\Admin\\' . ucfirst($action)  . 'Action::submit';
-                    }
-                    
-                    $router->get($entity . '/' . $action, $actionCustomClassGet   ?? $actionClassGet);
-                    $router->post($entity . '/' . $action, $actionCustomClassPost ?? $actionClassPost);
+                    $router->get($entity . '/' . $action, $actionClassGet);
+                    $router->post($entity . '/' . $action, $actionClassPost);
                 }
             }
         }

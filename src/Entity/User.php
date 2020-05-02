@@ -55,6 +55,12 @@ class User
         return false;
     }
 
+    public function setImg(string $img) {
+        if(!empty($img)) {
+            return $img;
+        }
+    }
+
     public function __toString() {
         return $this->username;
     }

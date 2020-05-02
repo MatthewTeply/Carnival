@@ -3,15 +3,21 @@ $(document).ready(function () {
     const appName = $('#meta-appName').val();
     const appIsDefault = $('#meta-appIsDefault').val();
 
+    let notifier = new AWN();
+
     let carnivalLink = webroot + appName;
-    let isLoading = false;
+    let pageIsLoading = false;
 
     if (appIsDefault) {
         carnivalLink = webroot;
     }
 
-    function pageLoading() {
-        if (isLoading) {
+    function pageLoading(loading = null) {
+        if(loading === null) {
+            loading = pageIsLoading;
+        }
+
+        if (loading) {
             $('.logo-inner').hide();
             $('.page-loading').show();
         } else {
@@ -26,9 +32,18 @@ $(document).ready(function () {
         return txt.value;
     }
 
-    function loadPage(href) {
-        if (href.includes(carnivalLink)) {
-            isLoading = true;
+    function loadPage(href, e = null) {
+        let hrefSplit  = href.split('/');
+        let entityName = href.split(carnivalLink)[1].split('/')[0].split('?')[0].split('#')[0];
+
+        // If link is a Carnival link, and is not a link to a file, execute function
+        if (href.includes(carnivalLink) && !hrefSplit[hrefSplit.length - 1].includes('.')) {
+            // If event is provided, preventDefault
+            if(e) {
+                e.preventDefault();
+            }
+
+            pageIsLoading = true;
 
             pageLoading();
 
@@ -54,7 +69,24 @@ $(document).ready(function () {
                 url: href,
                 method: 'GET',
                 success: function (response) {
-                    response = JSON.parse(response);
+                    try {
+                        response = JSON.parse(response);
+                    }
+
+                    catch(e) {
+                        notifier.alert('Page could not be loaded! [Error: 1]');
+                        console.error(response);
+
+                        pageLoading(false);
+                        return;
+                    }
+
+                    if(response.error) {
+                        notifier.alert(response.error);
+                        
+                        pageLoading(false);
+                        return;
+                    }
 
                     if (response.redirect) {
                         window.location.replace(response.redirect);
@@ -62,7 +94,7 @@ $(document).ready(function () {
                         if (response.href) {
                             href = response.href;
 
-                            isLoading = false;
+                            pageIsLoading = false;
 
                             loadPage(href);
                             return;
@@ -77,28 +109,36 @@ $(document).ready(function () {
                         }
 
                         if (response.template) {
+                            $('.side-nav .nav-btn.active:not(#nav-btn-' + entityName + ')').removeClass('active');
+                            $('#nav-btn-' + entityName).addClass('active');
+
                             $('#carnival-container').html(decodeHtml(response.template));
+
+                            pageLoading(false);
                         }
 
                         if (response.title) {
                             $('title').html('Carnival &bull; ' + response.title);
                         }
 
-                        isLoading = false;
-
-                        pageLoading();
+                        pageIsLoading = false;
                     }
+                
                 }
-            })
-        } else {
-            window.location.replace(href);
-        }
+            });
+        } 
     }
 
-    $('body').on('click', 'a', function(e) {
-        e.preventDefault();
+    $('body').on('click', 'a', function (e) {
+        loadPage($(this).attr('href'), e);
+    });
 
-        loadPage($(this).attr('href'));
+    window.addEventListener('popstate', function (e) {
+        loadPage(e.currentTarget.location.href);
+    });
+
+    window.addEventListener('carnival-page-change', function(e) {
+        loadPage(e.detail.href);
     });
 
     $('.side-nav .nav-btn').click(function () {

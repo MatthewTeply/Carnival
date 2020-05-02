@@ -34,7 +34,7 @@
         {% for entity in entities %}
             {% if entity.type == 'entity' %}
                 <a href="{{ path(entity.name) }}">
-                    <div class="nav-btn {{ (entity.active) ? 'active' : '' }}">
+                    <div class="nav-btn {{ (entity.active) ? 'active' : '' }}" id="nav-btn-{{ entity.name }}">
                         {% if entity.icon is not null %}
                             <img src="{{ __img__ }}icons/{{ entity.icon }}">
                         {% endif %}
@@ -48,7 +48,7 @@
         {% for entity in entities %}
             {% if entity.type == 'settings' %}
                 <a href="{{ path(entity.name) }}">
-                    <div class="nav-btn {{ (entity.active) ? 'active' : '' }}">
+                    <div class="nav-btn {{ (entity.active) ? 'active' : '' }}" id="nav-btn-{{ entity.name }}">
                         {% if entity.icon is not null %}
                             <img src="{{ __img__ }}icons/{{ entity.icon }}">
                         {% endif %}

@@ -12,6 +12,11 @@ body {
     background-color: #542db1;
 }
 
+::selection {
+    background-color: rgb(242, 201, 76);
+    color: #542db1;
+}
+
 .btn {
     font-size: 14px;
 }
@@ -28,8 +33,8 @@ body {
     align-content: flex-start;
     background-color: #4418a1;
     border-radius: 5px;
-    overflow-y: scroll;
-    border: 1px solid #5a33bc;
+    -webkit-clip-path: inset(0 0 0 0 round 5px);
+    clip-path: inset(0 0 0 0 round 5px);
 }
 
 .main-content .body {
@@ -600,4 +605,33 @@ select[multiple].form-control option:nth-child(even) {
 .form-field-breaker {
     flex-basis: 100%;
     height: 0;
+}
+
+.carnival-multiselect {
+    margin: 5px;
+    border: 1px solid #542db1;
+    flex: 0 0 calc(100% - 10px);
+    border-radius: 5px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.carnival-multiselect .row {
+    padding: 2px 10px;
+}
+
+.carnival-multiselect .row .custom-control {
+    font-size: 12px !important;
+}
+
+.carnival-multiselect .row .custom-checkbox {
+    min-height: 30px !important;
+    padding-left: 28px;
+}
+
+.carnival-multiselect .row .custom-control-label::before, .carnival-multiselect .row .custom-control-label::after {
+    width: 20px;
+    height: 20px;
+    left: -28px;
+    top: 5px;
 }

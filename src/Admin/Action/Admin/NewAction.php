@@ -100,9 +100,19 @@ class NewAction extends AdminController {
 
         $this->em->persist($entity);
 
-        Url::redirect($this->entityName, [
-            'success' => 'new'
-        ]);
+        if(!$this->ajax) {
+            Url::redirect($this->entityName, [
+                'success' => 'new'
+            ]);
+        }
+
+        else {
+            $this->response->json([
+                'href' => Url::link($this->entityName, [
+                    'success' => 'new'
+                ])
+            ]);
+        }
     }
 
 }

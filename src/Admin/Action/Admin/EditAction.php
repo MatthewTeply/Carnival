@@ -23,7 +23,7 @@ class EditAction extends AdminController {
         $this->action = Url::link($this->entityName) . '/edit?id=' . $this->entityId;
         $this->entityConfig = $this->entityConfig->actions->edit ?? null;
 
-        $this->form = new Form($this->action, 'POST');
+        $this->form = new Form($this->action, 'POST', true);
     }
 
     public function display() {
@@ -108,9 +108,19 @@ class EditAction extends AdminController {
 
         $this->em->persist($entity);
 
-        Url::redirect($this->entityName, [
-            'success' => 'edit'
-        ]);
+        if(!$this->ajax) {
+            Url::redirect($this->entityName, [
+                'success' => 'edit'
+            ]);
+        }
+
+        else {
+            $this->response->json([
+                'href' => Url::link($this->entityName, [
+                    'success' => 'edit'
+                ])
+            ]);
+        }
     }
 
 }

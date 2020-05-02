@@ -55,6 +55,11 @@ class AdminConfig {
         $args['logo']        = $this->config->logo;
         $args['breadcrumbs'] = explode('/', $_GET['url']);
         $args['entityName']  = $this->entityName;
+        $args['webroot']     = WEB_ROOT;
+        $args['app']         = [
+            'name'      => Application::name(),
+            'isDefault' => Application::name() == DEFAULT_APP
+        ];
         
         foreach($this->config->entities as $key => $entity) {
             # Check if entity's list action has set permission

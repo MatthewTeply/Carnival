@@ -1,7 +1,10 @@
-<div class="col-lg-12 form-input-around">
-    <select name="{{ name }}[value][]" multiple="multiple" class="form-control {{ attr.class }}" id="{{ attr.id }}">
-        {% for choice in choices|toArray %}
-            <option {{ choice.key in value ? 'selected' : '' }} value="{{ choice.key }}">{{ choice.value }}</option>
-        {% endfor %}
-    </select>
+<div class="col-lg-12 carnival-multiselect {{ attr.class }}" id="{{ attr.id }}">
+    {% for choice in choices|toArray %}
+        <div class="row">
+            <div class="col custom-control custom-checkbox"> 
+                <input type="checkbox" class="custom-control-input" {{ choice.key in value ? 'checked' : '' }} name="{{ name }}[value][]" value="{{ choice.key }}" id="{{ choice.key }}">
+                <label class="custom-control-label" for="{{ choice.key }}">{{ choice.value }}</label>
+            </div>
+        </div>
+    {% endfor %}
 </div>
