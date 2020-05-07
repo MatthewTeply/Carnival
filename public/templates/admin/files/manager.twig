@@ -1,0 +1,62 @@
+{{ header }}
+{{ nav }}
+
+<link href="{{ __css__ }}admin/actions/list.css" rel="stylesheet">
+<link href="{{ __css__ }}admin/files/manager.css" rel="stylesheet">
+
+<div class="main-content">
+    <div class="col-lg-12 headline headline-button ">
+        <div style="background-image: url('{{ __img__ }}icons/text-document.svg')" class="icon"></div>
+        <p class="title">
+            {{ 'File manager'|trans('files/manager') }}
+            <span class="description">{{ description is not null ? description : 'Manage'|trans('global') ~ ' ' ~ 'Files'|trans('files/manager') }}</span>
+        </p>
+
+        <button class="add-button" id="open-form">
+            <span><i class="fas fa-upload"></i> {{ 'Upload files'|trans('files/manager') }}</span>
+        </button>
+    </div>
+
+    <table class="table">
+        <tbody>
+            {% for dir in dirs %}
+                <tr>
+                    <td>
+                        {% if dir.icon %}
+                            {{ dir.icon|raw }}
+                        {% else %}
+                            <i class="fas fa-folder"></i>
+                        {% endif %}
+                    </td>
+                    <td><a href="{{ path('FileManager') }}?dir={{ dir.relativePath }}">{{ dir.name }}</a></td>
+                    <td>
+                        <div class="table-buttons">
+                            <button type="button" data-toggle="modal" class="btn link">{{ 'Edit'|trans('global') }}</button>
+                            <button type="button" data-toggle="modal" class="btn link text-danger">{{ 'Delete'|trans('global') }}</button>
+                        </div>
+                    </td>
+                </tr>
+            {% endfor %}
+            {% for file in files %}
+                <tr>
+                    <td>
+                        {% if file.isImg %}
+                            <img src="{{ __webStorage__ ~ file.name }}" alt="">
+                        {% else %}  
+                            <i class="fas fa-file"></i>
+                        {% endif %}
+                    </td>
+                    <td>{{ file.name }}</td>
+                    <td>
+                        <div class="table-buttons">
+                            <button type="button" data-toggle="modal" class="btn link">{{ 'Edit'|trans('global') }}</button>
+                            <button type="button" data-toggle="modal" class="btn link text-danger">{{ 'Delete'|trans('global') }}</button>
+                        </div>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{{ footer }}

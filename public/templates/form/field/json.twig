@@ -2,7 +2,16 @@
     {% for choice in choices|toArray %}
         <div class="row">
             <div class="col custom-control custom-checkbox"> 
-                <input type="checkbox" class="custom-control-input" {{ choice.key in value ? 'checked' : '' }} name="{{ name }}[value][]" value="{{ choice.key }}" id="{{ choice.key }}">
+                <input
+                    type="checkbox"
+                    class="custom-control-input" {{ choice.key in value ? 'checked' : '' }}
+                    name="{{ name }}[value][]"
+                    value="{{ choice.key }}"
+                    id="{{ choice.key }}"
+                    {% if attr.disabled %}
+                        disabled="disabled"
+                    {% endif %}
+                >
                 <label class="custom-control-label" for="{{ choice.key }}">{{ choice.value }}</label>
             </div>
         </div>

@@ -36,6 +36,7 @@ class AdminController extends AdminConfig {
     public $action;
     public $defaultAction;
     public $declaredActions;
+    public $description;
 
     # Twig partials
     public $header;
@@ -89,6 +90,9 @@ class AdminController extends AdminConfig {
         # Setting title
         $this->configTitle();
 
+        # Setting description
+        $this->configDescription();
+
         # Setting twig variables and partials
         $this->configTwig();
 
@@ -133,7 +137,7 @@ class AdminController extends AdminConfig {
 
     public function renderTemplate($template) {
         if($this->ajax) {
-            $this->response->json($returnArr = [
+            $this->response->json([
                 'template' => htmlspecialchars($template),
                 'title'    => $this->title
             ]);

@@ -202,6 +202,22 @@ class AdminConfig {
         }
     }
 
+    protected function configDescription() {
+        if(isset($this->entityConfig->actions->{$this->action}->description)) {
+            $this->description = $this->entityConfig->actions->{$this->action}->description;
+        }
+
+        else {
+            if(isset($this->entityConfig->description)) {
+                $this->description = $this->entityConfig->description;                
+            }
+
+            else {
+                $this->description = null;
+            }
+        }
+    }
+
     protected function configPermissions() {
         $permissions = null;
 
@@ -225,7 +241,7 @@ class AdminConfig {
                 'entityName'  => $this->entityName,
                 'title'       => $this->title,
                 'icon'        => $this->entityConfig->icon ?? null,
-                'description' => $this->entityConfig->description ?? null,
+                'description' => $this->description ?? null,
                 'user'        => $this->user
             ]);
 

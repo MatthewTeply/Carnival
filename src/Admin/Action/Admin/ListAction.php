@@ -119,7 +119,7 @@ class ListAction extends AdminController {
             'sortBy'      => $_GET['sortBy'] ?? $sortBy,
             'sortOrder'   => $sortOrder,
             'sortString'  => isset($sortBy) ? '&sortBy=' . ($_GET['sortBy'] ?? $sortBy) . '&sortOrder=' . $sortOrder : '',
-            'description' => $this->entityConfig->description ?? null,
+            'description' => $this->description,
             'new'         => isset($this->entityConfig->actions->new)    ? is_object($this->entityConfig->actions->new)    : true,
             'edit'        => isset($this->entityConfig->actions->edit)   ? is_object($this->entityConfig->actions->edit)   : true,
             'delete'      => isset($this->entityConfig->actions->delete) ? is_object($this->entityConfig->actions->delete) : true

@@ -1,0 +1,11 @@
+.table tbody tr td img {
+    max-height: 30px;
+    background-color: #fff;
+    padding: 1px;
+    border-radius: 5px;
+}
+
+.table tr td:first-of-type, .table tr th:first-of-type {
+    width: 70px;
+    text-align: right;
+}

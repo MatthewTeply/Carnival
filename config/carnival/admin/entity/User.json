@@ -33,6 +33,7 @@
             },
             "new": {
                 "title": "Nový uživatel",
+                "description": "Vytvořte nového uživatele",
                 "label": "Nový uživatel",
                 "action_label": "Vytvořit",
                 "fields": {
@@ -76,7 +77,9 @@
             },
             "edit": {
                 "title": "Úprava uživatele",
+                "description": "Upravte existujícího uživatele",
                 "action_label": "Upravit",
+                "permission": ["ROLE_ADMIN"],
                 "fields": {
                     "username": {
                         "label": "Uživatelské jméno",
@@ -109,6 +112,11 @@
                         }
                     }
                 }
+            },
+            "show": {
+                "title": "Uživatelský profil",
+                "description": "Prohlížíte si profil uživatele",
+                "permission": ["ROLE_USER"]
             }
         }
     }

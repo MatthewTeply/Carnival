@@ -1,0 +1,14 @@
+{
+    "FileManager": {
+        "title": "Prohlížeč souborů",
+        "description": "Spravujte soubory",
+        "icon": "upload.svg",
+        "nav_section": "settings",
+        "permission": ["ROLE_ADMIN", "ROLE_AUTHOR"],
+        "actions": {
+            "list": {
+                "controller": "Carnival\\Admin\\Controller\\Files\\FileManagerController::list"
+            }
+        }
+    }
+}

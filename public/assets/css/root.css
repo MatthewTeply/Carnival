@@ -162,6 +162,12 @@ body {
     border: 1px solid transparent;
 }
 
+.form-control:disabled {
+    background-color: rgba(255, 255, 255, .1);
+    color: rgba(255, 255, 255, .8);
+    cursor: not-allowed;
+}
+
 .form-around.toggled {
     max-height: 3000px;
     visibility: visible !important;
@@ -486,6 +492,12 @@ form {
     border: 1px solid #34157e;
 }
 
+.card-footer {
+    padding: 10px;
+    background-color: #32127a;
+    border-bottom: 1px solid #5a33bc;
+}
+
 .form-group {
     border:none !important;
     margin: 0px;
@@ -627,6 +639,11 @@ select[multiple].form-control option:nth-child(even) {
 .carnival-multiselect .row .custom-checkbox {
     min-height: 30px !important;
     padding-left: 28px;
+    cursor: default;
+}
+
+.carnival-multiselect .row .custom-control-input:disabled, .carnival-multiselect .row .custom-control-input:disabled ~ .custom-control-label {
+    cursor: not-allowed;
 }
 
 .carnival-multiselect .row .custom-control-label::before, .carnival-multiselect .row .custom-control-label::after {
@@ -634,4 +651,33 @@ select[multiple].form-control option:nth-child(even) {
     height: 20px;
     left: -28px;
     top: 5px;
+}
+
+.lampion-file-input .custom-file-input {
+    cursor: pointer;
+}
+
+.lampion-file-input .custom-file-label img {
+    max-height: 20px;
+    margin-right: 5px;
+    border-radius: 5px;
+    background-color: #fff;
+    padding: 1px;
+}
+
+.lampion-file-input .custom-file-input:disabled {
+    cursor: not-allowed;
+}
+
+.lampion-file-input .custom-file-input:disabled ~ .custom-file-label {
+    background-color: rgba(255, 255, 255, .1);
+    color: rgba(255, 255, 255, .8);
+}
+
+.lampion-file-input .custom-file-input:disabled ~ .custom-file-label::after {
+    display: none;
+}
+
+.lampion-ajax-form {
+    margin-bottom: 0;
 }

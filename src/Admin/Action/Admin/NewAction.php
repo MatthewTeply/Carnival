@@ -75,7 +75,7 @@ class NewAction extends AdminController {
             'nav'         => $this->nav,
             'footer'      => $this->footer,
             'icon'        => $this->config->entities->{$this->entityName}->icon ?? null,
-            'description' => $this->config->entities->{$this->entityName}->description ?? null
+            'description' => $this->description
         ]);
 
         $this->renderTemplate($template);

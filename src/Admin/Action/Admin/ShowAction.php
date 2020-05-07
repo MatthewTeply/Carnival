@@ -8,8 +8,9 @@ use Lampion\Http\Url;
 use Lampion\Form\Form;
 use Lampion\Misc\Util;
 use Lampion\Session\Lampion as LampionSession;
+use stdClass;
 
-class EditAction extends AdminController {
+class ShowAction extends AdminController {
 
     public $action;
     public $form;
@@ -20,7 +21,7 @@ class EditAction extends AdminController {
 
         $this->entityId = $_GET['id'];
 
-        $this->action = Url::link($this->entityName) . '/edit?id=' . $this->entityId;
+        $this->action = '';
         $this->entityConfig = $this->entityConfig->actions->edit ?? null;
 
         $this->form = new Form($this->action, 'POST', true);
@@ -43,7 +44,7 @@ class EditAction extends AdminController {
                     'name'  => $fieldName,
                     'label' => $field->label ?? null,
                     'value' => $value,
-                    'attr'  => $field->attr ?? null
+                    'attr'  => $field->attr ?? new stdClass()
                 ];
 
                 if(isset($field->field_options)) {
@@ -51,76 +52,33 @@ class EditAction extends AdminController {
                         $options[$key] = $value;
                     }
                 }
+
+                $options['attr']->disabled = true;
     
                 $this->form->field($field->type, $options);
             }
 
             $action_label = $this->entityConfig->action_label ?? null;
-
-            $this->form->field('button', [
-                'name'  => $this->entityName . '_submit',
-                'label' => $this->translator->read('entity/' . $this->entityName)->get($action_label) ?? $this->translator->read('global')->get('Submit'),
-                'type'  => 'submit',
-                'attr' => [
-                    'class' => 'btn btn-yellow'
-                ]
-            ]);
         }
 
         else {
             $this->constructForm($this->form, $entity);
         }
 
-        $template = $this->view->load('admin/actions/edit', [
+        $template = $this->view->load('admin/actions/show', [
             'form'        => $this->form,
             'title'       => $this->title,
             'entityName'  => $this->entityName,
+            'entityId'    => $this->entityId,
             'header'      => $this->header,
             'nav'         => $this->nav,
             'footer'      => $this->footer,
             'icon'        => $this->config->entities->{$this->entityName}->icon ?? null,
-            'description' => $this->description
+            'description' => $this->description,
+            'user'        => $this->user
         ]);
 
         $this->renderTemplate($template);
-    }
-
-    public function submit() {
-        $fields = $this->entityConfig->fields ?? $this->entityColumns;
-        $entity = $this->em->find($this->className, $_GET['id']);
-
-        foreach($fields as $key => $field) {
-            if($field->type == 'boolean') {
-                if(!isset($_POST[$key])) {
-                    $_POST[$key] = 'false';
-                }
-            }
-
-            $entity->$key = $_POST[$key];
-        }
-
-        # Files
-        foreach($_FILES as $key => $file) {
-            if(!empty($file['name'])) {
-                $entity->$key = APP . LampionSession::get('app') . STORAGE . $this->fs->upload($file, '');
-            }
-        }
-
-        $this->em->persist($entity);
-
-        if(!$this->ajax) {
-            Url::redirect($this->entityName, [
-                'success' => 'edit'
-            ]);
-        }
-
-        else {
-            $this->response->json([
-                'href' => Url::link($this->entityName, [
-                    'success' => 'edit'
-                ])
-            ]);
-        }
     }
 
 }

@@ -6,7 +6,6 @@ use Carnival\Admin\Core\Admin\AdminConfig;
 use Lampion\Core\FileSystem;
 use Lampion\Core\Router;
 use Lampion\Database\Query;
-use Lampion\Debug\Console;
 use Lampion\Application\Application;
 use Lampion\Http\Response;
 

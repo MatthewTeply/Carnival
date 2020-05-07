@@ -1,5 +1,12 @@
 <div class="form-input-around col-lg-12">
-    <select name="{{ name }}[value]" class="form-control {{ attr.class }}" id="{{ attr.id }}">
+    <select
+        name="{{ name }}[value]" 
+        class="form-control {{ attr.class }}" 
+        id="{{ attr.id }}"
+        {% if attr.disabled %}
+            disabled="disabled"
+        {% endif %}
+    >
         {% for entity in entities %}
             <option {{ value.id == entity.id ? 'selected' : '' }} value="{{ entity.id }}">{{ entity }}</option>
         {% endfor %}
