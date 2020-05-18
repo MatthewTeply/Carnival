@@ -3,14 +3,14 @@
 <nav class="side-nav">
     <div class="nav-fixed-buttons">
         <div class="logo">
-            <a class="logo-inner" href="{{ path('') }}">
+            <a class="logo-inner" href="{{ path('') }}" carnival-link="false">
                 {{ logo|raw }}
             </a>
             <div class="page-loading">
                 <img src="{{ __img__ }}icons/loading50.gif" style="height: 30px;">
             </div>
         </div>
-        <a target="_blank" href="{{ path('../') }}">
+        <a target="_blank" href="{{ path('../') }}" carnival-link="false">
             <button class="go-website">
                 <span>{{ 'Go to website'|trans('global') }}</span>
             </button>
@@ -116,7 +116,10 @@
             </div>
         </div>
         <div class="button-group">
-            <button class="info-btn">{{ 'Profile'|trans('global') }}</button>
+            <a href="{{ path('User') }}/show?id={{ user.id }}">
+                <button class="info-btn">{{ 'Profile'|trans('global') }}</button>
+            </a>
+
             <a href="{{ path('logout') }}">
                 <button class="info-btn logout">
                     {{ 'Logout'|trans('global') }}

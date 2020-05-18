@@ -330,6 +330,10 @@ button.btn-blue.edit span {
     color: #fff;
 }
 
+.custom-file-label:disabled {
+    color: rgba(255, 255, 255, .7);
+}
+
 .custom-file-input {
     height: 55px !important;
 }

@@ -26,6 +26,7 @@ if(Auth::isLoggedIn($token)) {
     $ac->registerRoutes($router);
     
     $router
+        ->get('dashboard', 'Carniva\\Admin\\Controller\\Common\\DashboardController::index')
         ->post('liveedit', function(Request $req, Response $res) {
             $le_id = $_POST['le_id'];
             $content = $_POST['content'];

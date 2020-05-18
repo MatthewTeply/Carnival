@@ -1,0 +1,15 @@
+{
+    "Dashboard": {
+        "title": "Nástěnka",
+        "description": "Sledujte statistiky svého webu",
+        "icon": "settings.svg",
+        "nav_section": "settings",
+        "permission": ["ROLE_ADMIN"],
+        "actions": {
+            "list": {
+                "permission": ["ROLE_USER"],
+                "controller": "Carnival\\Admin\\Controller\\Common\\DashboardController::list"
+            }
+        }
+    }
+}

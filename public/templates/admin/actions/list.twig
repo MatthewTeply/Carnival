@@ -3,6 +3,10 @@
     
 <link href="{{ __css__ }}admin/actions/list.css" rel="stylesheet">
 
+{% for template in customTemplates %}
+    <link rel="stylesheet" href="{{ __css__ }}admin/types/{{ template }}.css">
+{% endfor %}
+
 <style>
  .list-table, .list-table .btn {
     font-size: 14px !important;

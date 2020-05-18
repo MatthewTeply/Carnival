@@ -7,6 +7,7 @@ use Lampion\Session\Lampion as LampionSession;
 use Lampion\Database\Query;
 use Lampion\Debug\Console;
 use Lampion\Application\Application;
+use Lampion\Entity\EntityManager;
 
 class AdminConfig {
 
@@ -17,9 +18,9 @@ class AdminConfig {
 
         # Adding config fron entity files to main config file's entities
         foreach($this->fs->ls('config/carnival/admin/entity/')['files'] as $file) {
-            $entityName = ucfirst(explode('.' . $file['extension'], $file['name'])[0]);
+            $entityName = ucfirst(explode('.' . $file['extension'], $file['filename'])[0]);
 
-            $this->config->entities->{$entityName} = json_decode(file_get_contents($this->entityConfigDir . $file['name']))->{$entityName};
+            $this->config->entities->{$entityName} = json_decode(file_get_contents($this->entityConfigDir . $file['filename']))->{$entityName};
         }
 
         $this->entityConfig = is_object($this->config) && isset($this->config->entities->{$this->entityName}) ? $this->config->entities->{$this->entityName} : null;
@@ -90,7 +91,19 @@ class AdminConfig {
             return $this->translator->read($path)->get($key);
         });
 
-        $this->view->setFilter('hasPermission', function(User $user, $action = null) {
+        $this->view->setFilter('hasPermission', function($user, $action = null) {
+            # If user class is Lampion user class, convert it to Carnival user class
+            if(get_class($user) != User::class) {
+                $em = new EntityManager();
+
+                $user = $em->find(User::class, $user->id);
+
+                if(!$user) {
+                    //TODO: Error handling
+                    return false;
+                }
+            }
+
             if(!$action) {
                 $action = $this->action;
             }
@@ -235,14 +248,15 @@ class AdminConfig {
         if(!$this->user->hasPermission($permissions)) {
             # If user doesn't have sufficent privileges, display error
             $template = $this->view->load('admin/errors/actionDenied', [
-                'header'      => $this->header,
-                'nav'         => $this->nav,
-                'footer'      => $this->footer,
-                'entityName'  => $this->entityName,
-                'title'       => $this->title,
-                'icon'        => $this->entityConfig->icon ?? null,
-                'description' => $this->description ?? null,
-                'user'        => $this->user
+                'header'        => $this->header,
+                'nav'           => $this->nav,
+                'footer'        => $this->footer,
+                'entityName'    => $this->entityName,
+                'title'         => $this->title,
+                'icon'          => $this->entityConfig->icon ?? null,
+                'description'   => $this->description ?? null,
+                'user'          => $this->user,
+                'defaultAction' => $this->entityConfig->default_action ?? 'list'
             ]);
 
             if(method_exists($this, 'renderTemplate')) {

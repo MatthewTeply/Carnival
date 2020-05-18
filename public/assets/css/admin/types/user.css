@@ -1,0 +1,11 @@
+.type-user-container img {
+    height: 18px;
+    width: 18px;
+    object-fit: cover;
+    margin-right: 5px;
+    border-radius: 50%;
+}
+
+.type-user-container a:hover {
+    color: #f2c94c;
+}

@@ -32,12 +32,22 @@ $(document).ready(function () {
         return txt.value;
     }
 
-    function loadPage(href, e = null) {
+    function loadPage(href, e = null, el = null) {
         let hrefSplit  = href.split('/');
         let entityName = href.split(carnivalLink)[1].split('/')[0].split('?')[0].split('#')[0];
 
         // If link is a Carnival link, and is not a link to a file, execute function
-        if (href.includes(carnivalLink) && !hrefSplit[hrefSplit.length - 1].includes('.')) {
+        if (
+            (href.includes(carnivalLink) && !hrefSplit[hrefSplit.length - 1].includes('.')) ||
+            (el[0].hasAttribute('carnival-link') && el.attr('carnival-link') == 'true')
+        ) {
+            // If link element is marked as non carnival link, return
+            if(el) {
+                if(el.attr('carnival-link') == 'false') {
+                    return;
+                }
+            }
+
             // If event is provided, preventDefault
             if(e) {
                 e.preventDefault();
@@ -88,6 +98,10 @@ $(document).ready(function () {
                         return;
                     }
 
+                    if(response.success) {
+                        notifier.success(response.success);
+                    }
+
                     if (response.redirect) {
                         window.location.replace(response.redirect);
                     } else {
@@ -112,9 +126,12 @@ $(document).ready(function () {
                             $('.side-nav .nav-btn.active:not(#nav-btn-' + entityName + ')').removeClass('active');
                             $('#nav-btn-' + entityName).addClass('active');
 
-                            $('#carnival-container').html(decodeHtml(response.template));
+                            setTimeout(() => {
+                                $('#carnival-container').html(decodeHtml(response.template));
 
-                            pageLoading(false);
+                                pageLoading(false);
+                            }, 100);
+
                         }
 
                         if (response.title) {
@@ -130,7 +147,7 @@ $(document).ready(function () {
     }
 
     $('body').on('click', 'a', function (e) {
-        loadPage($(this).attr('href'), e);
+        loadPage($(this).attr('href'), e, $(this));
     });
 
     window.addEventListener('popstate', function (e) {

@@ -75,7 +75,8 @@ class ShowAction extends AdminController {
             'footer'      => $this->footer,
             'icon'        => $this->config->entities->{$this->entityName}->icon ?? null,
             'description' => $this->description,
-            'user'        => $this->user
+            'user'        => $this->user,
+            'referer'     => $_SERVER["HTTP_REFERER"]
         ]);
 
         $this->renderTemplate($template);

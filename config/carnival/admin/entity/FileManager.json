@@ -4,10 +4,17 @@
         "description": "Spravujte soubory",
         "icon": "upload.svg",
         "nav_section": "settings",
-        "permission": ["ROLE_ADMIN", "ROLE_AUTHOR"],
+        "permission": ["ROLE_ADMIN", "ROLE_USER"],
         "actions": {
             "list": {
+                "permission": ["ROLE_USER"],
                 "controller": "Carnival\\Admin\\Controller\\Files\\FileManagerController::list"
+            },
+            "delete": {
+                "controller": "Carnival\\Admin\\Controller\\Files\\FileManagerController::delete"
+            },
+            "createDir": {
+                "controller": "Carnival\\Admin\\Controller\\Files\\FileManagerController::createDir"
             }
         }
     }

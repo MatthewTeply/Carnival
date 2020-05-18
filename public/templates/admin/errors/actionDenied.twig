@@ -12,8 +12,8 @@
             <span class="description">{{ description is not null ? description : 'Manage'|trans('global') ~ ' ' ~ entityName|trans('entity/' ~ entityName) }}</span>
         </p>
 
-        {% if user|hasPermission('list') %}
-            <a href="{{ path(entityName) }}/list">
+        {% if user|hasPermission(defaultAction) %}
+            <a href="{{ path(entityName) }}">
                 <button class="btn btn-link close-button" id="open-form">
                     <span><i class="fas fa-times"></i></span>
                 </button>

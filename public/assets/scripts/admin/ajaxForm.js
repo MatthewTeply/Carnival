@@ -43,6 +43,7 @@ $(document).ready(function() {
                 }
 
                 catch(e) {
+                    console.log(response);
                     notifier.alert('Failed submitting form!');
                 }
             } 

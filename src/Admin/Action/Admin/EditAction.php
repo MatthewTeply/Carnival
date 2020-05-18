@@ -79,7 +79,8 @@ class EditAction extends AdminController {
             'nav'         => $this->nav,
             'footer'      => $this->footer,
             'icon'        => $this->config->entities->{$this->entityName}->icon ?? null,
-            'description' => $this->description
+            'description' => $this->description,
+            'referer'     => $_SERVER["HTTP_REFERER"]
         ]);
 
         $this->renderTemplate($template);

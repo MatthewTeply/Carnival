@@ -1,0 +1,59 @@
+/** Bootstrap is required for this CSS, if styling is broken, include Bootstrap */
+
+.le-panel {
+    position: fixed !important;
+    bottom: 0px !important;
+    left: 0;
+    right: 0;
+    border-radius: 0 !important;
+}
+
+.le-panel .card-header {
+    cursor: pointer;
+}
+
+.le-hovered {
+    position: relative;
+    border: 1px solid rgb(20, 79, 156) !important;
+    background-color: rgb(141, 188, 250) !important;
+    cursor: pointer;
+}
+
+.le-hovered:before {
+    padding: 4px;
+    font-size: 12px !important;
+    font-weight: bold;
+    content: attr(data-before);
+    position:absolute;
+    top: calc(-1rem - 6px);
+    left: -1px;
+    color: #fff;
+    background-color: rgb(20, 79, 156) !important;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+}
+
+.le-selected {
+    border: 1px solid rgb(20, 156, 49) !important;
+    background-color: rgb(141, 250, 159) !important;
+    cursor: pointer;
+    position: relative;
+}
+
+.le-selected:before {
+    padding: 4px;
+    font-size: 12px !important;
+    font-weight: bold;
+    content: attr(data-before);
+    position:absolute;
+    top: calc(-1rem - 6px);
+    left: -1px;
+    color: #fff;
+    background-color: rgb(20, 156, 49) !important;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+}
+
+#le-set-tr {
+    display: none;
+}

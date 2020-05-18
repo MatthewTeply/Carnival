@@ -1,0 +1,9 @@
+{% if value %}
+    <div class="type-user-container">
+        <a href="{{ path(value|getClass|split('Entity\\')[1]) }}/show?id={{ value.id }}">
+            <img src="{{ __webStorage__ ~ value.img }}" alt=""> {{ value.username }}
+        </a>
+    </div>
+{% else %}
+    <div class="badge badge-light">NULL</div>
+{% endif %}

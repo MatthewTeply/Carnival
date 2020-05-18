@@ -45,7 +45,7 @@
             {% for sectionKey, section in sections %}
                 <tr>
                     <th><i class="fas fa-folder-open"></i>
-                        {{ (section.name|trans('settings/translate') == '') ? 'Uncategorized'|trans('settings/translate') : section.name|trans('settings/translate') }}</th>
+                        {{ (section.filename|trans('settings/translate') == '') ? 'Uncategorized'|trans('settings/translate') : section.filename|trans('settings/translate') }}</th>
                     <th>
                         <div class="table-buttons">
                             <button type="button" data-toggle="modal" data-target="#edit-section-modal-{{ sectionKey }}" class="btn link">{{ 'Edit'|trans('global') }}</button>
@@ -56,11 +56,11 @@
 
                 {% for itemKey, item in section.items %}
                     <tr>
-                        <td><i class="fas fa-file-alt"></i> {{ item.name }}</td>
+                        <td><i class="fas fa-file-alt"></i> {{ item.filename }}</td>
                         <td>
                             <div class="table-buttons">
-                                <a href="{{ path('Translate') }}/edit?dir={{ section.name }}&filename={{ item.name }}"
-                                    class="link">{{ 'Edit'|trans('global') }}</a>
+                                <a href="{{ path('Translate') }}/edit?dir={{ section.filename }}&filename={{ item.filename }}"
+                                    class="link" carnival-link="true">{{ 'Edit'|trans('global') }}</a>
 
                                 <button type="button" data-toggle="modal" data-target="#delete-item-modal-{{ sectionKey }}-{{ itemKey }}" class="btn link text-danger">{{ 'Delete'|trans('global') }}</button>
                             </div>
@@ -98,17 +98,17 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="delete-item-modal-{{ sectionKey }}-{{ itemKey }}Label">{{ 'Delete'|trans('global') }} {{ item.name }}</h5>
+                        <h5 class="modal-title" id="delete-item-modal-{{ sectionKey }}-{{ itemKey }}Label">{{ 'Delete'|trans('global') }} {{ item.filename }}</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
-                        {{ 'Are you sure you want to delete'|trans('action/list') }} {{ item.name }}?
+                        {{ 'Are you sure you want to delete'|trans('action/list') }} {{ item.filename }}?
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ 'Close'|trans('global') }}</button>
-                        <a href="{{ path('Translate') }}/delete?path={{ section.name }}/{{ item.name }}"class="link text-danger">
+                        <a href="{{ path('Translate') }}/delete?path={{ section.filename }}/{{ item.filename }}"class="link text-danger">
                             <button type="button" class="btn btn-danger">{{ 'Delete'|trans('global') }}</button>
                         </a>
                     </div>
@@ -123,17 +123,17 @@
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="delete-section-modal-{{ sectionKey }}Label">{{ 'Delete'|trans('global') }} {{ (section.name|trans('settings/translate') == '') ? 'Uncategorized'|trans('settings/translate') : section.name|trans('settings/translate') }}</h5>
+                            <h5 class="modal-title" id="delete-section-modal-{{ sectionKey }}Label">{{ 'Delete'|trans('global') }} {{ (section.filename|trans('settings/translate') == '') ? 'Uncategorized'|trans('settings/translate') : section.filename|trans('settings/translate') }}</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
                         <div class="modal-body">
-                            {{ 'Are you sure you want to delete'|trans('action/list') }} {{ (section.name|trans('settings/translate') == '') ? 'Uncategorized'|trans('settings/translate') : section.name|trans('settings/translate') }}?
+                            {{ 'Are you sure you want to delete'|trans('action/list') }} {{ (section.filename|trans('settings/translate') == '') ? 'Uncategorized'|trans('settings/translate') : section.filename|trans('settings/translate') }}?
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ 'Close'|trans('global') }}</button>
-                            <a href="{{ path('Translate') }}/delete?path={{ section.name }}"class="link text-danger">
+                            <a href="{{ path('Translate') }}/delete?path={{ section.filename }}"class="link text-danger">
                                 <button type="button" class="btn btn-danger">{{ 'Delete'|trans('global') }}</button>
                             </a>
                         </div>
@@ -146,14 +146,14 @@
                 <div class="modal-dialog" role="document">
                     <form class="modal-content" action="{{ path('Translate') }}/editSection" method="POST">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="edit-section-modal-{{ sectionKey }}Label">{{ 'Edit'|trans('global') }} {{ section.name|trans('settings/translate') }}</h5>
+                            <h5 class="modal-title" id="edit-section-modal-{{ sectionKey }}Label">{{ 'Edit'|trans('global') }} {{ section.filename|trans('settings/translate') }}</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
                         <div class="modal-body">
-                            <input type="hidden" name="from" value="{{ section.name }}">
-                            <input type="text" name="to" class="form-control" placeholder="{{ 'New name'|trans('action/list') }}" value="{{ section.name }}">
+                            <input type="hidden" name="from" value="{{ section.filename }}">
+                            <input type="text" name="to" class="form-control" placeholder="{{ 'New name'|trans('action/list') }}" value="{{ section.filename }}">
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ 'Close'|trans('global') }}</button>

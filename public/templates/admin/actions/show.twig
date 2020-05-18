@@ -24,8 +24,8 @@
             <span class="description">{{ description is not null ? description : 'Manage'|trans('global') ~ ' ' ~ entityName|trans('entity/' ~ entityName) }}</span>
         </p>
 
-        <a href="{{ path(entityName) }}/list">
-            <button class="btn btn-link close-button" id="open-form">
+        <a href="{{ referer }}">
+            <button class="btn btn-link close-button">
                 <span><i class="fas fa-times"></i></span>
             </button>
         </a>

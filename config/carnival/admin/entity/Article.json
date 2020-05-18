@@ -13,7 +13,8 @@
                     },
                     "user": {
                         "type": "entity",
-                        "label": "Autor"
+                        "label": "Autor",
+                        "template": "user"
                     }
                 }
             }

@@ -1,0 +1,39 @@
+{{ header }}
+{{ nav }}
+
+<div class="main-content">
+    <div class="col-lg-12 headline headline-button ">
+        <div style="background-image: url('{{ __img__ }}icons/settings.svg')" class="icon"></div>
+        <p class="title">
+            {{ title }}
+            <span class="description">{{ description }}</span>
+        </p>
+    </div>
+    <div class="body">
+        <div class="card">
+            <div class="card-body">
+
+                <div class="card">
+                    <div class="card-header">
+                        <b>{{ 'Total visists'|trans('common/dashboard') }}</b>
+                    </div>
+                    <div class="card-body">
+                        <h2>{{ users }}</h2>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <b>{{ 'Total sessions'|trans('common/dashboard') }}</b>
+                    </div>
+                    <div class="card-body">
+                        <h2>{{ sessions }}</h2>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+{{ footer }}

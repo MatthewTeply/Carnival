@@ -31,8 +31,9 @@ class ListAction extends AdminController {
 
         $entityCount = Query::select($this->table, ['COUNT(*)'])[0]['COUNT(*)'];
 
-        $entities = [];
-        $columns  = [];
+        $entities        = [];
+        $columns         = [];
+        $customTemplates = [];
 
         foreach($ids as $key => $id) {
             if(!isset($id['id'])) {
@@ -62,6 +63,11 @@ class ListAction extends AdminController {
                         # Check if custom template is defined in field's config
                         if(isset($this->entityConfig->actions->list->fields->{$column}->template)) {
                             $template = $this->entityConfig->actions->list->fields->{$column}->template;
+
+                            # Add custom template to an array, so the css and js can be included automatically
+                            if(!in_array($template, $customTemplates)) {
+                                $customTemplates[] = $template;
+                            }
                         }
 
                         $args['__css__']     = $this->twigArgs['__css__'];
@@ -116,13 +122,14 @@ class ListAction extends AdminController {
                 'delete'   => $this->entityConfig->actions->delete->label ?? null,
                 'edit'     => $this->entityConfig->actions->edit->label   ?? null
             ],
-            'sortBy'      => $_GET['sortBy'] ?? $sortBy,
-            'sortOrder'   => $sortOrder,
-            'sortString'  => isset($sortBy) ? '&sortBy=' . ($_GET['sortBy'] ?? $sortBy) . '&sortOrder=' . $sortOrder : '',
-            'description' => $this->description,
-            'new'         => isset($this->entityConfig->actions->new)    ? is_object($this->entityConfig->actions->new)    : true,
-            'edit'        => isset($this->entityConfig->actions->edit)   ? is_object($this->entityConfig->actions->edit)   : true,
-            'delete'      => isset($this->entityConfig->actions->delete) ? is_object($this->entityConfig->actions->delete) : true
+            'sortBy'          => $_GET['sortBy'] ?? $sortBy,
+            'sortOrder'       => $sortOrder,
+            'sortString'      => isset($sortBy) ? '&sortBy=' . ($_GET['sortBy'] ?? $sortBy) . '&sortOrder=' . $sortOrder : '',
+            'description'     => $this->description,
+            'new'             => isset($this->entityConfig->actions->new)    ? is_object($this->entityConfig->actions->new)    : true,
+            'edit'            => isset($this->entityConfig->actions->edit)   ? is_object($this->entityConfig->actions->edit)   : true,
+            'delete'          => isset($this->entityConfig->actions->delete) ? is_object($this->entityConfig->actions->delete) : true,
+            'customTemplates' => $customTemplates
         ]);
 
         $this->renderTemplate($template);

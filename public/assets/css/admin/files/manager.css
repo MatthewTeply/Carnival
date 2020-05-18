@@ -9,3 +9,26 @@
     width: 70px;
     text-align: right;
 }
+
+.icon i.fas {
+    font-size: 20px;
+    color: #f2c94c;
+}
+
+.table tbody td a:hover {
+    color: #f2c94c;
+}
+
+.table tbody td i.fas.fa-cloud, .table tbody td i.fas.fa-hdd {
+    margin-right: 5px;
+}
+
+.table tbody td .user-icon {
+    background: none;
+    padding: 0;
+    border-radius: 50%;
+    margin-right: 5px;
+    height: 18px;
+    width: 18px;
+    object-fit: cover;
+}

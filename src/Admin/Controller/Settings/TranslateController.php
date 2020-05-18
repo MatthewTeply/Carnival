@@ -4,7 +4,7 @@ namespace Carnival\Admin\Controller\Settings;
 
 use Carnival\Admin\Core\Admin\AdminController;
 use Lampion\Application\Application;
-use Lampion\Core\FileSystem;
+use Lampion\FileSystem\FileSystem;
 use Lampion\Http\Url;
 use Lampion\Language\Translator;
 use Lampion\Session\Lampion as LampionSession;
@@ -28,12 +28,12 @@ class TranslateController extends AdminController {
         $sections = $dirRead['dirs'];
 
         foreach($sections as $key => $section) {
-            $sections[$key]['items'] = $this->fs->ls($section['name'] . '/')['files'];
+            $sections[$key]['items'] = $this->fs->ls($section['filename'] . '/')['files'];
         }
 
         $sections[] = [
-            'name'  => null,
-            'items' => $dirRead['files']
+            'filename' => null,
+            'items'    => $dirRead['files']
         ];
 
         $this->renderTemplate($this->view->load('admin/settings/translate/list', [
@@ -85,7 +85,7 @@ class TranslateController extends AdminController {
         $sections = [];
 
         foreach($this->translator->getSections() as $section) {
-            $sections[] = $section['name'];
+            $sections[] = $section['filename'];
         }
 
         $this->renderTemplate($this->view->load('admin/settings/translate/new', [

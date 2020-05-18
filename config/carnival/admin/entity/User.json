@@ -19,11 +19,6 @@
                         "label": "Uživatelské jméno",
                         "type": "string"
                     },
-                    "pwd": {
-                        "label": "Heslo",
-                        "type": "string",
-                        "permission": ["ROLE_ADMIN"]
-                    },
                     "role": {
                         "label": "Oprávnění",
                         "type": "json",
@@ -79,7 +74,7 @@
                 "title": "Úprava uživatele",
                 "description": "Upravte existujícího uživatele",
                 "action_label": "Upravit",
-                "permission": ["ROLE_ADMIN"],
+                "permission": ["ROLE_ADMIN", "ROLE_USER"],
                 "fields": {
                     "username": {
                         "label": "Uživatelské jméno",

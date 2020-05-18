@@ -3,11 +3,12 @@
 namespace Carnival\Admin\Controller\Files;
 
 use Carnival\Admin\Core\Admin\AdminController;
-use Lampion\Core\FileSystem;
-use Lampion\Application\Application;
-use Lampion\Debug\Console;
+use Exception;
+use Lampion\FileSystem\Entity\File;
+use Lampion\FileSystem\FileSystem;
 use Lampion\Session\Lampion as LampionSession;
 use Lampion\Language\Translator;
+use Lampion\Http\Url;
 
 class FileManagerController extends AdminController {
 
@@ -22,6 +23,7 @@ class FileManagerController extends AdminController {
 
         $this->fs         = new FileSystem();
         $this->translator = new Translator(LampionSession::get('lang'));
+        $this->user       = unserialize(LampionSession::get('user'));
 
         $this->dir = $_GET['dir'] ?? '';
 
@@ -44,11 +46,9 @@ class FileManagerController extends AdminController {
             'gif'
         ];
 
-        foreach($this->ls['dirs'] as $key => $dir) {
-            $dirs[$key] = $dir;
-        }
+        $dirs = $this->ls['dirs'];
 
-        if($this->dir != '') {
+        if(ltrim($this->dir, '/') != '') {
             $previousDir = explode('/', $_GET['dir']);
             
             unset($previousDir[sizeof($previousDir) - 1]);
@@ -57,14 +57,15 @@ class FileManagerController extends AdminController {
 
             array_unshift($dirs, [
                 'icon'         => '<i class="fas fa-arrow-left"></i>',
-                'name'         => $this->translator->read('global')->get('Back'),
-                'relativePath' => $previousDir
+                'filename'     => $this->translator->read('global')->get('Back'),
+                'relativePath' => $previousDir,
+                'isBack'       => true
             ]);
         }
 
-        foreach($this->ls['files'] as $key => $file) {
-            $files[$key] = $file;
+        $files = $this->ls['files'];
 
+        foreach($files as $key => $file) {
             $files[$key]['isImg'] = in_array($file['extension'], $imgExts);
         }
 
@@ -76,12 +77,65 @@ class FileManagerController extends AdminController {
             'description' => $this->description,
             'dirs'        => $dirs,
             'files'       => $files,
-            'currentDir'  => $_GET['dir'] ?? null
+            'currentDir'  => $_GET['dir'] ?? null,
+            'user'        => $this->user
         ]));
     }
 
     public function deleteGet() {
-        $this->fs->rm($_GET['path'], true);
+        $previousDir = explode('/', $_GET['path']);
+            
+        unset($previousDir[sizeof($previousDir) - 1]);
+
+        $previousDir = implode('/', $previousDir);
+
+        try {
+            $this->fs->rm($_GET['path'], true);
+        }
+
+        catch(Exception $e) {
+            $this->response->json([
+                'error' => $e->getMessage()
+            ]);
+            exit();
+        }
+
+        if(!$this->ajax) {
+            Url::redirect('FileManager', [
+                'success' => 'delete',
+                'dir'     => $previousDir
+            ]);
+        }
+
+        else {
+            $this->response->json([
+                'href' => Url::link('FileManager', [
+                    'success' => 'delete',
+                    'dir'     => $previousDir
+                ]),
+                'success' => 'File deleted successfully!'
+            ]);
+        }
+    }
+
+    public function createDirPost() {
+        $this->fs->mkdir($_POST['path']);
+
+        if(!$this->ajax) {
+            Url::redirect('FileManager', [
+                'success' => 'newDir',
+                'dir'     => $_POST['currentDir']
+            ]);
+        }
+
+        else {
+            $this->response->json([
+                'href' => Url::link('FileManager', [
+                    'success' => 'newDir',
+                    'dir'     => $_POST['currentDir']
+                ])
+            ]);
+        }
     }
 
 }
