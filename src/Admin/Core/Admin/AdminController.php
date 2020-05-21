@@ -10,6 +10,7 @@ use Lampion\Entity\EntityManager;
 use Lampion\Database\Query;
 use Lampion\Http\Request;
 use Lampion\Http\Response;
+use Lampion\Http\Url;
 use Lampion\Language\Translator;
 use Lampion\Session\Lampion as LampionSession;
 
@@ -48,6 +49,9 @@ class AdminController extends AdminConfig {
     # Ajax
     public $ajax;
     public $response;
+
+    # Other
+    public $referer;
     
     public function __construct() {
         # Getting config file's JSON, and turning it into an object
@@ -72,6 +76,9 @@ class AdminController extends AdminConfig {
         # Entity variables
         $this->entityName = explode('/', $_GET['url'])[0];
         $this->className  = 'Carnival\Entity\\' . $this->entityName;
+
+        # Setting referer
+        $this->referer = $_SERVER['HTTP_REFERER'] ?? Url::link($this->entityName . '/list');
         
         # DB config
         $this->table = strtolower($this->entityName);

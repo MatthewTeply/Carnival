@@ -48,6 +48,10 @@ $(document).ready(function() {
         el.removeAttr('class');
         el.removeAttr('data-before');
 
+        if(el.find('.le-node-container').length !== 0) {
+            el = el.find('.le-node-container');
+        }
+
         $('#le-set-content').val(el[0].innerHTML);
         $('#le-set-content-original-outer').val(el[0].outerHTML);
         $('#le-set-content-original-inner').val(el[0].innerHTML);
@@ -58,9 +62,24 @@ $(document).ready(function() {
         originalContent = el.html();
 
         $('#le-set-tr').show();
+        window.leNodesList.visible = true;
+
+        // Determine whether element is being edited or created
+        if(leName) {
+            $('#le-set-editing').val(1);
+            $('#le-name-original').val(leName);
+
+            $('#le-set-content').focus();
+        }
+
+        else {
+            $('#le-set-editing').val(0);
+            $('#le-name-original').val('');
+
+            $('#le-set-name').focus();
+        }
 
         $('#le-set-name').val(leName);
-        $('#le-set-name').focus();
     });
 
     $('#le-set-content').on('keydown keyup', function() {

@@ -80,7 +80,7 @@ class EditAction extends AdminController {
             'footer'      => $this->footer,
             'icon'        => $this->config->entities->{$this->entityName}->icon ?? null,
             'description' => $this->description,
-            'referer'     => $_SERVER["HTTP_REFERER"]
+            'referer'     => $this->referer
         ]);
 
         $this->renderTemplate($template);

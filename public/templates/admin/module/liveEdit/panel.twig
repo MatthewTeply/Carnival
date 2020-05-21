@@ -10,12 +10,13 @@
             <input type="hidden" name="route" value="{{ route }}">
             <input type="hidden" name="url" value="{{ path('le/set') }}">
             <input type="hidden" name="template" value="{{ template }}">
+            <input type="hidden" name="editing" value="0" id="le-set-editing">
 
             <table class="table table-bordered table-striped">
                 <thead>
                     <tr>
                         <th>Name</th>
-                        <th>Content</th>
+                        {#<th>Content</th>#}
                         <th>User</th>
                         <th></th>
                     </tr>
@@ -24,6 +25,7 @@
                     <tr id="le-set-tr">
                         <td>
                             <input name="name" id="le-set-name" type="text" class="form-control" placeholder="Name">
+                            <input type="hidden" name="nameOriginal" value="" id="le-name-original">
                         </td>
                         <td>
                             <textarea name="content" id="le-set-content" class="form-control" placeholder="Content (TODO: WYSIWYG)"></textarea>
@@ -34,6 +36,7 @@
                             <input type="text" class="form-control" disabled="disabled" value="{{ user.username }}">
                         </td>
                         <td>
+                            <button type="button" id="le-set-cancel" class="btn btn-secondary">Cancel</button>
                             <button type="submit" class="btn btn-primary">Confirm</button>
                         </td>
                     </tr>
@@ -41,14 +44,23 @@
                         <td>
                             ${ node.name }
                         </td>
-                        <td>
-                            ${ node.content }
+                        {#
+                        <td v-html="node.contentClean" class='le-list-content-td'>
                         </td>
+                        #}
                         <td>
                             ${ node.user }
                         </td>
                         <td>
-                            <button type="button" class="btn btn-light le-edit" v-bind:data-edit-le-name="node.name">Edit</button>
+                            <button type="button" class="btn btn-secondary le-edit" v-bind:data-edit-le-name="node.name">Edit</button>
+                            <button type="button" class="btn btn-danger le-delete"
+                                v-bind:data-delete-le-name="node.name" 
+                                data-delete-le-url="{{ path('le/delete') }}"
+                                data-delete-le-route="{{ route }}"
+                                data-delete-le-template="{{ template }}"
+                            >
+                                Delete
+                            </button>
                         </td>
                     </tr>
                 </tbody>
@@ -56,6 +68,10 @@
         </form>
     </div>
 </div>
+
+<textarea id="le-nodes-json" style="display:none;">
+    {{ nodes|toArray|json_encode }}
+</textarea>
 
 <script src="{{ __scripts__ }}vue.js"></script>
 <script src="{{ __scripts__ }}jquery.min.js"></script>
@@ -66,8 +82,8 @@
         el: '#le-panel',
         delimiters: ['${', '}'],
         data: {
-            visible: true,
-            nodes: JSON.parse(`{{ nodes|toArray|json_encode|raw }}`.replace(/(\r\n|\n|\r)/gm, ""))
+            visible: false,
+            nodes: JSON.parse(document.querySelector('#le-nodes-json').innerHTML.replace(/(\r\n|\n|\r)/gm, ""))
         },
         methods: {
             togglePanel: () => {
@@ -81,3 +97,4 @@
 </script>
 <script src="{{ __scripts__ }}admin/module/liveEdit/select.js"></script>
 <script src="{{ __scripts__ }}admin/module/liveEdit/set.js"></script>
+<script src="{{ __scripts__ }}admin/module/liveEdit/delete.js"></script>

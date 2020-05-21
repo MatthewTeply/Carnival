@@ -2,7 +2,6 @@
 
 namespace Carnival\Admin\Module;
 
-use Lampion\Debug\Console;
 use Lampion\User\Auth;
 use Lampion\Session\Lampion as LampionSession;
 use Lampion\Entity\EntityManager;
@@ -11,7 +10,6 @@ use Carnival\Entity\LiveEdit as LEEntity;
 use Carnival\Entity\User;
 use Error;
 use Lampion\Application\Application;
-use Lampion\Database\Query;
 use Lampion\Http\Request;
 use Lampion\Http\Response;
 use Lampion\View\View;
@@ -52,10 +50,31 @@ class LiveEdit {
                     $req->post('route'),
                     $req->post('content'),
                     $req->post('template'),
-                    !empty($req->post('contentOriginalOuter')) ? [
+                    [
                         'outer' => $req->post('contentOriginalOuter'),
                         'inner' => $req->post('contentOriginalInner')
-                    ] : null
+                    ],
+                    (bool)$req->post('editing'),
+                    $req->post('nameOriginal')
+                )
+            );
+
+            exit;
+        });
+
+        $router->post('le/delete', function(Request $req, Response $res) {
+            if(!Auth::isLoggedIn()) {
+                header('HTTP/1.0 403 Forbidden');
+                exit;
+            }
+            
+            $le = new LiveEdit();
+
+            $res->send(
+                $le->delete(
+                    $req->post('name'),
+                    $req->post('route'),
+                    $req->post('template')
                 )
             );
 
@@ -76,8 +95,8 @@ class LiveEdit {
     }
     
     public function get($route = null) {
-        $nodes = new stdClass;
-        $entities = $this->em->findBy(LEEntity::class, ['route' => $this->route ?? $route ], 'id', 'DESC');
+        $nodes    = new stdClass;
+        $entities = $this->em->findBy(LEEntity::class, ['route' => $this->route ?? $route ], 'name', 'ASC');
 
         if(empty($entities)) {
             return [];
@@ -86,52 +105,72 @@ class LiveEdit {
         # Making LiveEdit node's name the index
         foreach($entities as $entity) {
             $nodes->{$entity->name}               = $entity;
-            $nodes->{$entity->name}->content      = $entity->getHTMLContent();
             $nodes->{$entity->name}->contentClean = $entity->content;
+            $nodes->{$entity->name}->content      = $entity->getHTMLContent();
+
+            # Get rid of the original, as it is not needed and only causes JSON parsing issues
             unset($nodes->{$entity->name}->original);
         }
 
         return $nodes;
     }
 
-    public function set(string $name, string $route, $content, string $template, array $contentOriginal = null) {
+    public function set(string $name, string $route, $content, string $template, array $contentOriginal, bool $editing, string $nameOriginal = null) {
         if(!Auth::isLoggedIn()) {
             // TODO: Error handling
             throw new Error('You are not logged in!');
             exit;
         }
 
+        # -- SETTING ENTITY -- #
+
         $leEntity = $this->em->findBy(LEEntity::class, [
-            'name' => $name, 
+            'name'  => $nameOriginal ?? $name, 
             'route' => $route
         ]);
 
+        # Checking for duplicate name
+        if(!$editing && $leEntity) {
+            return json_encode([
+                'error' => 'Node with this name already exists!'
+            ]);
+        }
+
+        # Creating a new node
         if(!$leEntity) {
             $leEntity = new LEEntity();
-
-            $edit = false;
         }
 
+        # Editing an existing node
         else {
             $leEntity = $leEntity[0];
-
-            $edit = true;
         }
 
-        if($edit) {
-            $content = str_replace($contentOriginal['outer'], $content, $leEntity->content);
+        # If node is being edited, replace it's original content
+        if($editing) {
+            $content = str_replace($contentOriginal['inner'], $content, $leEntity->content);
         }
 
-        $leEntity->name     = $name;
-        $leEntity->route    = $route;
-        $leEntity->content  = $content;
-        $leEntity->original = $contentOriginal['outer'];
-        $leEntity->user     = $this->user;
+        $leEntity->name    = $name;
+        $leEntity->route   = $route;
+        $leEntity->content = $content;
 
-        if(!$edit) {
+        # Setting the original content, so if node is deleted, the content can be restored
+        if(!$editing) {
+            $leEntity->original = $contentOriginal['inner'];
+        }
+        
+        $leEntity->user = $this->user;
+
+        # -- TEMPLATE EDITING -- #
+
+        # Replacing static HTML with a liveEdit object
+        if(!$editing) {
+            # Getting template's contents
             $template = ROOT . APP . Application::name() . TEMPLATES . $template . '.twig';
-            $html = file_get_contents($template);
+            $html     = file_get_contents($template);
 
+            # Checking for all occurences of the original content
             $offset = 0;
             $allpos = array();
             while (($pos = strpos($html, $contentOriginal['outer'], $offset)) !== FALSE) {
@@ -139,8 +178,24 @@ class LiveEdit {
                 $allpos[] = $pos;
             }
 
+            # Checking for duplicates
             if(sizeof($allpos) > 1) {
-                echo 'Element has a duplicate! Please contact us to fix this!';
+                # Giving duplicates a LiveEdit duplicate attribute, basically giving them their own "ID"
+                $element            = substr($html, $allpos[0], strlen($contentOriginal['outer']));
+                $elementOccurrences = substr_count($html, $element);
+
+                # Replace every occurence of element in HMTL
+                for($i = 0; $i < $elementOccurrences; $i++) {
+                    $elementNew = $this->str_replace_first('>', ' data-le-id="' . uniqid() . '">', $element);
+
+                    $html = $this->str_replace_first($element, $elementNew, $html);
+                }
+
+                file_put_contents($template, $html);
+
+                # Send back an error message, prompting user to refresh the page and load the new HTML
+                # Possible TODO: no refresh
+                echo 'Duplicate detected, we are sorry about that, please reload the page and try again!';
                 exit;
             }
 
@@ -152,9 +207,52 @@ class LiveEdit {
             file_put_contents($template, $html);
         }
 
+        # Renaming a liveEdit object
+        elseif($editing && $name != $nameOriginal) {
+            $template = ROOT . APP . Application::name() . TEMPLATES . $template . '.twig';
+            $html     = file_get_contents($template);
+
+            $html = str_replace('liveEdit.' . $nameOriginal, 'liveEdit.' . $name, $html);
+
+            file_put_contents($template, $html);
+        }
+
         $this->em->persist($leEntity);
 
-        return json_encode($this->get($route));
+        return json_encode([
+            'content' => $this->em->findBy(LEEntity::class, [
+                'name'  => $name,
+                'route' => $route
+            ])[0]->getHTMLContent(),
+            'nodes' => $this->get($route)
+        ]);
+    }
+
+    public function delete(string $name, string $route, string $template) {
+        $leEntity = $this->em->findBy(LEEntity::class, [
+            'name'  => $name,
+            'route' => $route
+        ])[0];
+
+        $template = ROOT . APP . Application::name() . TEMPLATES . $template . '.twig';
+        $html = file_get_contents($template);
+
+        $html = str_replace('{{ liveEdit.' . $name . '|raw }}', $leEntity->original, $html);
+
+        file_put_contents($template, $html);
+
+        $this->em->destroy($leEntity);
+
+        return json_encode([
+            'original' => $leEntity->original,
+            'nodes'    => $this->get($route)
+        ]);
+    }
+
+    private function str_replace_first($from, $to, $content) {
+        $from = '/'.preg_quote($from, '/').'/';
+
+        return preg_replace($from, $to, $content, 1);
     }
 
 }

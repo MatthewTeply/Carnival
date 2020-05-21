@@ -2,6 +2,8 @@
 
 namespace Carnival\Entity;
 
+use Lampion\User\Auth;
+
 class LiveEdit {
     
     /** @var(type="int", length="11") */
@@ -23,11 +25,17 @@ class LiveEdit {
     public $user;
 
     public function getHTMLContent() {
-        $html  = '<span class=\'le-node-container\' id=\'le-' . $this->name . '\' data-le-name=\'' . $this->name . '\'>';
-        $html .= $this->content;
-        $html .= '</span>';
+        if(Auth::isLoggedIn()) {
+            $html  = '<span class=\'le-node-container\' id=\'le-' . $this->name . '\' data-le-name=\'' . $this->name . '\'>';
+            $html .= $this->content;
+            $html .= '</span>';
 
-        return $html;
+            return $html;
+        }
+
+        else {
+            return $this->content;
+        }
     }
 
     public function getUser() {

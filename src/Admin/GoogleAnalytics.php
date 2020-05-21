@@ -15,7 +15,7 @@ class GoogleAnalytics {
       // Use the developers console and download your service account
       // credentials in JSON format. Place them in this directory or
       // change the key file location if necessary.
-      $KEY_FILE_LOCATION = ROOT . APP . Application::name() . APP_VAR . 'apiKeys/carnival-276915-41e08f9feace.json';
+      $KEY_FILE_LOCATION = ROOT . APP . Application::name() . APP_VAR . 'apiKeys/ga.json';
     
       // Create and configure a new client object.
       $client = new Google_Client();

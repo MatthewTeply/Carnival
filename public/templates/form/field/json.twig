@@ -1,18 +1,18 @@
 <div class="col-lg-12 carnival-multiselect {{ attr.class }}" id="{{ attr.id }}">
-    {% for choice in choices|toArray %}
+    {% for key, choice in choices|toArray %}
         <div class="row">
             <div class="col custom-control custom-checkbox"> 
                 <input
                     type="checkbox"
-                    class="custom-control-input" {{ choice.key in value ? 'checked' : '' }}
+                    class="custom-control-input" {{ key in value ? 'checked' : '' }}
                     name="{{ name }}[value][]"
-                    value="{{ choice.key }}"
-                    id="{{ choice.key }}"
+                    value="{{ key }}"
+                    id="{{ key }}"
                     {% if attr.disabled %}
                         disabled="disabled"
                     {% endif %}
                 >
-                <label class="custom-control-label" for="{{ choice.key }}">{{ choice.value }}</label>
+                <label class="custom-control-label" for="{{ key }}">{{ choice }}</label>
             </div>
         </div>
     {% endfor %}
