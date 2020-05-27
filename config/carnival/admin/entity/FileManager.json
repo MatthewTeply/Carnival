@@ -15,6 +15,9 @@
             },
             "createDir": {
                 "controller": "Carnival\\Admin\\Controller\\Files\\FileManagerController::createDir"
+            },
+            "move": {
+                "controller": "Carnival\\Admin\\Controller\\Files\\FileManagerController::move"
             }
         }
     }

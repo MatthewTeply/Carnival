@@ -25,31 +25,7 @@ if(Auth::isLoggedIn($token)) {
     $ac = new AdminCore();
     $ac->registerRoutes($router);
     
-    $router
-        ->get('dashboard', 'Carniva\\Admin\\Controller\\Common\\DashboardController::index')
-        ->post('liveedit', function(Request $req, Response $res) {
-            $le_id = $_POST['le_id'];
-            $content = $_POST['content'];
-    
-            $id = Query::select('liveedit', ['id'], [
-                'le_id' => ['=', $le_id]
-            ]);
-    
-            $le = new Liveedit(isset($id[0]['id']) ? $id[0]['id'] : null);
-            $le->le_id = $le_id;
-    
-            if(isset($id[0]['id'])) {
-                if(!$_POST['initial']) {
-                    $le->content = $content;
-                }
-            }
-    
-            else {
-                $le->content = $content;
-            }
-            
-            $le->persist();
-        });
+    $router->get('dashboard', 'Carnival\\Admin\\Controller\\Common\\DashboardController::index');
 }
 
 else {

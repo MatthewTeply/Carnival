@@ -74,7 +74,7 @@
                 "title": "Úprava uživatele",
                 "description": "Upravte existujícího uživatele",
                 "action_label": "Upravit",
-                "permission": ["ROLE_ADMIN", "ROLE_USER"],
+                "permission": ["ROLE_ADMIN"],
                 "fields": {
                     "username": {
                         "label": "Uživatelské jméno",

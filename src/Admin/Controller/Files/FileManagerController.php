@@ -4,7 +4,6 @@ namespace Carnival\Admin\Controller\Files;
 
 use Carnival\Admin\Core\Admin\AdminController;
 use Exception;
-use Lampion\FileSystem\Entity\File;
 use Lampion\FileSystem\FileSystem;
 use Lampion\Session\Lampion as LampionSession;
 use Lampion\Language\Translator;
@@ -69,6 +68,20 @@ class FileManagerController extends AdminController {
             $files[$key]['isImg'] = in_array($file['extension'], $imgExts);
         }
 
+        $breadcrumbs    = [];
+        $breadcrumbPath = Url::link('FileManager') . '?dir=';
+
+        if(isset($_GET['dir'])) {
+            foreach(explode('/', ltrim($_GET['dir'], '/')) as $key => $breadcrumb) {
+                $breadcrumbPath .= '/' . $breadcrumb;
+    
+                $breadcrumbs[$key] = [
+                    'name' => $breadcrumb,
+                    'path' => $breadcrumbPath
+                ];
+            }
+        }
+
         $this->renderTemplate($this->view->load('admin/files/manager', [
             'header'      => $this->header,
             'nav'         => $this->nav,
@@ -77,8 +90,10 @@ class FileManagerController extends AdminController {
             'description' => $this->description,
             'dirs'        => $dirs,
             'files'       => $files,
+            'empty'       => ((sizeof($dirs) == 1 && $dirs[0]['isBack']) && empty($files)) ? true : false,
             'currentDir'  => $_GET['dir'] ?? null,
-            'user'        => $this->user
+            'user'        => $this->user,
+            'breadcrumbs' => !empty($breadcrumbs[0]['name']) ? $breadcrumbs : null
         ]));
     }
 
@@ -135,6 +150,26 @@ class FileManagerController extends AdminController {
                     'dir'     => $_POST['currentDir']
                 ])
             ]);
+        }
+    }
+
+    public function movePost() {
+        $from = $_POST['from'];
+        $to   = $_POST['to'];
+
+        if($this->fs->mv($from, $to)) {
+            $this->response->json([
+                'success' => $this->translator->read('files/manager')->get('File moved successfuly!'),
+                'href'    => Url::link('FileManager', [
+                    'dir' => $_POST['currentDir']
+                ])
+            ]);
+        }
+
+        else {
+            $this->response->json([
+                'fail' => 'move',
+            ]); 
         }
     }
 

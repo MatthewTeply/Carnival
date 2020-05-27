@@ -274,9 +274,11 @@ button.btn-blue {
     outline: none;
     background-color: #4418a1;
     border-radius: 5px;
-    padding: 15px 35px;
-    height: 100%;
     border: 1px solid #9a74fb;
+    color: #fff;
+}
+
+button.btn-blue:hover {
     color: #fff;
 }
 
@@ -684,4 +686,29 @@ select[multiple].form-control option:nth-child(even) {
 
 .lampion-ajax-form {
     margin-bottom: 0;
+}
+
+.modal-content {
+    background-color: #32127a;
+    border: 1px solid #5a33bc;
+    color: #fff;
+}
+
+.modal-header {
+    border-bottom: 1px solid #5a33bc;
+    padding: 10px;
+}
+
+.modal-header h5 {
+    font-size: 14px;
+}
+
+.modal-header .close {
+    color: #fff;
+    text-shadow: none;
+    padding-right: 20px;
+}
+
+.modal-footer {
+    border-top: 1px solid #5a33bc;
 }
