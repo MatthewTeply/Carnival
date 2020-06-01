@@ -4,8 +4,18 @@
 <link href="{{ __css__ }}admin/actions/list.css" rel="stylesheet">
 <link href="{{ __css__ }}admin/files/manager.css" rel="stylesheet">
 
+{% if popup %}
+    <style>
+        .main-content {
+            margin: 0 !important;
+            height: 100%;
+            border-radius: 0 !important;
+        }
+    </style>
+{% endif %}
+
 <div class="main-content">
-    <input type="hidden" id="current-dir" value="{{ currentDir }}">
+    <input type="hidden" id="current-dir" value="{{ currentDir }}{{ popup ? '&popup' : '' }}">
     <input type="hidden" id="fm-url" value="{{ path('FileManager') }}">
 
     <div class="col-lg-12 headline headline-button ">
@@ -21,9 +31,18 @@
         </button>
         {% endif %}
 
-        <button type="button" class="add-button" id="open-form">
-            <span><i class="fas fa-upload"></i> {{ 'Upload files'|trans('files/manager') }}</span>
+        <button type="button" class="add-button" id="fm-files-upload-btn">
+            <span class="label"><i class="fas fa-upload"></i> {{ 'Upload files'|trans('files/manager') }}</span>
+            <span class="loading" style="display:none">
+                <i class="fas fa-circle-notch fa-spin"></i> {{ 'Uploading...'|trans('files/manager') }}
+            </span>
         </button>
+
+        <form action="" id="fm-files-upload-form" enctype="multipart/form-data" style="display:none !important;">
+            <input type="file" name="files[]" multiple id="fm-files-upload">
+            <input type="hidden" name="currentDir" value="{{ currentDir }}">
+            <input type="hidden" name="popup" value="{{ popup ? 1 : 0 }}">
+        </form>
     </div>
 
     <nav class="control-nav">
@@ -34,11 +53,20 @@
         </a>
         <div class="fm-controls-path">
             <span>
-                <a href="{{ path('FileManager') }}?dir=/"><i class="fas fa-home"></i></a>
+                <a href="{{ path('FileManager') }}?dir=/{{ popup ? '&popup' : '' }}" class="fm-breadcrumb"
+                    data-dir-path=""
+                >
+                    <i class="fas fa-home"></i>
+                </a>
 
                 {% if breadcrumbs %}
                     {% for breadcrumb in breadcrumbs %}
-                        <i class="fas fa-angle-right"></i><a href="{{ breadcrumb.path }}">{{ breadcrumb.name }}</a>
+                        <i class="fas fa-angle-right"></i>
+                        <a href="{{ breadcrumb.fullPath }}" class="fm-breadcrumb"
+                            data-dir-path="{{ breadcrumb.relativePath }}"
+                        >
+                            {{ breadcrumb.name }}
+                        </a>
                     {% endfor %}
                 {% else %}
                     {# Here just so the home icon is aligned properly #}
@@ -58,6 +86,7 @@
 
         {# Directories #}
         {% for key, dir in dirs %}
+
             {% if not dir.isBack %}
                 <div class="file-box col-lg-2 dir"
                     data-dir-name="{{ dir.filename }}"
@@ -67,13 +96,22 @@
                         <div class="owner-icon">
                             {% if dir.synced %}
                                 <a href="{{ path('User') }}/show?id={{ dir.user.id }}">
-                                    <img src="{{ __webStorage__ ~ dir.user.img }}" class="user-icon" alt=""> <span>{{ dir.user.username }}</span>
+                                    <img src="{{ __webStorage__ ~ dir.user.img.relativePath }}" class="user-icon" alt=""> <span>{{ dir.user.username }}</span>
                                 </a>
                             {% else %}
                                 <i class="fas fa-hdd"></i> <span>Server</span>
                             {% endif %}
                         </div>
-                        <a href="{{ path('FileManager') }}?dir={{ dir.relativePath }}" class="dir-open">
+
+                        <div class="menu-toggle-container">
+                            <i class="fas fa-ellipsis-h toggler"></i>
+                            <div class="content">
+                                <button type="button" data-toggle="modal" data-target="#delete-dir-modal-{{ key }}"><i class="fas fa-trash-alt"></i> {{ 'Delete'|trans('global') }}</button>
+                                <button><i class="fas fa-pencil-alt"></i> Upravit</button>
+                            </div>
+                        </div>
+
+                        <a href="{{ path('FileManager') }}?dir={{ dir.relativePath }}{{ popup ? '&popup' : '' }}" class="dir-open">
                             <div class="icon">
                                 {% if dir.icon %}
                                     {{ dir.icon|raw }}
@@ -99,7 +137,7 @@
                 </div>
             {% else %}
                 <script>
-                    document.querySelector('.fm-controls-back').setAttribute('href', '{{ path("FileManager") }}?dir={{ dir.relativePath }}');
+                    document.querySelector('.fm-controls-back').setAttribute('href', '{{ path("FileManager") }}?dir={{ dir.relativePath }}{{ popup ? "&popup" : "" }}');
                     document.querySelector('.fm-controls-back-btn').removeAttribute('disabled');
                 </script>
             {% endif %}
@@ -108,23 +146,45 @@
         {# Files #}
         {% for key, file in files %}
             <div class="file-box col-lg-2 file"
+                data-file-id="{{ file.id }}"
                 data-file-name="{{ file.filename }}"
                 data-file-path="{{ file.relativePath }}"
+                data-file-preview="{{ file.isImg ? __webStorage__ ~ file.relativePath : '' }}"
             >
                 <div class="file-box-inner">
                     <div class="owner-icon">
                         {% if file.synced %}
                             <a href="{{ path('User') }}/show?id={{ file.user.id }}">
-                                <img src="{{ __webStorage__ ~ file.user.img }}" class="user-icon" alt=""> <span>{{ file.user.username }}</span>
+                                <img src="{{ __webStorage__ ~ file.user.img.relativePath }}" class="user-icon" alt=""> <span>{{ file.user.username }}</span>
                             </a>
                         {% else %}
                             <i class="fas fa-hdd"></i> <span>Server</span>
                         {% endif %}
                     </div>
 
+                    <div class="menu-toggle-container">
+                        <i class="fas fa-ellipsis-h toggler"></i>
+                        <div class="content">
+                            <button type="button" data-toggle="modal" data-target="#delete-file-modal-{{ key }}"><i class="fas fa-trash-alt"></i> {{ 'Delete'|trans('global') }}</button>
+                            <button><i class="fas fa-pencil-alt"></i> Upravit</button>
+                            <button><i class="fas fa-eye"></i> Náhled</button>
+                        </div>
+                    </div>
+
+                    {#
+                    {% if popup %}
+                        <button class="fm-select-file-btn"
+                            data-file-id="{{ file.id }}"
+                            data-file-name="{{ file.filename }}"
+                        >
+                            Select
+                        </button>
+                    {% endif %}
+                    #}
+
                     <div class="icon">
                         {% if file.isImg %}
-                            <img src="{{ __webStorage__ ~ file.filename }}" alt="">
+                            <img src="{{ __webStorage__ ~ file.relativePath }}" alt="">
                         {% else %}
                             <i class="fas fa-file"></i>
                         {% endif %}
@@ -133,7 +193,7 @@
                     <span class="file-owner">
                         {% if file.synced %}
                             <a href="{{ path('User') }}/show?id={{ file.user.id }}">
-                                <img src="{{ __webStorage__ ~ file.user.img }}" class="user-icon" alt="">
+                                <img src="{{ __webStorage__ ~ file.user.img.relativePath }}" class="user-icon" alt="">
                                 {{ file.user.username }}
                             </a>
                         {% else %}
@@ -162,7 +222,7 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="delete-dir-modal-{{ key }}Label">{{ 'Delete'|trans('global') }} {{ dir.filename }}</h5>
+                        <h5 class="modal-title" id="delete-dir-modal-{{ key }}Label">{{ 'Delete'|trans('global') }} <b>{{ dir.filename }}</b></h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -187,11 +247,11 @@
 {% for key, file in files %}
 
     <!-- File delete modal -->
-    <div class="modal fade" id="delete-file-modal-{{ key }}" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal fade delete-file-modal" id="delete-file-modal-{{ key }}" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="delete-file-modal-{{ key }}Label">{{ 'Delete'|trans('global') }} {{ file.filename }}</h5>
+                    <h5 class="modal-title" id="delete-file-modal-{{ key }}Label">{{ 'Delete'|trans('global') }} <b>{{ file.filename }}</b></h5>
 
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
@@ -199,6 +259,37 @@
                 </div>
                 <div class="modal-body">
                     {{ 'Are you sure? This action is pernament.'|trans('action/list') }}
+
+                    {% if file.uses[0]|length > 0 %}
+                        <div class="file-uses">
+                            <p>{{ 'This file is being used by these entities'|trans('files/manager') }}:</p>
+                            
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            {{ 'Entity'|trans('files/manager') }}
+                                        </th>
+                                        <th>
+                                            {{ 'Name'|trans('files/manager') }}
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for fileUse in file.uses %}
+                                        <tr>
+                                            <td>
+                                                {{ fileUse|getClassName|trans('entity/names') }}
+                                            </td>
+                                            <td>
+                                                <a data-dismiss="modal" href="{{ path(fileUse|getClassName) }}/show?id={{ fileUse.id }}">{{ fileUse }}</a>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% endif %}
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary"
@@ -227,10 +318,9 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <input type="hidden" name="path" v-bind:value="'{{ currentDir }}/' + dirName">
                     <input type="hidden" name="currentDir" value="{{ currentDir }}">
 
-                    <input type="text" class="form-control" id="create-dir-name" placeholder="{{ 'Folder name'|trans('files/manager') }}" v-model="dirName">
+                    <input type="text" name="dirName" class="form-control" id="create-dir-name" placeholder="{{ 'Folder name'|trans('files/manager') }}">
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary"
@@ -241,9 +331,5 @@
         </form>
     </div>
 </div>
-
-<script src="{{ __scripts__ }}vue.js"></script>
-<script src="https://unpkg.com/interactjs/dist/interact.min.js"></script>
-<script src="{{ __scripts__ }}admin/files/manager.js"></script>
 
 {{ footer }}

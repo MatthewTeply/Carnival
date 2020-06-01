@@ -5,6 +5,7 @@ namespace Carnival\Admin\Controller\Files;
 use Carnival\Admin\Core\Admin\AdminController;
 use Exception;
 use Lampion\FileSystem\FileSystem;
+use Lampion\Http\Request;
 use Lampion\Session\Lampion as LampionSession;
 use Lampion\Language\Translator;
 use Lampion\Http\Url;
@@ -22,7 +23,6 @@ class FileManagerController extends AdminController {
 
         $this->fs         = new FileSystem();
         $this->translator = new Translator(LampionSession::get('lang'));
-        $this->user       = unserialize(LampionSession::get('user'));
 
         $this->dir = $_GET['dir'] ?? '';
 
@@ -68,16 +68,19 @@ class FileManagerController extends AdminController {
             $files[$key]['isImg'] = in_array($file['extension'], $imgExts);
         }
 
-        $breadcrumbs    = [];
-        $breadcrumbPath = Url::link('FileManager') . '?dir=';
+        $breadcrumbs            = [];
+        $breadcrumbFullPath     = Url::link('FileManager') . '?dir=';
+        $breadcrumbRelativePath = '';
 
         if(isset($_GET['dir'])) {
             foreach(explode('/', ltrim($_GET['dir'], '/')) as $key => $breadcrumb) {
-                $breadcrumbPath .= '/' . $breadcrumb;
+                $breadcrumbFullPath     .= '/' . $breadcrumb;
+                $breadcrumbRelativePath .= '/' . $breadcrumb;
     
                 $breadcrumbs[$key] = [
-                    'name' => $breadcrumb,
-                    'path' => $breadcrumbPath
+                    'name'         => $breadcrumb,
+                    'fullPath'     => $breadcrumbFullPath,
+                    'relativePath' => $breadcrumbRelativePath
                 ];
             }
         }
@@ -90,10 +93,12 @@ class FileManagerController extends AdminController {
             'description' => $this->description,
             'dirs'        => $dirs,
             'files'       => $files,
-            'empty'       => ((sizeof($dirs) == 1 && $dirs[0]['isBack']) && empty($files)) ? true : false,
+            'empty'       => @((sizeof($dirs) == 1 && $dirs[0]['isBack']) && empty($files)) ? true : false,
             'currentDir'  => $_GET['dir'] ?? null,
             'user'        => $this->user,
-            'breadcrumbs' => !empty($breadcrumbs[0]['name']) ? $breadcrumbs : null
+            'breadcrumbs' => !empty($breadcrumbs[0]['name']) ? $breadcrumbs : null,
+            'popup'       => isset($_GET['popup']),
+            'ajax'        => Request::isAjax()
         ]));
     }
 
@@ -134,7 +139,7 @@ class FileManagerController extends AdminController {
     }
 
     public function createDirPost() {
-        $this->fs->mkdir($_POST['path']);
+        $this->fs->mkdir($_POST['currentDir'] . '/' . $_POST['dirName']);
 
         if(!$this->ajax) {
             Url::redirect('FileManager', [
@@ -171,6 +176,36 @@ class FileManagerController extends AdminController {
                 'fail' => 'move',
             ]); 
         }
+    }
+
+    public function uploadPost() {
+        $files      = [];
+        $currentDir = $_POST['currentDir']; 
+
+        for($i = 0; $i < sizeof($_FILES['files']['name']); $i++) {
+            $files[$i]['name']     = $_FILES['files']['name'][$i];
+            $files[$i]['type']     = $_FILES['files']['type'][$i];
+            $files[$i]['tmp_name'] = $_FILES['files']['tmp_name'][$i];
+            $files[$i]['error']    = $_FILES['files']['error'][$i];
+            $files[$i]['size']     = $_FILES['files']['size'][$i];
+        }
+
+        foreach($files as $file) {
+            $this->fs->upload($file, $currentDir . '/');
+        }
+
+        $getParams = [
+            'dir' => $currentDir
+        ];
+
+        if($_POST['popup'] != 0) {
+            $getParams['popup'] = '';
+        }
+
+        $this->response->json([
+            'href' => Url::link('FileManager', $getParams),
+            'success' => $this->translator->read('files/manager')->get('File(s) upload successfully!')
+        ]);
     }
 
 }

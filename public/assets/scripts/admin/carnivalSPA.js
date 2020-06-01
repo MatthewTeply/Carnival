@@ -1,6 +1,6 @@
 $(document).ready(function () {
-    const webroot = $('#meta-webroot').val();
-    const appName = $('#meta-appName').val();
+    const webroot      = $('#meta-webroot').val();
+    const appName      = $('#meta-appName').val();
     const appIsDefault = $('#meta-appIsDefault').val();
 
     let notifier = new AWN();
@@ -32,7 +32,7 @@ $(document).ready(function () {
         return txt.value;
     }
 
-    function loadPage(href, e = null, el = null) {
+    function loadPage(href, e = null, el = null, container = null) {
         let hrefSplit  = href.split('/');
         let entityName = href.split(carnivalLink)[1].split('/')[0].split('?')[0].split('#')[0];
 
@@ -127,7 +127,7 @@ $(document).ready(function () {
                             $('#nav-btn-' + entityName).addClass('active');
 
                             setTimeout(() => {
-                                $('#carnival-container').html(decodeHtml(response.template));
+                                $(container ?? '#carnival-container').html(decodeHtml(response.template));
 
                                 pageLoading(false);
                             }, 100);

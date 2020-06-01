@@ -36,15 +36,23 @@
             <div class="card-body">
                 {{ form.render() }}
             </div>
-            {% if user|hasPermission('edit') %}
-                <div class="card-footer">
+            <div class="card-footer">
+                {% if user|hasPermission('edit') %}
                     <a href="{{ path(entityName) }}/edit?id={{ entityId }}">
-                        <button type="button" class="btn btn-yellow float-right">
+                        <button type="button" class="btn btn-yellow float-right" style="margin-left: 10px;">
                             <i class="fas fa-pencil-alt"></i> {{ 'Edit'|trans('global') }}
                         </button>
                     </a>
-                </div>
-            {% endif %}
+                {% endif %}
+
+                {% if user|hasPermission('delete') %}
+                    <a href="{{ path(entityName) }}/delete?id={{ entityId }}">
+                        <button type="button" class="btn btn-danger float-right">
+                            <i class="fas fa-trash-alt"></i> {{ 'Delete'|trans('global') }}
+                        </button>
+                    </a>
+                {% endif %}
+            </div>
         </div>
     </div>
 </div>

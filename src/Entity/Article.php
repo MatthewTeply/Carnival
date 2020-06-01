@@ -16,6 +16,9 @@ class Article {
     /** @var(type="entity", entity="Carnival\Entity\User", mappedBy="user_id") */
     public $user;
 
+    /** @var(type="file") */
+    public $banner;
+
     public function __toString() {
         return $this->title;
     }

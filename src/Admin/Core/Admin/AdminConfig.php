@@ -51,7 +51,7 @@ class AdminConfig {
         $args['__scripts__'] = $this->twigArgs['__scripts__'];
         $args['__img__']     = $this->twigArgs['__img__'];
         $args['__storage__'] = $this->twigArgs['__storage__'];
-        $args['user']        = unserialize(LampionSession::get('user'));
+        $args['user']        = $this->user;
         $args['title']       = $this->title;
         $args['logo']        = $this->config->logo;
         $args['breadcrumbs'] = explode('/', $_GET['url']);

@@ -7,12 +7,12 @@ window.createDirModal = new Vue({
 });
 
 let mainContentElement = document.querySelector('.main-content');
+let notifier = new AWN();
 
 interact('.dir, .file').draggable({
     inertia: true,
     modifiers: [
         interact.modifiers.restrictRect({
-            restriction: 'parent',
             endOnly: true
         })
     ],
@@ -57,7 +57,7 @@ function dragMoveListener(event) {
 // this function is used later in the resizing and gesture demos
 mainContentElement.dragMoveListener = dragMoveListener
 
-interact('.dir').dropzone({
+interact('.dir, .fm-breadcrumb').dropzone({
     accept: '.file, .dir',
     ondragenter: function (event) {
         var dropzoneElement  = event.target;
@@ -70,6 +70,8 @@ interact('.dir').dropzone({
         event.target.classList.remove('dir-dragged-over');
     },
     ondrop: (event) => {
+        console.log('Dropped');
+
         var draggableElement = event.relatedTarget;
         var dropzoneElement  = event.target;
 
@@ -77,13 +79,7 @@ interact('.dir').dropzone({
         let to         = dropzoneElement.getAttribute('data-dir-path') + '/' + (draggableElement.getAttribute('data-file-name') ?? draggableElement.getAttribute('data-dir-name'));
         let currentDir = document.querySelector('#current-dir').value;
 
-        console.log('From: ' + from);
-        console.log('To: ' + to);
-        console.log('Current dir: ' + currentDir);
-
         event.target.classList.remove('dir-dragged-over');
-
-        let notifier = new AWN();
 
         $.ajax({
             url: document.querySelector('#fm-url').value + '/move',
@@ -97,24 +93,97 @@ interact('.dir').dropzone({
                 try {
                     response = JSON.parse(response);
 
-                    if(response.href && response.success) {
-                        let pageChangeEvent = new CustomEvent('carnival-page-change', {
-                            detail: {
-                                href: response.href
-                            }
-                        });
+                    let pageChangeEvent = new CustomEvent('carnival-page-change', {
+                        detail: {
+                            href: response.href
+                        }
+                    });
 
-                        notifier.success(success);
+                    notifier.success(response.success);
 
-                        window.dispatchEvent(pageChangeEvent);
-                    }
+                    window.dispatchEvent(pageChangeEvent);
                 }
 
                 catch(e) {
-                    console.log(response);
+                    console.error(response);
                     notifier.alert('Failed moving file!');
                 }
             }
         });
     }
+});
+
+$('body').on('dblclick', '.file', function() {
+    let id          = $(this).attr('data-file-id');
+    let fileName    = $(this).attr('data-file-name');
+    let filePreview = $(this).attr('data-file-preview');
+    let filePath    = $(this).attr('data-file-path');
+
+    window.opener.insertFileId(id, fileName, filePreview, filePath);
+    window.close();
+});
+
+$('body').on('click', '#fm-files-upload-btn', function() {
+    $('#fm-files-upload').click();
+});
+
+$('body').on('change', '#fm-files-upload', function(e) {
+    e.preventDefault();
+
+    $('#fm-files-upload-btn').attr('disabled', 'disabled');
+
+    $('#fm-files-upload-btn .label').hide();
+    $('#fm-files-upload-btn .loading').show();
+
+    var formData = new FormData($(this).parents('form')[0]);
+
+    $.ajax({
+        url: $('#fm-url').val() + '/upload',
+        type: 'POST',
+        xhr: function() {
+            var myXhr = $.ajaxSettings.xhr();
+            return myXhr;
+        },
+        success: function (response) {
+            try {
+                response = JSON.parse(response);
+
+                let pageChangeEvent = new CustomEvent('carnival-page-change', {
+                    detail: {
+                        href: response.href
+                    }
+                });
+
+                notifier.success(response.success);
+
+                window.dispatchEvent(pageChangeEvent);
+            }
+
+            catch(e) {
+                console.error(response);
+                notifier.alert('Failed uploading the file!');
+            }
+
+            $('#fm-files-upload-btn').removeAttr('disabled');
+
+            $('#fm-files-upload-btn .loading').hide();
+            $('#fm-files-upload-btn .label').show();
+        },
+        data: formData,
+        cache: false,
+        contentType: false,
+        processData: false
+    });
+});
+
+$('body').on('click', '.menu-toggle-container .toggler', function() {
+    $(this).toggleClass('fa-ellipsis-h');    
+    $(this).toggleClass('fa-times');  
+
+    $(this).siblings('.content').toggle();
+});
+
+$('body').on('click', '.file', function() {
+    $('.file').removeClass('focused');
+    $(this).addClass('focused');
 });

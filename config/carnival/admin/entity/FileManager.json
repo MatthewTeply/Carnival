@@ -18,6 +18,9 @@
             },
             "move": {
                 "controller": "Carnival\\Admin\\Controller\\Files\\FileManagerController::move"
+            },
+            "upload": {
+                "controller": "Carnival\\Admin\\Controller\\Files\\FileManagerController::upload"
             }
         }
     }

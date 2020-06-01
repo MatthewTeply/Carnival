@@ -1,0 +1,36 @@
+<style>
+    .file-type-preview {
+        display: none;
+        margin: -12px;
+        margin-top: 5px;
+        width: calc(100% + 24px) !important;
+        object-fit: cover !important;
+        max-height: 300px;
+    }
+
+    .fm-open {
+        overflow: hidden;
+    }
+</style>
+
+<div class="form-input-around col-lg-12">
+    <button type="button" class="btn btn-yellow fm-open" data-url="{{ path('FileManager') }}?popup" {{ attr.disabled ? 'disabled="disabled"' : '' }}>
+        {% if value is null %}
+            <i class="fas fa-folder-open"></i> <span class="file-type-label">Select file</span>
+        {% else %}
+            <i class="fas fa-folder-open" style="display:none;"></i> <span class="file-type-label">{{ value.filename }}</span>
+        {% endif %}
+
+        <input type="hidden" name="{{ name }}[value]" value="{{ value.id ?? '' }}">
+
+        {% if value.relativePath is defined %}
+            <style>
+                .file-type-preview {
+                    display: block;
+                }
+            </style>
+        {% endif %}
+
+        <img src="{{ value.relativePath is defined ? __webStorage__ ~ value.relativePath : '' }}" alt="" class="file-type-preview">
+    </button>
+</div>

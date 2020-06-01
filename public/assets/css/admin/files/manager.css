@@ -5,6 +5,7 @@
 
 .file-box {
     padding: 5px;
+    overflow: hidden;
 }
 
 .file-box-inner {
@@ -17,7 +18,6 @@
     border: 1px solid #9a74fb;
     flex-direction: column;
     color: #fff;
-    overflow: hidden;
     width: 100%;
     position: relative;
 }
@@ -36,6 +36,7 @@
     text-align: center;
     position: relative;
     background: rgba(0, 0, 0, .3);
+    border-radius: 4px;
 }
 
 .file-box img {
@@ -57,6 +58,8 @@
     background-color: rgba(50, 18, 122, .8);
     bottom: 0;
     left: 0;
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
 }
 
 .file-box .icon i.fas {
@@ -116,7 +119,6 @@
 
 .file-owner {
     display: none;
-    background: rgba(0, 0, 0, .3);
     padding: 10px 0;
     width: 100%;
     text-align: center;
@@ -130,6 +132,7 @@
     border-bottom: 1px solid #9a74fb;
     border-right: 1px solid #9a74fb;
     border-bottom-right-radius: 5px;
+    border-top-left-radius: 4px;
     padding: 2px;
     background-color: #32127a;
 }
@@ -223,6 +226,10 @@
     z-index: 10;
 }
 
+.dir-dragged-over {
+    color: red !important;
+}
+
 .dir-dragged-over .file-box-inner {
     transition: .2s;
 
@@ -234,4 +241,66 @@
 
     background-color: #f2c94c;
     color: #32127a;
+}
+
+.menu-toggle-container {
+    position: absolute;
+    right: 0;
+    top: 0;
+    background-color: rgba(50, 18, 122, 1);
+    border-left: 1px solid #9a74fb;
+    border-bottom: 1px solid #9a74fb;
+    z-index: 2;
+    border-bottom-left-radius: 5px;
+    border-top-right-radius: 4px;
+    cursor: pointer;
+    overflow: hidden;
+}
+
+.menu-toggle-container:hover .toggler {
+    color: #f2c94c;
+}
+
+.menu-toggle-container .content {
+    display: none;
+}
+
+.menu-toggle-container .toggler {
+    padding: 5px;
+    display: block;
+    text-align: right;
+}
+
+.menu-toggle-container button {
+    background: none;
+    border: none;
+    padding: 5px;
+    color: #fff;
+    border-top: 1px solid #9a74fb;
+}
+
+.menu-toggle-container button i {
+    margin-right: 5px;
+}
+
+.file.focused .file-box-inner {
+    border: 1px solid #f2c94c;
+    box-shadow: 0 0 0 6px rgba(242, 201, 76, .4);
+}
+
+.file {
+    cursor: default !important;
+}
+
+.delete-file-modal .file-uses a {
+    color: #f2c94c;
+}
+
+.delete-file-modal .file-uses a:hover {
+    text-decoration: underline;
+}
+
+.delete-file-modal .file-uses .table {
+    border: 1px solid #9a74fb;
+    margin-top: 10px;
 }

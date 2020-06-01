@@ -12,12 +12,12 @@
             <input type="hidden" name="template" value="{{ template }}">
             <input type="hidden" name="editing" value="0" id="le-set-editing">
 
-            <table class="table table-bordered table-striped">
+            <table class="table">
                 <thead>
                     <tr>
-                        <th>Name</th>
-                        {#<th>Content</th>#}
-                        <th>User</th>
+                        <th>Jméno</th>
+                        {#<th>Obsah</th>#}
+                        <th>Uživatel</th>
                         <th></th>
                     </tr>
                 </thead>
@@ -36,8 +36,8 @@
                             <input type="text" class="form-control" disabled="disabled" value="{{ user.username }}">
                         </td>
                         <td>
-                            <button type="button" id="le-set-cancel" class="btn btn-secondary">Cancel</button>
-                            <button type="submit" class="btn btn-primary">Confirm</button>
+                            <button type="button" id="le-set-cancel" class="btn btn-yellow">Zrušit</button>
+                            <button type="submit" class="btn blue-button">Potvrdit</button>
                         </td>
                     </tr>
                     <tr v-for="node in nodes">
@@ -52,14 +52,14 @@
                             ${ node.user }
                         </td>
                         <td>
-                            <button type="button" class="btn btn-secondary le-edit" v-bind:data-edit-le-name="node.name">Edit</button>
-                            <button type="button" class="btn btn-danger le-delete"
+                            <button type="button" class="btn blue-button le-edit" v-bind:data-edit-le-name="node.name">Upravit</button>
+                            <button type="button" class="btn btn-yellow le-delete"
                                 v-bind:data-delete-le-name="node.name" 
                                 data-delete-le-url="{{ path('le/delete') }}"
                                 data-delete-le-route="{{ route }}"
                                 data-delete-le-template="{{ template }}"
                             >
-                                Delete
+                                Smazat
                             </button>
                         </td>
                     </tr>

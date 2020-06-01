@@ -22,7 +22,7 @@ class ShowAction extends AdminController {
         $this->entityId = $_GET['id'];
 
         $this->action = '';
-        $this->entityConfig = $this->entityConfig->actions->edit ?? null;
+        $this->entityConfig = $this->entityConfig->actions->show ?? null;
 
         $this->form = new Form($this->action, 'POST', true);
     }
@@ -54,7 +54,7 @@ class ShowAction extends AdminController {
                 }
 
                 $options['attr']->disabled = true;
-    
+
                 $this->form->field($field->type, $options);
             }
 
