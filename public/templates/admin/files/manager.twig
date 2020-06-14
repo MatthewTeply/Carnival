@@ -19,23 +19,21 @@
     <input type="hidden" id="fm-url" value="{{ path('FileManager') }}">
 
     <div class="col-lg-12 headline headline-button ">
-        <div style="background-image: url('{{ __img__ }}icons/upload.svg')" class="icon"></div>
+        <div class="icon"><i class="fa-images fas"></i></div>
         <p class="title">
             {{ 'File manager'|trans('files/manager') }}
             <span class="description">{{ description is not null ? description : 'Manage'|trans('global') ~ ' ' ~ 'Files'|trans('files/manager') }}</span>
         </p>
 
         {% if user|hasPermission('createDir') %}
-        <button type="button" class="add-button" id="create-dir" data-toggle="modal" data-target="#create-dir-modal">
-            <span><i class="fas fa-folder-plus"></i> {{ 'New folder'|trans('files/manager') }}</span>
+        <button type="button" class="add-button btn btn-black" id="create-dir" data-toggle="modal" data-target="#create-dir-modal">
+            <span><i class="fas fa-folder-plus"></i></span>
         </button>
         {% endif %}
 
-        <button type="button" class="add-button" id="fm-files-upload-btn">
-            <span class="label"><i class="fas fa-upload"></i> {{ 'Upload files'|trans('files/manager') }}</span>
-            <span class="loading" style="display:none">
-                <i class="fas fa-circle-notch fa-spin"></i> {{ 'Uploading...'|trans('files/manager') }}
-            </span>
+        <button type="button" class="add-button btn btn-black" id="fm-files-upload-btn">
+            <span class="label"><i class="fas fa-upload"></i></span>
+            <span class="loading" style="display:none"><i class="fas fa-circle-notch fa-spin"></i></span>
         </button>
 
         <form action="" id="fm-files-upload-form" enctype="multipart/form-data" style="display:none !important;">
@@ -47,7 +45,7 @@
 
     <nav class="control-nav">
         <a href="#" class="fm-controls-back">
-            <button class="btn btn-blue fm-controls-back-btn" disabled>
+            <button class="btn btn-gray fm-controls-back-btn" disabled>
                 <i class="fas fa-arrow-left"></i> {{ 'Back'|trans('global') }}
             </button>
         </a>
@@ -273,6 +271,9 @@
                                         <th>
                                             {{ 'Name'|trans('files/manager') }}
                                         </th>
+                                        <th>
+                                            {{ 'Use'|trans('files/manager') }}
+                                        </th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -283,6 +284,9 @@
                                             </td>
                                             <td>
                                                 <a data-dismiss="modal" href="{{ path(fileUse|getClassName) }}/show?id={{ fileUse.id }}">{{ fileUse }}</a>
+                                            </td>
+                                            <td>
+                                                {{ fileUse.property }}
                                             </td>
                                         </tr>
                                     {% endfor %}

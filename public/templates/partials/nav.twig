@@ -7,128 +7,148 @@
                 {{ logo|raw }}
             </a>
             <div class="page-loading">
-                <img src="{{ __img__ }}icons/loading50.gif" style="height: 30px;">
+                <img src="{{ __img__ }}icons/loading50.gif" style="height: 15px;">
             </div>
         </div>
         <div class="go-website-around">
             <a target="_blank" href="{{ path('../') }}" carnival-link="false">
-                <button class="go-website">
-                    <span>{{ 'Go to website'|trans('global') }}</span>
+                <button class="go-website" data-toggle="tooltip" data-placement="right" title="{{ 'Go to website'|trans('partials/nav') }}">
+                    <span><i class="fas fa-globe"></i></span>
                 </button>
             </a>
         </div>
-        {#
-        <div class="tab">
-            <!--
-            <div class="tab-button-group">
-            </div>
-            -->
-            <button class="tablinks tablink-entities" onclick="openCity(event, 'custom')" id="defaultOpen">{{ 'Entities'|trans('global') }}</button>
-            <button class="tablinks settings" onclick="openCity(event, 'settings')">
-                <img src="{{ __img__ }}icons/settings-dark.svg">
-            </button>
-        </div>
-        #}
     </div>
 
     <div class="body">
-        <h2>{{ 'Entities'|trans('global') }}</h2>
-        {% for entity in entities %}
-            {% if entity.type == 'entity' %}
-                <a href="{{ path(entity.name) }}">
-                    <div class="nav-btn {{ (entity.active) ? 'active' : '' }}" id="nav-btn-{{ entity.name }}">
-                        {% if entity.icon is not null %}
-                            <img src="{{ __img__ }}icons/{{ entity.icon }}">
-                        {% endif %}
-                        <p>{{ entity.title }}</p>
-                    </div>
-                </a>
-            {% endif %}
-        {% endfor %}
 
-        <h2>{{ 'Settings'|trans('global') }}</h2>
-        {% for entity in entities %}
-            {% if entity.type == 'settings' %}
-                <a href="{{ path(entity.name) }}">
-                    <div class="nav-btn {{ (entity.active) ? 'active' : '' }}" id="nav-btn-{{ entity.name }}">
-                        {% if entity.icon is not null %}
-                            <img src="{{ __img__ }}icons/{{ entity.icon }}">
-                        {% endif %}
-                        <p>{{ entity.title }}</p>
-                    </div>
-                </a>
-            {% endif %}
-        {% endfor %}
-    </div>
+        <a href="#">
+            <div class="nav-btn scn-nav-toggle {% if entityConfig.nav_section is null or entityConfig.nav_section == 'entity' %}active{% endif %}" id="nav-btn-Entities">
+                <i class="fas fa-cube"></i>
+                <p>Entities</p>
+            </div>
+        </a>
 
-    <div id="custom" class="tabcontent">
-        <h2>{{ 'Entities'|trans('global') }}</h2>
+        <a href="{{ path('Dashboard') }}">
+            <div class="nav-btn {% if entityConfig.nav_section == 'dashboard' %}active{% endif %}" id="nav-btn-Dashboard">
+                <i class="fas fa-tachometer-alt"></i>
+                <p>Dashboard</p>
+            </div>
+        </a>
 
-        {% for entity in entities %}
-            {% if entity.type == 'entity' %}
-                <a href="{{ path(entity.name) }}">
-                    <div class="nav-btn {{ (entity.active) ? 'active' : '' }}">
-                        {% if entity.icon is not null %}
-                            <img src="{{ __img__ }}icons/{{ entity.icon }}">
-                        {% endif %}
-                        <h3>{{ entity.title }}</h3>
-                    </div>
-                </a>
-            {% endif %}
-        {% endfor %}
-    </div>
-    <div id="settings" class="tabcontent">
-        <h2>{{ 'Settings'|trans('global') }}</h2>
-        {% for entity in entities %}
-            {% if entity.type == 'settings' %}
-                <a href="{{ path(entity.name) }}">
-                    <div class="nav-btn {{ (entity.active) ? 'active' : '' }}">
-                        {% if entity.icon is not null %}
-                            <img src="{{ __img__ }}icons/{{ entity.icon }}">
-                        {% endif %}
-                        <h3>{{ entity.title }}</h3>
-                    </div>
-                </a>
-            {% endif %}
-        {% endfor %}
-        <h2>{{ 'Advanced Settings'|trans('global') }}</h2>
-        {% for entity in entities %}
-            {% if entity.type == 'settings_advanced' %}
-                <a href="{{ path(entity.name) }}">
-                    <div class="nav-btn {{ (entity.active) ? 'active' : '' }}">
-                        {% if entity.icon is not null %}
-                            <img src="{{ __img__ }}icons/{{ entity.icon }}">
-                        {% endif %}
-                        <h3>{{ entity.title }}</h3>
-                    </div>
-                </a>
-            {% endif %}
-        {% endfor %}
+        <a href="{{ path('FileManager') }}" carnival-fade='true'>
+            <div class="nav-btn {% if entityConfig.nav_section == 'fileManager' %}active{% endif %}" id="nav-btn-FileManager">
+                <i class="fas fa-folder"></i>
+                <p>File Manager</p>
+            </div>
+        </a>
+
+        <a href="{{ path('Translate') }}" carnival-fade='true'>
+            <div class="nav-btn {% if entityConfig.nav_section == 'translate' %}active{% endif %}" id="nav-btn-Translate">
+                <i class="fas fa-language"></i>
+                <p>Translations</p>
+            </div>
+        </a>
+
+        <a href="{{ path('User') }}" carnival-fade='true'>
+            <div class="nav-btn {% if entityConfig.nav_section == 'user' %}active{% endif %}" id="nav-btn-User">
+                <i class="fas fa-users"></i>
+                <p>Users</p>
+            </div>
+        </a>
+
+        <a href="#">
+            <div class="nav-btn scn-nav-toggle {% if entityConfig.nav_section == 'settings' %}active{% endif %}" id="nav-btn-Settings">
+                <i class="fas fa-cogs"></i>
+                <p>Settings</p>
+            </div>
+        </a>
     </div>
 
     <div class="info-box">
         <div class="online-user-around">
-            <div class="online-user">
+            <div class="online-user droptop">
                 {% if user.img != '' %}
-                    <img src="{{ __storage__ ~ user.img }}">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" carnival-link="false">
+                        <img class="user-img" src="{{ __storage__ ~ user.img }}">
+                    </a>
                 {% else %}
-                    <img src="{{ __img__ }}icons/profile.png">
+                    <img class="user-img dropdown-toggle" src="{{ __img__ }}icons/profile.png" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 {% endif %}
-                <span>{{ user.username }}</span>
+
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" href="{{ path('User') }}/show?id={{ user.id }}"><i class="fas fa-user"></i> {{ 'Profile'|trans('partials/nav') }}</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item danger" href="{{ path('logout') }}"><i class="fa-sign-out-alt fas"></i> {{ 'Log out'|trans('partials/nav') }}</a>
+                </div>
             </div>
         </div>
+        {#
         <div class="button-group">
-            <a href="{{ path('User') }}/show?id={{ user.id }}">
-                <button class="info-btn">{{ 'Profile'|trans('global') }}</button>
-            </a>
-
             <a href="{{ path('logout') }}">
                 <button class="info-btn logout">
-                    {{ 'Logout'|trans('global') }}
-                    <img src="{{ __img__ }}icons/logout-dark.svg" width="10px">
+                    <i class="fa-sign-out-alt fas"></i>
                 </button>
             </a>
         </div>
+        #}
+    </div>
+
+    <div class="scn-nav">
+
+        <section id="scn-nav-entities" class="scn-nav-section
+            {% if entityConfig.nav_section is null or entityConfig.nav_section != 'settings' or entityConfig.nav_section == 'entity' %}
+                active
+            {% endif %}
+        ">
+            <h2>
+                <i class="fas fa-cube"></i>
+                {{ 'Content'|trans('partials/nav') }}
+            </h2>
+    
+            <ul>
+                {% for entity in entities %}
+                    {% if entity.type == 'entity' %}
+                        <a href="{{ path(entity.name) }}" carnival-fade='true'>
+                            <li class="scn-nav-btn scn-nav-entity-btn {{ (entity.active) ? 'active' : '' }}" id="nav-btn-{{ entity.name }}">
+                                {% if entity.icon is not null %}
+                                    <i class="fas fa-{{ entity.icon }}"></i>
+                                {% else %}
+                                    <i class="fas fa-cube"></i>
+                                {% endif %}
+                                {{ entity.title }}
+                            </li>
+                        </a>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        </section>
+
+        <section id="scn-nav-settings" class="scn-nav-section
+            {% if entityConfig.nav_section == 'settings' %}
+                active
+            {% endif %}
+        ">
+            <h2>
+                <i class="fas fa-cogs"></i>
+                {{ 'Settings'|trans('partials/nav') }}
+            </h2>
+            
+            <ul id="scn-nav-settings">
+                {% for entity in entities %}
+                    {% if entity.type == 'settings' %}
+                        <a href="{{ path(entity.name) }}" carnival-fade="true">
+                            <li class="scn-nav-btn scn-nav-settings-btn {{ (entity.active) ? 'active' : '' }}" id="nav-btn-{{ entity.name }}">
+                                {% if entity.icon is not null %}
+                                    <i class="fas fa-{{ entity.icon }}"></i>
+                                {% endif %}
+                                {{ entity.title }}
+                            </li>
+                        </a>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        </section>
+
     </div>
 
 </nav>

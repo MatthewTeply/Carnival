@@ -13,24 +13,26 @@
     }
 </style>
 
-<div class="form-input-around col-lg-12">
-    <button type="button" class="btn btn-yellow fm-open" data-url="{{ path('FileManager') }}?popup" {{ attr.disabled ? 'disabled="disabled"' : '' }}>
-        {% if value is null %}
-            <i class="fas fa-folder-open"></i> <span class="file-type-label">Select file</span>
-        {% else %}
-            <i class="fas fa-folder-open" style="display:none;"></i> <span class="file-type-label">{{ value.filename }}</span>
-        {% endif %}
+{% for key, file in value %}
+    <div class="form-input-around col-lg-12">
+        <button type="button" class="btn btn-yellow fm-open" data-url="{{ path('FileManager') }}?popup" {{ attr.disabled ? 'disabled="disabled"' : '' }}>
+            {% if file is null or file == false %}
+                <i class="fas fa-folder-open"></i> <span class="file-type-label">Select file</span>
+            {% else %}
+                <i class="fas fa-folder-open" style="display:none;"></i> <span class="file-type-label">{{ file.filename }}</span>
+            {% endif %}
 
-        <input type="hidden" name="{{ name }}[value]" value="{{ value.id ?? '' }}">
+            <input type="hidden" name="{{ name }}[value]" value="{{ file.id ?? '' }}">
 
-        {% if value.relativePath is defined %}
-            <style>
-                .file-type-preview {
-                    display: block;
-                }
-            </style>
-        {% endif %}
+            {% if file.relativePath is defined %}
+                <style>
+                    .file-type-preview {
+                        display: block;
+                    }
+                </style>
+            {% endif %}
 
-        <img src="{{ value.relativePath is defined ? __webStorage__ ~ value.relativePath : '' }}" alt="" class="file-type-preview">
-    </button>
-</div>
+            <img src="{{ file.relativePath is defined ? __webStorage__ ~ file.relativePath : '' }}" alt="" class="file-type-preview">
+        </button>
+    </div>
+{% endfor %}

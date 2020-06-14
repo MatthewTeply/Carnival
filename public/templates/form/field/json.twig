@@ -1,4 +1,29 @@
-<div class="col-lg-12 carnival-multiselect {{ attr.class }}" id="{{ attr.id }}">
+<style>
+    .carnival-multiselect {
+        position: relative;
+        border-radius: 3px;
+        padding: 15px;
+        height: auto;
+        color: #000;
+        margin: 5px;
+        font-size: 14px;
+        background-color: rgba(255, 255, 255, .1);
+        border: 2px solid #eee;
+    }
+
+    .carnival-multiselect .row {
+        margin-right: 10px;
+    }
+
+    .carnival-multiselect .field-label {
+        top: -10px;
+        left: 8px;
+    }
+</style>
+
+<div class="col-lg-12 form-input-around carnival-multiselect {{ attr.class }}" id="{{ attr.id }}">
+    <label class="field-label">{{ label }}</label>
+
     {% for key, choice in choices|toArray %}
         <div class="row">
             <div class="col custom-control custom-checkbox"> 

@@ -8,6 +8,7 @@ use Lampion\View\View;
 use Lampion\FileSystem\FileSystem;
 use Lampion\Entity\EntityManager;
 use Lampion\Database\Query;
+use Lampion\Debug\Console;
 use Lampion\Http\Request;
 use Lampion\Http\Response;
 use Lampion\Http\Url;
@@ -107,6 +108,10 @@ class AdminController extends AdminConfig {
     }
 
     public function constructForm(&$form, $entity = null) {
+        if(!$this->action) {
+            $this->configDefaultAction();
+        }
+
         if($entity) {
             $form->field('number', [
                 'name'  => 'id',
@@ -116,29 +121,39 @@ class AdminController extends AdminConfig {
         }
 
         foreach($this->entityColumns as $column) {
+            $attr = [
+                'class'       => 'col-lg-12',
+                'placeholder' => $this->translator->read('entity/' . strtolower($this->entityName))->get($column->name)
+            ];
+
+            if($this->action == 'show') {
+                $attr['disabled'] = true;
+            }
+
             $form->field($column->type, [
                 'name'     => $column->name,
                 'type'     => $column->type,
                 'label'    => $column->name,
                 'value'    => $entity->{$column->name} ?? null,
                 'metadata' => $column->metadata,
-                'attr'  => [
-                    'class'       => 'col-lg-12',
-                    'placeholder' => $this->translator->read('entity/' . strtolower($this->entityName))->get($column->name)
-                ]
+                'attr'     => $attr
             ]);
         }
     
         $action_label = $this->entityConfig->action_label ?? null;
 
-        $form->field('button', [
-            'name'  => $this->entityName . '_submit',
-            'label' => $action_label ?? 'Submit',
-            'type'  => 'submit',
-            'attr' => [
-                'class' => 'btn btn-yellow'
-            ]
-        ]);
+        /*
+        if($this->action != 'show') {
+            $form->field('button', [
+                'name'  => $this->entityName . '_submit',
+                'label' => $action_label ?? 'Submit',
+                'type'  => 'submit',
+                'attr' => [
+                    'class' => 'btn btn-yellow'
+                ]
+            ]);
+        }
+        */
     }
 
     public function renderTemplate($template) {

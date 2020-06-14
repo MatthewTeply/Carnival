@@ -20,7 +20,7 @@ class AdminConfig {
         foreach($this->fs->ls('config/carnival/admin/entity/')['files'] as $file) {
             $entityName = ucfirst(explode('.' . $file['extension'], $file['filename'])[0]);
 
-            $this->config->entities->{$entityName} = json_decode(file_get_contents($this->entityConfigDir . $file['filename']))->{$entityName};
+            $this->config->entities->{$entityName} = json_decode(file_get_contents($this->entityConfigDir . $file['filename']))->{$entityName} ?? null;
         }
 
         $this->entityConfig = is_object($this->config) && isset($this->config->entities->{$this->entityName}) ? $this->config->entities->{$this->entityName} : null;
@@ -47,17 +47,18 @@ class AdminConfig {
         $this->twigArgs['__img__']     = WEB_ROOT . APP . Application::name() . IMG;
         $this->twigArgs['__storage__'] = WEB_ROOT . APP . Application::name() . STORAGE;
 
-        $args['__css__']     = $this->twigArgs['__css__'];
-        $args['__scripts__'] = $this->twigArgs['__scripts__'];
-        $args['__img__']     = $this->twigArgs['__img__'];
-        $args['__storage__'] = $this->twigArgs['__storage__'];
-        $args['user']        = $this->user;
-        $args['title']       = $this->title;
-        $args['logo']        = $this->config->logo;
-        $args['breadcrumbs'] = explode('/', $_GET['url']);
-        $args['entityName']  = $this->entityName;
-        $args['webroot']     = WEB_ROOT;
-        $args['app']         = [
+        $args['__css__']      = $this->twigArgs['__css__'];
+        $args['__scripts__']  = $this->twigArgs['__scripts__'];
+        $args['__img__']      = $this->twigArgs['__img__'];
+        $args['__storage__']  = $this->twigArgs['__storage__'];
+        $args['user']         = $this->user;
+        $args['title']        = $this->title;
+        $args['logo']         = $this->config->logo;
+        $args['breadcrumbs']  = explode('/', $_GET['url']);
+        $args['entityName']   = $this->entityName;
+        $args['entityConfig'] = $this->entityConfig;
+        $args['webroot']      = WEB_ROOT;
+        $args['app']          = [
             'name'      => Application::name(),
             'isDefault' => Application::name() == DEFAULT_APP
         ];
@@ -162,7 +163,7 @@ class AdminConfig {
                 continue;
             }
 
-            $column  = $columns[$value->mappedBy ?? $key] ?? null;
+            $column = $columns[$value->mappedBy ?? $key] ?? null;
 
             if(!$column) {
                 continue;

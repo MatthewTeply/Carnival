@@ -38,6 +38,7 @@ $(document).ready(function() {
         $('.le-selected').each(function(index, previousEl) {
             previousEl = $(previousEl);
 
+            previousEl.html($('#le-set-content-original-inner').val());
             previousEl.removeClass('le-selected');
         });
 
@@ -45,7 +46,13 @@ $(document).ready(function() {
 
         let leName = $(this).find('.le-node-container').attr('data-le-name') ?? null;
 
-        el.removeAttr('class');
+        el.removeClass('le-hovered');
+        el.removeAttr('data-before')
+
+        if(el.attr('class') == '') {
+            el.removeAttr('class');
+        }
+
         el.removeAttr('data-before');
 
         if(el.find('.le-node-container').length !== 0) {
@@ -56,12 +63,12 @@ $(document).ready(function() {
         $('#le-set-content-original-outer').val(el[0].outerHTML);
         $('#le-set-content-original-inner').val(el[0].innerHTML);
 
-        el.addClass('le-selected')
-        el.attr('data-before', leName ?? 'Unnamed')
+        el.addClass('le-selected');
+        el.attr('data-before', leName ?? 'Unnamed');
 
         originalContent = el.html();
 
-        $('#le-set-tr').show();
+        $('#le-set-form').show();
         window.leNodesList.visible = true;
 
         // Determine whether element is being edited or created

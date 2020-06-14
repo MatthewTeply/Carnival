@@ -1,0 +1,11 @@
+{% if value %}
+    {% if value is iterable %}
+        {% for entity in value %}
+            <div class="badge badge-success"><i class="fas fa-tag"></i> {{ entity }}</div>
+        {% endfor %}
+    {% else %}
+        <div class="badge badge-success"><i class="fas fa-tag"></i> {{ value }}</div>
+    {% endif %}
+{% else %}
+    <div class="badge badge-light">NULL</div>
+{% endif %}

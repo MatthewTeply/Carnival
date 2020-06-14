@@ -1,10 +1,11 @@
 {
     "User": {
         "title": "Uživatelé",
-        "icon": "profile.png",
-        "nav_section": "settings",
+        "icon": "users",
+        "nav_section": "user",
         "permission": ["ROLE_ADMIN"],
         "description": "Zde administrátoři můžou vytvářet, mazat a upravovat uživatelské účty",
+        "sortable": true,
         "actions": {
             "list": {
                 "sortBy": "username",

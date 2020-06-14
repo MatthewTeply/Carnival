@@ -50,4 +50,8 @@ $(document).ready(function() {
         });
     });
 
+    $('body').on('click', '#form-submit-btn', function() {
+        $('.lampion-ajax-form').submit();
+    });
+
 });

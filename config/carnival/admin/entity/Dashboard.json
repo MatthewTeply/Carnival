@@ -2,8 +2,8 @@
     "Dashboard": {
         "title": "Nástěnka",
         "description": "Sledujte statistiky svého webu",
-        "icon": "settings.svg",
-        "nav_section": "settings",
+        "icon": "tachometer-alt",
+        "nav_section": "dashboard",
         "permission": ["ROLE_ADMIN"],
         "actions": {
             "list": {

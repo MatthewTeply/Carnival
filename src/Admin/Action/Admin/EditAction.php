@@ -31,8 +31,16 @@ class EditAction extends AdminController {
 
         if(isset($this->entityConfig->fields)) {
             foreach($this->entityConfig->fields as $fieldName => $field) {
-                if(Util::validateJson(htmlspecialchars_decode($entity->$fieldName))) {
-                    $value = json_decode(htmlspecialchars_decode($entity->$fieldName), true);
+                if(is_array($entity->$fieldName) || Util::validateJson(htmlspecialchars_decode($entity->$fieldName))) {
+                    if(is_array($entity->$fieldName)) {
+                        foreach($entity->$fieldName as $fieldValue) {
+                            $value[] = json_decode(htmlspecialchars_decode($fieldValue), true);
+                        }
+                    }
+
+                    else {
+                        $value = json_decode(htmlspecialchars_decode($entity->$fieldName), true);
+                    }
                 }
     
                 else {
@@ -57,6 +65,7 @@ class EditAction extends AdminController {
 
             $action_label = $this->entityConfig->action_label ?? null;
 
+            /*
             $this->form->field('button', [
                 'name'  => $this->entityName . '_submit',
                 'label' => $this->translator->read('entity/' . $this->entityName)->get($action_label) ?? $this->translator->read('global')->get('Submit'),
@@ -65,6 +74,7 @@ class EditAction extends AdminController {
                     'class' => 'btn btn-yellow'
                 ]
             ]);
+            */
         }
 
         else {

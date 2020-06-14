@@ -13,7 +13,7 @@
 
 <div class="main-content">
     <div class="col-lg-12 headline headline-button ">
-        <div style="background-image: url('{{ __img__ }}icons/text-document.svg')" class="icon"></div>
+        <div class="icon"><i class="fa-language fas"></i></div>
         <p class="title">
             {{ 'Translations'|trans('settings/translate') }}
             <span class="description">{{ description is not null ? description : 'Manage'|trans('global') ~ ' ' ~ 'Translations'|trans('settings/translate') }}</span>
@@ -21,7 +21,7 @@
 
         <a href="{{ path('Translate') }}/new">
             <button class="add-button" id="open-form">
-                <span><i class="fas fa-plus"></i> {{ 'New'|trans('global') }}</span>
+                <span><i class="fas fa-plus"></i></span>
             </button>
         </a>
     </div>
@@ -48,8 +48,8 @@
                         {{ (section.filename|trans('settings/translate') == '') ? 'Uncategorized'|trans('settings/translate') : section.filename|trans('settings/translate') }}</th>
                     <th>
                         <div class="table-buttons">
-                            <button type="button" data-toggle="modal" data-target="#edit-section-modal-{{ sectionKey }}" class="btn link">{{ 'Edit'|trans('global') }}</button>
-                            <button type="button" data-toggle="modal" data-target="#delete-section-modal-{{ sectionKey }}" class="btn link text-danger">{{ 'Delete'|trans('global') }}</button>
+                            <button type="button" data-toggle="modal" data-target="#edit-section-modal-{{ sectionKey }}" class="btn link"><i class="fa-edit fas"></i></button>
+                            <button type="button" data-toggle="modal" data-target="#delete-section-modal-{{ sectionKey }}" class="btn link text-danger"><i class="far fa-trash-alt"></i></button>
                         </div>
                     </th>
                 </tr>
@@ -60,9 +60,9 @@
                         <td>
                             <div class="table-buttons">
                                 <a href="{{ path('Translate') }}/edit?dir={{ section.filename }}&filename={{ item.filename }}"
-                                    class="link" carnival-link="true">{{ 'Edit'|trans('global') }}</a>
+                                    class="link" carnival-link="true"><i class="fa-edit fas"></i></a>
 
-                                <button type="button" data-toggle="modal" data-target="#delete-item-modal-{{ sectionKey }}-{{ itemKey }}" class="btn link text-danger">{{ 'Delete'|trans('global') }}</button>
+                                <button type="button" data-toggle="modal" data-target="#delete-item-modal-{{ sectionKey }}-{{ itemKey }}" class="btn link text-danger"><i class="far fa-trash-alt"></i></button>
                             </div>
                         </td>
                     </tr>
@@ -98,7 +98,7 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="delete-item-modal-{{ sectionKey }}-{{ itemKey }}Label">{{ 'Delete'|trans('global') }} {{ item.filename }}</h5>
+                        <h5 class="modal-title" id="delete-item-modal-{{ sectionKey }}-{{ itemKey }}Label"><i class="far fa-trash-alt"></i></h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>

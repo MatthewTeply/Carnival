@@ -40,6 +40,7 @@ $(document).ready(function() {
 
                     else {
                         $('.le-selected').html(response.content);
+                        $('#le-set-form').hide();
 
                         window.leNodesList.nodes = response.nodes;
                     }
@@ -64,9 +65,11 @@ $(document).ready(function() {
         $('.le-selected').each(function(index, previousEl) {
             previousEl = $(previousEl);
 
+            previousEl.html($('#le-set-content-original-inner').val());
             previousEl.removeClass('le-selected');
         });
-        $('#le-set-tr').hide();
+
+        $('#le-set-form').hide();
     });
 
 });

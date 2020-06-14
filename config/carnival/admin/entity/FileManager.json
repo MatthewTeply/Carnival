@@ -2,8 +2,8 @@
     "FileManager": {
         "title": "Prohlížeč souborů",
         "description": "Spravujte soubory",
-        "icon": "upload.svg",
-        "nav_section": "settings",
+        "icon": "folder",
+        "nav_section": "fileManager",
         "permission": ["ROLE_ADMIN", "ROLE_USER"],
         "actions": {
             "list": {

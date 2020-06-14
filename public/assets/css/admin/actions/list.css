@@ -9,11 +9,11 @@
     flex-wrap: wrap;
     align-content: center;
     padding: 10px;
-    color: #9a74fb;
+    color: #000;
 }
 
 .table {
-    color: #fff !important;
+    color: #000 !important;
     border-collapse: separate;
     table-layout: fixed;
     border-spacing: 0 5px;
@@ -23,35 +23,38 @@
     font-size: 14px !important;
     margin-bottom: 0 !important;
     position: relative;
+    background: #fff !important;
 }
 
 .table thead tr th, .table tfoot tr td {
-    background-color: #32127a;
+    background-color: #fff;
     border-top: none;
     padding: 10px 20px !important;
 }
 
 .table thead tr th {
-    border-bottom: 1px solid #5a33bc;
+    border-bottom: 1px solid #eee;
     position: sticky;
     top: 0;
     z-index: 10;
 }
 
 .table tfoot tr td {
-    border-top: 1px solid #5a33bc;
+    border-top: 1px solid #eee;
+    border-bottom: 0px solid #eee;
 }
 
 .table thead tr, .table tfoot tr {
-    background-color: #32127a;
+    background-color: #fff;
     border: none !important;
+    height: 60px;
 }
 
 .table td {
     padding: 10px 20px;
     border: none;
-    border-bottom: 1px solid #32127a;
-    background-color: #4316a3;
+    border-bottom: 1px solid #eee;
+    background-color: #fff;
     position: relative;
 }
 
@@ -84,8 +87,7 @@
 }
 
 .table-buttons .link {
-    margin-left: 10px;
-    color: #f2c94c;
+    margin-left: 5px;
 }
 
 .table-buttons .link:hover {
@@ -107,9 +109,9 @@
 }
 
 .table tfoot .list-pagination .btn {
-    background-color: #4418a1;
-    color: #fff;
-    border-color: #4f1eba;
+    background-color: #fff;
+    color: #000;
+    font-size:12px;
 }
 
 .table tfoot .list-pagination .page-counter {
@@ -130,7 +132,7 @@
 }
 
 .table tbody th {
-    background-color: #230a5d;
+    background-color: #fff;
     border-top: none;
 }
 
@@ -144,7 +146,7 @@
 }
 
 .modal form .form-control {
-    border: 1px solid #ccc;
+    border: 1px solid #eee;
     color: #000;
     margin: 0 !important;
 }
@@ -162,27 +164,27 @@
     transition: .3s;
     margin-left: 5px;
     font-size: 16px;
-    color: rgba(255, 255, 255, .1);
+    color: #000;
 }
 
 .list-sort-order-arrow.active {
-    color: rgb(242, 201, 76);
+    color:#bbb;
 }
 
 .table thead tr th a.active {
-    color: rgb(242, 201, 76);
+    color: #bbb;
 }
 
 .table thead tr th a:hover {
-    color: rgb(242, 201, 76);
+    color: #000;
 }
 
 .table thead tr th a:hover .list-sort-order-arrow {
-    color: rgba(255, 255, 255, .6);
+    color: #000;
 }
 
 .table thead tr th a:hover .list-sort-order-arrow.active {
-    color: rgb(242, 201, 76);
+    color: #000;
 }
 
 .table thead tr th a:hover .list-sort-order-arrow, .table thead tr th a:focus .list-sort-order-arrow {
@@ -194,4 +196,37 @@
     background-color: #fff;
     padding: 1px;
     cursor: zoom-in;
+}
+
+tfoot {
+    font-size:12px;
+}
+
+a.edit-btn {
+    width: 40px;
+    color: #fff;
+    height: 40px;
+    background: #383849;
+    font-size: 12px;
+    border-radius: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+button.delete-btn {
+    width: 40px;
+    color: #fff;
+    height: 40px;
+    background: #c10000;
+    font-size: 12px;
+    border-radius: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+button.delete-btn:hover {
+    color:#fff;
+    background: #c10000;
 }

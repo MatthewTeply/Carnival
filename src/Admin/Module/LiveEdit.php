@@ -8,12 +8,13 @@ use Lampion\Entity\EntityManager;
 
 use Carnival\Entity\LiveEdit as LEEntity;
 use Carnival\Entity\User;
-use Error;
 use Lampion\Application\Application;
 use Lampion\Http\Request;
 use Lampion\Http\Response;
 use Lampion\View\View;
+
 use stdClass;
+use Error;
 
 class LiveEdit {
 

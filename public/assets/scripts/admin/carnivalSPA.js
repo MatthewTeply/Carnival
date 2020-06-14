@@ -32,8 +32,13 @@ $(document).ready(function () {
         return txt.value;
     }
 
-    function loadPage(href, e = null, el = null, container = null) {
+    function loadPage(href, e = null, el = null, container = null, fade = false) {
         let hrefSplit  = href.split('/');
+
+        if(!href.split(carnivalLink)[1]) {
+            return;
+        }
+
         let entityName = href.split(carnivalLink)[1].split('/')[0].split('?')[0].split('#')[0];
 
         // If link is a Carnival link, and is not a link to a file, execute function
@@ -123,11 +128,19 @@ $(document).ready(function () {
                         }
 
                         if (response.template) {
-                            $('.side-nav .nav-btn.active:not(#nav-btn-' + entityName + ')').removeClass('active');
+                            if(fade) {
+                                $('#carnival-container').fadeOut(100);
+                            }
+
+                            $('.side-nav .scn-nav-btn.active:not(#nav-btn-' + entityName + ')').removeClass('active');
                             $('#nav-btn-' + entityName).addClass('active');
 
                             setTimeout(() => {
                                 $(container ?? '#carnival-container').html(decodeHtml(response.template));
+
+                                if(fade) {
+                                    $('#carnival-container').fadeIn(300);
+                                }
 
                                 pageLoading(false);
                             }, 100);
@@ -147,7 +160,13 @@ $(document).ready(function () {
     }
 
     $('body').on('click', 'a', function (e) {
-        loadPage($(this).attr('href'), e, $(this));
+        let fade = false;
+
+        if($(this).attr('carnival-fade') == 'true') {
+            fade = true;
+        }
+
+        loadPage($(this).attr('href'), e, $(this), null, fade);
     });
 
     window.addEventListener('popstate', function (e) {
@@ -156,6 +175,12 @@ $(document).ready(function () {
 
     window.addEventListener('carnival-page-change', function(e) {
         loadPage(e.detail.href);
+    });
+
+    $('.side-nav .scn-nav-btn').click(function () {
+        $('.side-nav .scn-nav-btn.active').removeClass('active');
+
+        $(this).addClass('active');
     });
 
     $('.side-nav .nav-btn').click(function () {

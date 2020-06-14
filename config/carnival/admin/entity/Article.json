@@ -1,11 +1,12 @@
 {
     "Article": {
         "title": "Články",
-        "icon": "blog.svg",
         "permission": ["ROLE_ADMIN", "ROLE_AUTHOR"],
         "actions": {
             "list": {
                 "permission": ["ROLE_USER"],
+                "sortBy": "id",
+                "sortOrder": "DESC",
                 "fields": {
                     "banner": {
                         "type": "image",

@@ -51,6 +51,7 @@ class NewAction extends AdminController {
             
             $action_label = $this->entityConfig->action_label ?? null;
     
+            /*
             $this->form->field('button', [
                 'name'  => $this->entityName . '_submit',
                 'label' => $this->translator->read('entity/' . $this->entityName)->get($action_label) ?? $this->translator->read('global')->get('Submit'),
@@ -60,6 +61,7 @@ class NewAction extends AdminController {
                     'class' => 'btn btn-yellow'
                 ]
             ]);
+            */
         }
 
         # If fields are not defined, automatically construct the form

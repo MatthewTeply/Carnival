@@ -1,8 +1,8 @@
 {
     "Translate": {
         "title": "Překlady",
-        "icon": "text-document.svg",
-        "nav_section": "settings",
+        "icon": "language",
+        "nav_section": "translate",
         "permission": ["ROLE_ADMIN"],
         "actions": {
             "list": {

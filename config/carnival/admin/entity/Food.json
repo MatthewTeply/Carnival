@@ -1,0 +1,1 @@
+{"Food":{"title":"Food","icon":"hamburger","description":"Food manager","permission":["ROLE_ADMIN","ROLE_MODERATOR","ROLE_AUTHOR"]}}

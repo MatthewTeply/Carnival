@@ -1,6 +1,6 @@
 {% if value %}
     <div class="type-user-container">
-        <a href="{{ path(value|getClass|split('Entity\\')[1]) }}/show?id={{ value.id }}">
+        <a href="{{ path(value|getClass|split('Entity\\')[1]) }}/show?id={{ value.id }}" carnival-fade="true">
             <img src="{{ __webStorage__ ~ value.img.relativePath }}" alt=""> {{ value.username }}
         </a>
     </div>

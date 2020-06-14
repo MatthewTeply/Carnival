@@ -21,7 +21,7 @@ function particlesInit() {
 		var size = getRandomInt(2, 6);
 		var n = '<div class="particle" style="top:' + getRandomInt(15, 95) + '%; left:' + getRandomInt(5,95) + '%; width:'
 		+ size + 'px; height:' + size + 'px; animation-delay:' + (getRandomInt(0,30)/10) + 's; background-color:rgba('
-		+ getRandomInt(80, 160) + ',' + getRandomInt(185, 255) + ',' + getRandomInt(160, 255) + ',' + (getRandomInt(2, 8)/10) + ');"></div>';
+		+ getRandomInt(235, 255) + ',' + getRandomInt(235, 255) + ',' + getRandomInt(235, 255) + ',' + (getRandomInt(235, 255)/10) + ');"></div>';
 		console.log("Particle " + i + ": " + n);
 		var node = document.createElement("div");
 		node.innerHTML = n;

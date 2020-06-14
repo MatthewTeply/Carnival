@@ -1,5 +1,11 @@
 {% if value %}
-    <a href="{{ path(value|getClass|split('Entity\\')[1]) }}/show?id={{ value.id }}"><div class="badge badge-success">{{ value }}</div></a>
+    {% if value is iterable %}
+        {% for entity in value %}
+            <a href="{{ path(entity|getClass|split('Entity\\')[1]) }}/show?id={{ entity.id }}" carnival-fade="true"><div class="badge badge-success">{{ entity }}</div></a>
+        {% endfor %}
+    {% else %}
+        <a href="{{ path(value|getClass|split('Entity\\')[1]) }}/show?id={{ value.id }}" carnival-fade="true"><div class="badge badge-success">{{ value }}</div></a>
+    {% endif %}
 {% else %}
     <div class="badge badge-light">NULL</div>
 {% endif %}

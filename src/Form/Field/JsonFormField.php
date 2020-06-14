@@ -11,6 +11,6 @@ class JsonFormField extends FormField {
     }
 
     public function display($options) {
-        return isset($options['choices']) ? $this->template('json', $options) : null;
+        return isset($options['choices']) ? $this->template('json', $options) : false;
     }
 }

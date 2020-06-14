@@ -106,7 +106,7 @@ class ListAction extends AdminController {
         $template = $this->view->load('admin/actions/list', [
             'entity'       => $this->entityConfig,
             'user'         => $this->user,
-            'action'       => $this->entityConfig->actions->list,
+            'action'       => $this->entityConfig->actions->list ?? null,
             'columns'      => $columns ?? array_keys((array)$this->entityConfig->actions->list->fields),
             'listEntities' => $entities,
             'resultsCount' => $entityCount,

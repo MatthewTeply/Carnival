@@ -1,0 +1,33 @@
+{
+    "Blog": {
+        "title": "Blog",
+        "icon": "newspaper",
+        "description": "This is a test of some sorts...",
+        "permission": ["ROLE_ADMIN", "ROLE_AUTHOR"],
+        "actions": {
+            "list": {
+                "fields": {
+                    "bannerTest": {
+                        "type": "file",
+                        "label": "Banner",
+                        "template": "image"
+                    },
+                    "title": {
+                        "type": "string",
+                        "label": "Titulek"
+                    },
+                    "tags": {
+                        "type": "entity",
+                        "label": "Štítky",
+                        "template": "tags"
+                    },
+                    "user": {
+                        "type": "entity",
+                        "label": "Uživatel",
+                        "template": "user"
+                    }
+                }
+            }
+        }
+    }
+}

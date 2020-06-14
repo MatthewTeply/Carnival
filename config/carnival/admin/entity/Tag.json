@@ -1,0 +1,7 @@
+{
+    "Tag": {
+        "title": "Tag",
+        "icon": "tag",
+        "permission": ["ROLE_ADMIN"]
+    }
+}

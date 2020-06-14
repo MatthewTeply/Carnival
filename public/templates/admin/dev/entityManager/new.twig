@@ -1,0 +1,38 @@
+{{ header }}
+{{ nav }}
+
+<div class="main-content">
+    <div class="col-lg-12 headline headline-button ">
+        <div class="icon">
+            {% if icon is not null %}
+                <i class="fas fa-{{ icon }}"></i>
+            {% else %}
+                <i class="fas fa-cube"></i>
+            {% endif %}
+        </div>
+        <p class="title">
+            {{ title ?? entityName|trans('entity/' ~ entityName) }}
+            <span class="description"><span class="badge badge-warning">DEVELOPER TOOL</span> {{ description is not null ? description : 'Manage'|trans('global') ~ ' ' ~ entityName|trans('entity/' ~ entityName) }}</span>
+        </p>
+
+        <a href="{{ referer }}">
+            <button class="btn btn-gray close-button">
+                <span><i class="fas fa-times"></i></span>
+            </button>
+        </a>
+
+        <button class="btn btn-black add-button" id="form-submit-btn">
+            <i class="fas fa-check"></i>
+        </button>
+    </div>
+
+    <div class="body">
+        <div class="card">
+            <div class="card-body">
+                {{ form.render() }}
+            </div>
+        </div>
+    </div>
+</div>
+
+{{ footer }}
