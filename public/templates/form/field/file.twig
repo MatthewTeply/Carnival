@@ -13,26 +13,36 @@
     }
 </style>
 
-{% for key, file in value %}
-    <div class="form-input-around col-lg-12">
-        <button type="button" class="btn btn-yellow fm-open" data-url="{{ path('FileManager') }}?popup" {{ attr.disabled ? 'disabled="disabled"' : '' }}>
-            {% if file is null or file == false %}
-                <i class="fas fa-folder-open"></i> <span class="file-type-label">Select file</span>
-            {% else %}
-                <i class="fas fa-folder-open" style="display:none;"></i> <span class="file-type-label">{{ file.filename }}</span>
-            {% endif %}
+{% if value|length > 0 %}
+    {% for key, file in value %}
+        <div class="form-input-around col-lg-12">
+            <button type="button" class="btn btn-yellow fm-open" data-url="{{ path('FileManager') }}?popup" {{ attr.disabled ? 'disabled="disabled"' : '' }}>
+                {% if file is null or file == false %}
+                    <i class="fas fa-folder-open"></i> <span class="file-type-label">Select file</span>
+                {% else %}
+                    <i class="fas fa-folder-open" style="display:none;"></i> <span class="file-type-label">{{ file.filename }}</span>
+                {% endif %}
 
-            <input type="hidden" name="{{ name }}[value]" value="{{ file.id ?? '' }}">
+                <input type="hidden" name="{{ name }}[value]" value="{{ file.id ?? '' }}">
 
-            {% if file.relativePath is defined %}
-                <style>
-                    .file-type-preview {
-                        display: block;
-                    }
-                </style>
-            {% endif %}
+                {% if file.relativePath is defined %}
+                    <style>
+                        .file-type-preview {
+                            display: block;
+                        }
+                    </style>
+                {% endif %}
 
-            <img src="{{ file.relativePath is defined ? __webStorage__ ~ file.relativePath : '' }}" alt="" class="file-type-preview">
-        </button>
-    </div>
-{% endfor %}
+                <img src="{{ file.relativePath is defined ? __webStorage__ ~ file.relativePath : '' }}" alt="" class="file-type-preview">
+            </button>
+        </div>
+    {% endfor %}
+{% else %}
+<div class="form-input-around col-lg-12">
+    <button type="button" class="btn btn-yellow fm-open" data-url="{{ path('FileManager') }}?popup" {{ attr.disabled ? 'disabled="disabled"' : '' }}>
+        <i class="fas fa-folder-open"></i> <span class="file-type-label">Select file</span>
+        <input type="hidden" name="{{ name }}[value]">
+        <img src="" alt="" class="file-type-preview">
+    </button>
+</div>
+{% endif %}

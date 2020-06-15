@@ -150,7 +150,7 @@ body {
 
 .form-control:disabled {
     background-color: rgba(255, 255, 255, .1);
-    color: rgba(255, 255, 255, .8);
+    color: rgba(0, 0, 0, .8);
     cursor: not-allowed;
 }
 
@@ -391,6 +391,12 @@ button.btn-blue.edit span {
     color: #fff;
     border: 1px solid #000;
     background: #000;
+}
+
+.custom-checkbox .custom-control-input:disabled:checked ~ .custom-control-label::before {
+    color: #fff;
+    border: 1px solid rgba(0, 0, 0, .6);
+    background: rgba(0, 0, 0, .6);
 }
 
 .custom-checkbox {
