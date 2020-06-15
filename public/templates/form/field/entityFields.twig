@@ -30,6 +30,10 @@
         align-items: center;
         justify-content: center;
     }
+
+    .metadata-add-btn {
+        margin-top: 10px;
+    }
 </style>
 
 <div class="col-lg-12 form-input-around">
@@ -47,7 +51,7 @@
 
             <b class="entity-field-label">Metadata</b>
             <div class="form-control">
-                <div class="container metadata-container">
+                <div class="container-fluid metadata-container">
                     <div class="row" v-for="(data, dataKey) in field['metadata']">
                         <div class="col col-5">
                             <input type="text" class="form-control" placeholder="Key" v-on:change="updateJson" v-model="data['key']">
@@ -60,7 +64,7 @@
                         </div>
                     </div>
 
-                    <button type="button" class="btn btn-black" v-on:click="addMetadata(fieldKey)"><i class="fas fa-plus"></i> Add data</button>
+                    <button type="button" class="btn btn-black metadata-add-btn" v-on:click="addMetadata(fieldKey)"><i class="fas fa-plus"></i> Add data</button>
                 </div>
             </div>
         </div>
