@@ -9,4 +9,4 @@ var/entity/*
 var/api/*
 
 # config
-config/carnival/admin/entity/*
+config/carnival/admin/_entity
