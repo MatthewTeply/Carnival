@@ -1,0 +1,1 @@
+{"Background":{"general":{"title":"Background","icon":"image","description":"Manage backgrounds","permission":["ROLE_ADMIN"]},"fields":{"img":{"type":"file","metadata":{"nullable":"false"}},"textColor":{"type":"varchar","metadata":{"length":"255","nullable":"false"}}}}}

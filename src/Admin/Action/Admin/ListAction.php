@@ -27,7 +27,7 @@ class ListAction extends AdminController {
         $queryString = 'SELECT id FROM ' . $this->table . $sortString . ' LIMIT ' . $limit . ' OFFSET ' . (isset($_GET['page']) ? ($_GET['page'] - 1) * $limit : 0);
 
         # If entity's name is reserved in SQL, try entity prefix
-        $ids = Query::raw($queryString);
+        $ids = $_GET['ids'] ?? Query::raw($queryString);
 
         $entityCount = Query::select($this->table, ['COUNT(*)'])[0]['COUNT(*)'];
 

@@ -7,5 +7,5 @@
 }
 
 .type-user-container a:hover {
-    color: #f2c94c;
+    color: var(--col-primary);
 }

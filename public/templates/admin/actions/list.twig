@@ -23,7 +23,7 @@
             {% endif %}
         </div>
         <p class="title">
-            {{ title ?? entityName|trans('entity/' ~ entityName) }}
+            {{ title is not defined ? entityName|trans('entity/' ~ entityName) : title|trans('entity/' ~ entityName) }}
             <span class="description">{{ description is not null ? description : 'Manage'|trans('global') ~ ' ' ~ entityName|trans('entity/' ~ entityName) }}</span>
         </p>
         
@@ -38,7 +38,7 @@
 
     <div class="body">
         {% if listEntities|length == 0 %}
-            <div class="empty-content"><p>Zatím tu nic není...</p></div>
+            <div class="empty-content"><p>{{ 'Nothing here'|trans('action/list') }}</p></div>
         {% else %}
             <table class="table">
                 <thead>

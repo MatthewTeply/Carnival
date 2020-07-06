@@ -7,9 +7,11 @@
                 {{ logo|raw }}
             </a>
             <div class="page-loading">
-                <img src="{{ __img__ }}icons/loading50.gif" style="height: 15px;">
+                {#<img src="{{ __img__ }}icons/loading50.gif" style="height: 15px;">#}
+                <i class="fas fa-circle-notch fa-spin"></i>
             </div>
         </div>
+        {#
         <div class="go-website-around">
             <a target="_blank" href="{{ path('../') }}" carnival-link="false">
                 <button class="go-website" data-toggle="tooltip" data-placement="right" title="{{ 'Go to website'|trans('partials/nav') }}">
@@ -17,39 +19,49 @@
                 </button>
             </a>
         </div>
+        #}
     </div>
 
     <div class="body">
 
+        <a target="_blank" href="{{ path('../') }}" carnival-link="false">
+            <div class="nav-btn">
+                <i class="fas fa-globe"></i>
+                <p>Go to website</p>
+            </div>
+        </a>
+
         <a href="#">
             <div class="nav-btn scn-nav-toggle {% if entityConfig.nav_section is null or entityConfig.nav_section == 'entity' %}active{% endif %}" id="nav-btn-Entities">
-                <i class="fas fa-cube"></i>
+                <i class="fas fa-home"></i>
                 <p>Entities</p>
             </div>
         </a>
 
+        {#
         <a href="{{ path('Dashboard') }}">
             <div class="nav-btn {% if entityConfig.nav_section == 'dashboard' %}active{% endif %}" id="nav-btn-Dashboard">
-                <i class="fas fa-tachometer-alt"></i>
+                <i class="fas fa-th-large"></i>
                 <p>Dashboard</p>
             </div>
         </a>
+        #}
 
-        <a href="{{ path('FileManager') }}" carnival-fade='true'>
+        <a href="{{ path('FileManager') }}" carnival-fade="false">
             <div class="nav-btn {% if entityConfig.nav_section == 'fileManager' %}active{% endif %}" id="nav-btn-FileManager">
                 <i class="fas fa-folder"></i>
                 <p>File Manager</p>
             </div>
         </a>
 
-        <a href="{{ path('Translate') }}" carnival-fade='true'>
+        <a href="{{ path('Translate') }}" carnival-fade="false">
             <div class="nav-btn {% if entityConfig.nav_section == 'translate' %}active{% endif %}" id="nav-btn-Translate">
                 <i class="fas fa-language"></i>
                 <p>Translations</p>
             </div>
         </a>
 
-        <a href="{{ path('User') }}" carnival-fade='true'>
+        <a href="{{ path('User') }}" carnival-fade="false">
             <div class="nav-btn {% if entityConfig.nav_section == 'user' %}active{% endif %}" id="nav-btn-User">
                 <i class="fas fa-users"></i>
                 <p>Users</p>
@@ -58,7 +70,7 @@
 
         <a href="#">
             <div class="nav-btn scn-nav-toggle {% if entityConfig.nav_section == 'settings' %}active{% endif %}" id="nav-btn-Settings">
-                <i class="fas fa-cogs"></i>
+                <i class="fas fa-cog"></i>
                 <p>Settings</p>
             </div>
         </a>
@@ -101,21 +113,20 @@
             {% endif %}
         ">
             <h2>
-                <i class="fas fa-cube"></i>
                 {{ 'Content'|trans('partials/nav') }}
             </h2>
     
             <ul>
                 {% for entity in entities %}
                     {% if entity.type == 'entity' %}
-                        <a href="{{ path(entity.name) }}" carnival-fade='true'>
+                        <a href="{{ path(entity.name) }}" carnival-fade="false">
                             <li class="scn-nav-btn scn-nav-entity-btn {{ (entity.active) ? 'active' : '' }}" id="nav-btn-{{ entity.name }}">
                                 {% if entity.icon is not null %}
                                     <i class="fas fa-{{ entity.icon }}"></i>
                                 {% else %}
                                     <i class="fas fa-cube"></i>
                                 {% endif %}
-                                {{ entity.title }}
+                                {{ entity.title|trans('partials/nav') }}
                             </li>
                         </a>
                     {% endif %}
@@ -129,7 +140,6 @@
             {% endif %}
         ">
             <h2>
-                <i class="fas fa-cogs"></i>
                 {{ 'Settings'|trans('partials/nav') }}
             </h2>
             
@@ -150,7 +160,10 @@
         </section>
 
     </div>
+</nav>
 
+<nav class="side-nav-right">
+    <div class="nav-right-btn"><div class="nav-right-btn-inner"><i class="fas fa-info-circle"></i><span>Info</span></div></div>
 </nav>
 
 <input type="hidden" id="meta-webroot" value="{{ webroot }}">

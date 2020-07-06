@@ -1,0 +1,6 @@
+{% if value.before is defined and value.after is defined %}
+    <strike style="color:#ccc;">{{ value.before }},-</strike><br>
+    {{ value.after }},-
+{% else %}
+    {{ value }}
+{% endif %}

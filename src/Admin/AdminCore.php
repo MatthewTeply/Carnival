@@ -3,6 +3,7 @@
 namespace Carnival\Admin;
 
 use Carnival\Admin\Core\Admin\AdminConfig;
+use Carnival\Admin\Core\Filter\Filter;
 use Lampion\FileSystem\FileSystem;
 use Lampion\Core\Router;
 use Lampion\Database\Query;
@@ -122,5 +123,8 @@ class AdminCore extends AdminConfig {
                 }
             }
         }
+
+        # Registering filter submission route
+        //$router->post('filter', Filter::process());
     }
 }

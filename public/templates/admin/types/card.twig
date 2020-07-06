@@ -1,0 +1,5 @@
+{% if value.img.relativePath %}
+    <a href="{{ __storage__ ~ value.img.relativePath }}" data-lightbox="image-{{ rowIndex }}-{{ colIndex }}" data-title="{{ value.img.relativePath }}">
+        <img src="{{ value.img.relativePath ? __storage__ ~ value.img.relativePath : '' }}" class="{{ attr.class }} list-type-image" id="{{ attr.id }}" style="max-width: 45px;">
+    </a>
+{% endif %}

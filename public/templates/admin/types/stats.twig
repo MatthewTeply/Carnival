@@ -1,0 +1,5 @@
+{% set value = value|json_decode %}
+
+{% for key, item in value[0]|toArray %}
+    <div>{{ key }} = {{ item }}</div>
+{% endfor %}

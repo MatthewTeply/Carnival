@@ -28,16 +28,18 @@
 }
 
 .logo {
-    display: inline-block;
     font-size: 10px;
     font-weight: 800;
     color: #fff;
     width: 80px;
     text-align: center;
-    width: 100%;
     padding: 10px;
     overflow: hidden;
-    margin-top: 10px;
+    min-height: 50px;
+    display: flex;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
 }
 
 .logo a {
@@ -55,6 +57,7 @@ nav.side-nav {
     flex-wrap: wrap;
     align-content: flex-start;
     justify-content: space-between;
+    text-align: center;
     bottom: 0px;
     top: 0px;
     padding-left: 0px;
@@ -64,8 +67,8 @@ nav.side-nav {
 }
 
 .nav-btn {
-    width: 100%;
-    height: 60px;
+    width: 50px;
+    height: 50px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -76,8 +79,10 @@ nav.side-nav {
     cursor: pointer;
     transition: all 200ms ease-in-out;
     text-align: center;
-    font-size: 17px;
+    font-size: 18px;
     vertical-align: top;
+    border-radius: 10px;
+    margin-bottom: 10px;
 }
 
 .nav-btn p {
@@ -132,7 +137,6 @@ nav.side-nav .info-box {
     padding: 10px;
     text-align: center;
     font-size: 10px;
-    background: var(--col-side-nav);
 }
 
 .nav-btn:hover, .nav-btn:focus {
@@ -140,7 +144,7 @@ nav.side-nav .info-box {
 }
 
 .nav-btn.active, .nav-btn:focus {
-    background: var(--col-side-nav);
+    background: var(--col-primary-bg);
     color: #fff;
 }
 
@@ -153,17 +157,13 @@ nav.side-nav::-webkit-scrollbar {
     width: 80px;
     left: 0;
     top: 0;
-    background-color: var(--col-side-nav);
 }
 
 .online-user {
     position: relative;
     width: 100%;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
     cursor: pointer;
+    text-align: center;
 }
 
 .online-user span {
@@ -187,20 +187,16 @@ nav.side-nav::-webkit-scrollbar {
     cursor: pointer;
     padding: 3px 18px;
     transition: all 300ms ease-in-out;
-    background: #4418a1;
-    color: #9a74fb;
     font-weight: 500;
     font-size: 12px;
     height: 24px;
 }
 
 .tab button:hover {
-    background-color: #4f2ea0;
 }
 
 .tab button.active {
     color: #fff;
-    background: #4f2ea0;
 }
 
 .tabcontent {
@@ -258,34 +254,31 @@ nav.side-nav::-webkit-scrollbar {
 .online-user-around {
     width: 60px;
     position: relative;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: flex-start;
-    flex-wrap: wrap;
-    align-content: flex-start;
     border-radius: 3px;
+    text-align: center;
 }
 
 .online-user .user-img {
     width: 40px;
     height: 40px;
-    border-radius: 3px;
+    border-radius: 10px;
     object-fit: cover;
-    margin-left: 10px;
-    background: #fff;
-    padding: 1px;
+    display: inline-block !important;
+}
+
+.online-user-around .dropdown-toggle::after {
+    display: none;
 }
 
 button.go-website {
     outline: none;
     border-radius: 50%;
     color: #fff;
-    background: #008DD5 !important;
+    background: var(--col-primary-bg) !important;
     width: 40px;
     height: 40px;
     margin: 0 auto;
-    margin-top: 10px;
+    margin-top: 20px;
     border: none;
 }
 
@@ -311,19 +304,19 @@ button.go-website {
 
 .side-nav .body {
     width: 100%;
-    margin-top: 105px;
+    margin-top: 50px;
 }
 
 .page-loading {
     display: none;
-    font-size: 30px;
+    font-size: 25px;
 }
 
 .scn-nav {
     position: fixed;
     height: 100vh;
     width: 200px;
-    background: #eee;
+    background: #fff;
     top: 0;
     left: 80px;
     overflow: hidden;
@@ -332,32 +325,36 @@ button.go-website {
 
 .scn-nav h2 {
     color: #000 !important;
-    margin-top: 20px !important;
     font-size: 14px !important;
+    padding: 20px 0 15px 0;
+    margin: 0 !important;
+    border-bottom: 1px solid#eee;
+    display: inline-block;
+    width: 80% !important;
 }
 
 .scn-nav h2 i.fas {
-    display: block;
-    margin-bottom: 8px;
     font-size: 18px;
+    display: block;
+    margin-bottom: 4px;
     color: var(--col-primary);
 }
 
 .scn-nav ul {
     padding: 10px;
-    padding-top: 5px;
 }
 
 .scn-nav ul li {
-    padding: 10px;
+    padding: 10px 15px;
     list-style-type: none;
     color: #000;
-    border-radius: 3px;
+    border-radius: 5px;
     cursor:pointer;
 }
 
 .scn-nav ul li.active {
-    background: #ccc;  
+    background: var(--col-primary-light);
+    color: var(--col-primary);
 }
 
 .scn-nav ul li i {
@@ -383,8 +380,11 @@ button.go-website {
 }
 
 .scn-nav-toggle.active::after {
+    position: absolute;
     opacity: 1;
-    right: -5px;
+    right: -10px;
+    background-color: #fff;
+    color: #000;
 }
 
 .scn-nav-toggle::after {
@@ -392,8 +392,6 @@ button.go-website {
     content: '>';
     font-weight: bold;
     display: block;
-    background-color: var(--col-side-nav);
-    color: #fff;
     width: 20px;
     height: 20px;
     font-size: 12px;
@@ -404,6 +402,10 @@ button.go-website {
     right: 0px;
     z-index: 999;
     opacity: 0;
+}
+
+.scn-nav-btn {
+    text-align: left;
 }
 
 .dropdown-item {
@@ -422,4 +424,64 @@ button.go-website {
 
 .dropdown-item.danger:hover i.fas {
     color: #fff;
+}
+
+.side-nav-right {
+    position:fixed;
+    top:0;
+    bottom: 0;
+    right:0;
+    width: 0;
+    height: 100%;
+    background: #fff;
+    transition: width 200ms ease-in-out;
+}
+
+.side-nav-right.toggled {
+    width:200px;
+}
+
+.nav-right-btn {
+    width:70px;
+    height: 70px;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+    transition: width 200ms ease-in-out;
+    cursor: pointer;
+}
+
+.nav-right-btn-inner {
+    display: flex;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+    position: relative;
+}
+
+.nav-right-btn i {
+    font-size:24px;
+}
+
+.side-nav-right.toggled .nav-right-btn i {
+    margin-right: 5px;
+}
+
+.nav-right-btn span {
+    visibility: hidden;
+    width: 0;
+    transition: all 200ms ease-in-out;
+    font-weight: 600;
+}
+
+.side-nav-right.toggled .nav-right-btn span {
+    visibility: visible;
+    width: auto;
+}
+
+.side-nav-right.toggled .nav-right-btn {
+    width: 200px;
+    transition: width 200ms ease-in-out;
 }

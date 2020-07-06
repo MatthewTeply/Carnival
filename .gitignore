@@ -1,3 +1,12 @@
 
+# Root
 .DS_STORE
+
+# var
 var/storage/*
+var/lang/*
+var/entity/*
+var/api/*
+
+# config
+config/carnival/admin/entity/*

@@ -13,6 +13,14 @@
                 "title": "Create entity",
                 "description": "Creating new entity conifg",
                 "controller": "Carnival\\Admin\\Controller\\Dev\\EntityManagerController::new"
+            },
+            "edit": {
+                "title": "Edit entity",
+                "description": "Editing an existing entity",
+                "controller": "Carnival\\Admin\\Controller\\Dev\\EntityManagerController::edit"
+            },
+            "delete": {
+                "controller": "Carnival\\Admin\\Controller\\Dev\\EntityManagerController::delete"
             }
         }
     }

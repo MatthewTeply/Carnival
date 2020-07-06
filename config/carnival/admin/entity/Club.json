@@ -1,0 +1,23 @@
+{
+    "Club": {
+        "title": "Kluby",
+        "icon": "users",
+        "description": "Manage clubs",
+        "permission": ["ROLE_ADMIN"],
+        "actions": {
+            "list": {
+                "fields": {
+                    "flag": {
+                        "label": "flag",
+                        "type": "file",
+                        "template": "image"
+                    },
+                    "name": {
+                        "label": "name",
+                        "type": "string"
+                    }
+                }
+            }
+        }
+    }
+}

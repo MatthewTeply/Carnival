@@ -5,7 +5,7 @@ $(document).ready(function () {
 
     let notifier = new AWN();
 
-    let carnivalLink = webroot + appName;
+    let carnivalLink = webroot + 'carnival/';
     let pageIsLoading = false;
 
     if (appIsDefault) {
@@ -148,7 +148,7 @@ $(document).ready(function () {
                         }
 
                         if (response.title) {
-                            $('title').html('Carnival &bull; ' + response.title);
+                            $('title').html($('title').text().split('•')[0] + ' • ' + response.title);
                         }
 
                         pageIsLoading = false;
@@ -177,15 +177,4 @@ $(document).ready(function () {
         loadPage(e.detail.href);
     });
 
-    $('.side-nav .scn-nav-btn').click(function () {
-        $('.side-nav .scn-nav-btn.active').removeClass('active');
-
-        $(this).addClass('active');
-    });
-
-    $('.side-nav .nav-btn').click(function () {
-        $('.side-nav .nav-btn.active').removeClass('active');
-
-        $(this).addClass('active');
-    });
 });

@@ -21,18 +21,41 @@
         margin-top: 0;
     }
 
+    .metadata-container {
+        padding: 0;
+        padding-bottom: 10px;
+    }
+
     .metadata-container .row {
         margin-bottom: 10px;
+        border-bottom: 2px solid #eee;
+        padding: 10px;
     }
 
     .metadata-container .col {
         display: flex;
         align-items: center;
         justify-content: center;
+        padding: 0;
     }
 
     .metadata-add-btn {
         margin-top: 10px;
+    }
+
+    .field-delete-btn {
+        display: block;
+        margin-top: 10px;
+    }
+
+    .field-control-btns {
+        display: block;
+        margin-top: 10px;
+    }
+
+    .field-control-btns .btn {
+        display: inline-block;
+        vertical-align: bottom;
     }
 </style>
 
@@ -43,15 +66,15 @@
 
     <div class="form-control" id="app-entity-fields">
         <div class="field-container" v-for="(field, fieldKey) in fields">
-            <b class="entity-field-label">Entity name</b>
-            <input type="text" class="form-control" placeholder="Entity name" v-on:change="updateJson" v-model="field['name']">
+            <b class="entity-field-label">Name</b>
+            <input type="text" class="form-control" placeholder="Field name" v-on:change="updateJson" v-model="field['name']">
 
             <b class="entity-field-label">Type</b>
-            <input type="text" class="form-control" placeholder="Entity type" v-on:change="updateJson" v-model="field['type']">
+            <input type="text" class="form-control" placeholder="Field type" v-on:change="updateJson" v-model="field['type']">
 
             <b class="entity-field-label">Metadata</b>
-            <div class="form-control">
-                <div class="container-fluid metadata-container">
+            <div class="form-control metadata-container">
+                <div class="container-fluid">
                     <div class="row" v-for="(data, dataKey) in field['metadata']">
                         <div class="col col-5">
                             <input type="text" class="form-control" placeholder="Key" v-on:change="updateJson" v-model="data['key']">
@@ -59,14 +82,22 @@
                         <div class="col col-sm-1">
                             <i class="fas fa-long-arrow-alt-right"></i>
                         </div>
-                        <div class="col col-6">
+                        <div class="col col-5">
                             <input type="text" class="form-control" placeholder="Value" v-on:change="updateJson" v-model="data['value']">
+                        </div>
+                        <div class="col col-1">
+                            <button type="button" class="btn btn-danger data-delete-btn" v-on:click="field['metadata'].splice(dataKey, 1)"><i class="fas fa-trash-alt"></i> Delete</button>
                         </div>
                     </div>
 
                     <button type="button" class="btn btn-black metadata-add-btn" v-on:click="addMetadata(fieldKey)"><i class="fas fa-plus"></i> Add data</button>
                 </div>
             </div>
+
+            <nav class="field-control-btns">
+                <button type="button" class="btn btn-secondary field-copy-btn" v-on:click="copyField(field)"><i class="fas fa-copy"></i> Copy field</button>
+                <button type="button" class="btn btn-danger field-delete-btn" v-on:click="fields.splice(fieldKey, 1)"><i class="fas fa-trash-alt"></i> Delete field</button>
+            </nav>
         </div>
 
         <button type="button" class="btn btn-black" v-on:click="addField"><i class="fas fa-plus"></i> Add field</button>
@@ -74,11 +105,36 @@
 </div>
 
 <script>
-    window.fields = new Vue({
+    let valueFields = JSON.parse(`{{ value is defined ? value|raw : "[]" }}`);
+    let translatedFields = [];
+
+    if(Object.keys(valueFields).length != 0) {
+        for(let fieldName of Object.keys(valueFields)) {
+            let translatedField = {};
+            
+            translatedField.name = fieldName;
+            translatedField.type = valueFields[fieldName].type;
+
+            translatedField.metadata = [];
+            
+            for(let metadataName of Object.keys(valueFields[fieldName].metadata)) {
+                let newMetaData = {};
+
+                newMetaData.key   = metadataName;
+                newMetaData.value = valueFields[fieldName].metadata[metadataName];
+
+                translatedField.metadata.push(newMetaData);
+            }
+
+            translatedFields.push(translatedField);
+        }
+    }
+
+    window.entityFields['{{ name }}'] = new Vue({
         el: '#app-entity-fields',
         delimiters: ['${', '}'],
         data: {
-            fields: []
+            fields: translatedFields
         },
         methods: {
             updateJson() {
@@ -96,8 +152,6 @@
                 }
 
                 document.querySelector('#entity-json-{{ name }}').value = JSON.stringify(json);
-
-                console.log(json);
             },
             addField() {
                 this.fields.push({
@@ -107,6 +161,9 @@
                 });
 
                 this.updateJson();
+            },
+            copyField(field) {
+                this.fields.push(JSON.parse(JSON.stringify(field)));
             },
             addMetadata(fieldIndex) {
                 this.fields[fieldIndex].metadata.push({});

@@ -2,19 +2,18 @@
 
 namespace Carnival\Entity;
 
-class Tag {
+class Club {
 
     /** @var(type="int", length="11") */
     public $id;
 
 	/** @var(type="varchar" length="255" nullable="false") */
-	public $title;
+	public $name;
 
-	/** @var(type="entity" mappedBy="user_id" entity="Carnival\Entity\User" nullable="false") */
-	public $user;
+	/** @var(type="file" nullable="false") */
+	public $flag;
 
 	public function __toString() {
-		return $this->title;
+		return $this->name;
 	}
-
 }

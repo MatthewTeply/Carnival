@@ -1,17 +1,20 @@
 :root {
-    --col-primary: #008DD5;
+    --col-primary: rgba(0,132,255,1);
+    --col-primary-light: rgb(226, 241, 255);
+    --col-primary-bg: linear-gradient(90deg, rgba(0,132,255,1) 0%, rgba(71,160,244,1) 100%);
     --col-side-nav: #191927;
+    --col-second: #2d2d2d;
+    --border-primary: 1px solid rgb(241, 241, 241);
 }
 
 body {
     font-family: Poppins;
     font-size: 14px;
-    background-color: #fff;
+    background: #ECEEF5;
 }
 
 ::selection {
-    background-color: #000;
-    color: #fff;
+    background-color: var(--col-primary-light);
 }
 
 .btn {
@@ -20,17 +23,20 @@ body {
 
 .main-content {
     --mc-margin: 15px;
-    margin: 0 var(--mc-margin);
+    margin: 10px var(--mc-margin);
     position: relative;
     margin-left: calc(280px + var(--mc-margin));
+    margin-right: var(--mc-margin)/*calc(70px + var(--mc-margin))*/;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     align-content: flex-start;
     background-color: #fff;
-    border-radius: 0px;
-    -webkit-clip-path: inset(0 0 0 0 round 5px);
-    clip-path: inset(0 0 0 0 round 5px);
+    border-radius: 5px;
+}
+
+.main-content.toggled {
+    margin-right: 200px;
 }
 
 .main-content .body {
@@ -42,6 +48,8 @@ body {
     width: 100%;
     border-radius: 0;
     border: none;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
 }
 
 .main-content .body .card form {
@@ -81,9 +89,10 @@ body {
 }
 
 .main-content .headline .icon {
-   margin-right: 15px;
-    border-radius: 100%;
-    background-color: #eee;
+    margin-right: 15px;
+    border-radius: 5px;
+    color: var(--col-primary);
+    background: var(--col-primary-light);
     width: 40px;
     height: 40px;
     display: flex;
@@ -104,14 +113,17 @@ body {
     display: block;
     font-size: 12px;
     color: rgba(0, 0, 0, .6);
+    transform: translateY(-2px);
 }
 
 .main-content .headline {
     display: flex;
     align-items: center;
-    padding: 20px 10px;
+    padding: 15px 20px;
     background-color: #fff;
     border-bottom: 1px solid #eee;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
 }
 
 .form-around {
@@ -124,7 +136,6 @@ body {
     align-items: flex-start;
     visibility: hidden;
     max-height: 0px;
-    transition: all 300ms ease-in-out;
 }
 
 .form-input-around {
@@ -213,7 +224,6 @@ button.close-button:hover {
 
 .added-form-box {
     border-radius: 5px;
-    background-color: #4418a1;
     width: 100%;
     padding: 25px 20px;
     display: flex;
@@ -225,13 +235,8 @@ button.close-button:hover {
     justify-content: center;
     margin-bottom: 15px;
     border-style: solid;
-    border-top: 1px solid #4f1eba;
-    border-bottom: 1px solid #4f1eba;
-    border-left: 5px solid #f2c94c;
-    border-right: 1px solid #4f1eba;
     margin-top: 5px;
     cursor: pointer;
-    transition: all 300ms ease-in-out;
 }
 
 .added-form-box h3 {
@@ -268,7 +273,6 @@ button.btn-blue:hover {
 
 button.btn-blue span {
     font-weight: 500;
-    color: #9a74fb;
     font-size: 12px;
 }
 
@@ -329,8 +333,6 @@ button.btn-blue.edit span {
     align-items: center;
     justify-content: center;
     color: #34157e;
-    border: 1px solid #f2c94c;
-    background: linear-gradient(55deg, rgb(242, 153, 74) 0%, rgb(242, 201, 76) 100%) !important;
     height: 100%;
 }
 
@@ -454,7 +456,6 @@ a:hover {
 }
 
 .added-form-box:hover {
-    border-left: 10px solid #f2c94c;
 }
 
 form {
@@ -555,7 +556,7 @@ button {
 }
 
 .btn-black {
-    background: #383849;
+    background: var(--col-primary-bg);
     color: #fff;
 }
 

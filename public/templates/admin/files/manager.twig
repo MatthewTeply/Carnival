@@ -151,7 +151,7 @@
             >
                 <div class="file-box-inner">
                     <div class="owner-icon">
-                        {% if file.synced %}
+                        {% if file.synced and file.user is not null %}
                             <a href="{{ path('User') }}/show?id={{ file.user.id }}">
                                 <img src="{{ __webStorage__ ~ file.user.img.relativePath }}" class="user-icon" alt=""> <span>{{ file.user.username }}</span>
                             </a>

@@ -1,0 +1,5 @@
+<select class="form-control {{ attr.class }}" name="{{ name }}[value]">
+    {% for key, choice in choices|toArray %}
+        <option value="{{ key }}">{{ choice }}</option>
+    {% endfor %}
+</select>

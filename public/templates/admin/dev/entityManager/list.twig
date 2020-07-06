@@ -46,22 +46,24 @@
                     <tr>
                         <th>Icon</th>
                         <th>Name</th>
+                        <th>Title</th>
                         <th>Description</th>
                         <th></th>
                     </tr>
                 </thead>
                 <tbody>
-                    {% for entityFile in entities %}
+                    {% for entityName, entityFile in entities %}
                         <tr>
                             <td><i class="fas fa-{{ entityFile.general.icon }}"></i></td>
+                            <td>{{ entityName }}</td>
                             <td>{{ entityFile.general.title }}</td>
                             <td>{{ entityFile.general.description }}</td>
                             <td><div class="table-buttons">
                                 {% if edit and user|hasPermission('edit') %}
-                                    <a href="{{ path(entityName) }}/edit?id={{ listEntity.id }}" class="link edit-btn"><i class="fa-edit fas"></i></a>
+                                    <a href="{{ path('EntityManager') }}/edit?entity={{ entityName }}" class="link edit-btn"><i class="fa-edit fas"></i></a>
                                 {% endif %}
                                 {% if delete and user|hasPermission('delete') %}
-                                    <button data-toggle="modal" data-target="#delete-entity-modal-{{ listEntity.id }}" class="btn link delete-btn"><i class="far fa-trash-alt"></i></button>
+                                    <button data-toggle="modal" data-target="#delete-entity-modal-{{ entityName }}" class="btn link delete-btn"><i class="far fa-trash-alt"></i></button>
                                 {% endif %}
                             </td>
                         </tr>
@@ -72,7 +74,7 @@
                         <td>
                             {{ resultsCount }} {{ 'Results'|trans('action/list') }}
                         </td>
-                        <td class="text-right list-pagination" colspan="3">
+                        <td class="text-right list-pagination" colspan="4">
                             <div class="btn-group" role="group" aria-label="Basic example">
                                 <a href="{{ path(entityName) }}/list?page={{ page - 1 }}{{ sortString }}" {{ (page == 1) ? 'class="btn disabled"' : 'class="btn"' }}><i class="fas fa-arrow-left"></i> {{ 'Previous'|trans('action/list') }}</a>
                                 <div class="btn page-counter">{{ page }} / {{ pagesCount }}</div>
@@ -86,15 +88,14 @@
     </div>
 </div>
 
-{#
-{% for listEntity in listEntities %}
+{% for entityName, entityFile in entities %}
 
     <!-- Entity delete modal -->
-    <div class="modal fade" id="delete-entity-modal-{{ listEntity.id }}" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal fade" id="delete-entity-modal-{{ entityName }}" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="delete-entity-modal-{{ listEntity.id }}Label">{{ 'Delete'|trans('global') }}</h5>
+                    <h5 class="modal-title" id="delete-entity-modal-{{ entityName }}Label">{{ 'Delete'|trans('global') }} {{ entityName }}</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -104,7 +105,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ 'Close'|trans('global') }}</button>
-                    <a href="{{ path(entityName) }}/delete?id={{ listEntity.id }}" class="link text-danger" data-dismiss="modal">
+                    <a href="{{ path('EntityManager') }}/delete?entity={{ entityName }}" class="link text-danger" data-dismiss="modal">
                         <button type="button" class="btn btn-danger">{{ 'Delete'|trans('global') }}</button>
                     </a>
                 </div>
@@ -113,6 +114,5 @@
     </div>
 
 {% endfor %}
-#}
 
 {{ footer }}
