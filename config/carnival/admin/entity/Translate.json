@@ -1,0 +1,25 @@
+{
+    "Translate": {
+        "title": "Překlady",
+        "icon": "language",
+        "nav_section": "translate",
+        "permission": ["ROLE_ADMIN"],
+        "actions": {
+            "list": {
+                "controller": "Carnival\\Admin\\Controller\\Settings\\TranslateController::list"
+            },
+            "edit": {
+                "controller": "Carnival\\Admin\\Controller\\Settings\\TranslateController::edit"
+            },
+            "new": {
+                "controller": "Carnival\\Admin\\Controller\\Settings\\TranslateController::new"
+            },
+            "delete": {
+                "controller": "Carnival\\Admin\\Controller\\Settings\\TranslateController::delete"
+            },
+            "editSection": {
+                "controller": "Carnival\\Admin\\Controller\\Settings\\TranslateController::editSection"
+            }
+        }
+    }
+}

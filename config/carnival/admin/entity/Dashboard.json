@@ -1,0 +1,15 @@
+{
+    "Dashboard": {
+        "title": "Nástěnka",
+        "description": "Sledujte statistiky svého webu",
+        "icon": "tachometer-alt",
+        "nav_section": "dashboard",
+        "permission": ["ROLE_ADMIN"],
+        "actions": {
+            "list": {
+                "permission": ["ROLE_USER"],
+                "controller": "Carnival\\Admin\\Controller\\Common\\DashboardController::list"
+            }
+        }
+    }
+}

@@ -1,0 +1,27 @@
+{
+    "EntityManager": {
+        "title": "Entity Manager",
+        "description": "Manage entities",
+        "icon": "boxes",
+        "nav_section": "settings",
+        "permission": ["ROLE_ADMIN"],
+        "actions": {
+            "list": {
+                "controller": "Carnival\\Admin\\Controller\\Dev\\EntityManagerController::list"
+            },
+            "new": {
+                "title": "Create entity",
+                "description": "Creating new entity conifg",
+                "controller": "Carnival\\Admin\\Controller\\Dev\\EntityManagerController::new"
+            },
+            "edit": {
+                "title": "Edit entity",
+                "description": "Editing an existing entity",
+                "controller": "Carnival\\Admin\\Controller\\Dev\\EntityManagerController::edit"
+            },
+            "delete": {
+                "controller": "Carnival\\Admin\\Controller\\Dev\\EntityManagerController::delete"
+            }
+        }
+    }
+}
