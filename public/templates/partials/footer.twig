@@ -4,6 +4,7 @@
 <script src="{{ __scripts__ }}popper.js"></script>
 <script src="{{ __scripts__ }}bootstrap.min.js"></script>
 <script src="{{ __scripts__ }}lightbox.js"></script>
+<script src="{{ __scripts__ }}easytimer.js"></script>
 
 <!-- SPA -->
 <script src="https://cdn.jsdelivr.net/npm/interactjs/dist/interact.min.js"></script>
@@ -13,26 +14,6 @@
 <script src="{{ __scripts__ }}admin/files/manager.js"></script>
 <script src="{{ __scripts__ }}admin/files/select.js"></script>
 <script src="{{ __scripts__ }}admin/partials/nav.js"></script>
-
-<script>
-    function openCity(evt, cityName) {
-        var i, tabcontent, tablinks;
-        tabcontent = document.getElementsByClassName("tabcontent");
-        for (i = 0; i < tabcontent.length; i++) {
-            tabcontent[i].style.display = "none";
-        }
-        tablinks = document.getElementsByClassName("tablinks");
-        for (i = 0; i < tablinks.length; i++) {
-            tablinks[i].className = tablinks[i].className.replace(" active", "");
-        }
-        document.getElementById(cityName).style.display = "flex";
-        evt.currentTarget.className += " active";
-    }
-</script>
-<script>
-    // Get the element with id="defaultOpen" and click on it
-    //document.getElementById("defaultOpen").click();
-</script>
 
 <script>
     lightbox.option({

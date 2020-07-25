@@ -1,10 +1,12 @@
 :root {
-    --col-primary: rgba(0,132,255,1);
-    --col-primary-light: rgb(226, 241, 255);
-    --col-primary-bg: linear-gradient(90deg, rgba(0,132,255,1) 0%, rgba(71,160,244,1) 100%);
+    --col-primary: rgb(142, 84, 233);
+    --col-primary-light: rgb(242, 234, 255);
+    --col-primary-bg: linear-gradient(90deg, rgba(0, 132, 255, 1) 0%, rgba(71, 160, 244, 1) 100%);
     --col-side-nav: #191927;
     --col-second: #2d2d2d;
     --border-primary: 1px solid rgb(241, 241, 241);
+
+    --nav-border-active: #fff;
 }
 
 body {
@@ -19,20 +21,24 @@ body {
 
 .btn {
     font-size: 14px;
+    cursor: pointer !important;
 }
 
 .main-content {
     --mc-margin: 15px;
     margin: 10px var(--mc-margin);
     position: relative;
-    margin-left: calc(280px + var(--mc-margin));
-    margin-right: var(--mc-margin)/*calc(70px + var(--mc-margin))*/;
+    margin-left: calc(200px + var(--mc-margin));
+    margin-right: var(--mc-margin)
+        /*calc(70px + var(--mc-margin))*/
+    ;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     align-content: flex-start;
     background-color: #fff;
     border-radius: 5px;
+    border-bottom: 1px solid #ddd;
 }
 
 .main-content.toggled {
@@ -69,7 +75,7 @@ body {
 }
 
 .info-box div .info-btn i {
-    margin-right:-3px;
+    margin-right: -3px;
 }
 
 .info-box div .info-btn.right {
@@ -88,7 +94,7 @@ body {
     background-color: #4f2ea0;
 }
 
-.main-content .headline .icon {
+.main-content .headline div.icon {
     margin-right: 15px;
     border-radius: 5px;
     color: var(--col-primary);
@@ -98,6 +104,10 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.main-content .headline .icon svg {
+    margin: 9px;
 }
 
 .main-content .headline .title {
@@ -154,15 +164,26 @@ body {
     height: auto;
     color: #000;
     margin: 0px;
-    font-size: 14px;
     background-color: rgba(255, 255, 255, .1);
-    border: 2px solid #eee;
+    border: 1px solid #ccc;
 }
 
 .form-control:disabled {
     background-color: rgba(255, 255, 255, .1);
     color: rgba(0, 0, 0, .8);
     cursor: not-allowed;
+}
+
+input.form-control,
+textarea.form-control {
+    border: 1px solid #ccc;
+    font-size: 14px;
+}
+
+input.form-control:focus,
+textarea.form-control:focus {
+    border-color: var(--col-primary) !important;
+    box-shadow: 0 0 0 0.2rem rgba(142, 84, 233, .3) !important;
 }
 
 .form-around.toggled {
@@ -182,7 +203,7 @@ button.add-button {
     align-items: center;
     justify-content: center;
     color: #fff;
-    border:none;
+    border: none;
     margin-right: 10px;
 }
 
@@ -197,7 +218,7 @@ button.close-button {
     display: flex;
     align-items: center;
     justify-content: center;
-    border:none;
+    border: none;
     margin-right: 10px;
 }
 
@@ -336,7 +357,7 @@ button.btn-blue.edit span {
     height: 100%;
 }
 
-.custom-file-input:lang(en) ~ .custom-file-label::after {
+.custom-file-input:lang(en)~.custom-file-label::after {
     content: "Vybrat soubor";
 }
 
@@ -389,16 +410,27 @@ button.btn-blue.edit span {
     top: 13px;
 }
 
-.custom-control-input:checked ~ .custom-control-label::before {
+.custom-control-input:checked~.custom-control-label::before {
     color: #fff;
-    border: 1px solid #000;
-    background: #000;
+    border: 1px solid var(--col-primary);
+    background: var(--col-primary);
 }
 
-.custom-checkbox .custom-control-input:disabled:checked ~ .custom-control-label::before {
-    color: #fff;
-    border: 1px solid rgba(0, 0, 0, .6);
-    background: rgba(0, 0, 0, .6);
+.custom-checkbox .custom-control-input:disabled:checked~.custom-control-label::before {
+    opacity: .8;
+}
+
+.custom-control-input:focus:not(:checked)~.custom-control-label::before {
+    border-color: var(--col-primary) !important;
+}
+
+.custom-control-input:focus~.custom-control-label::before {
+    box-shadow: 0 0 0 0.2rem rgba(142, 84, 233, .3) !important;
+}
+
+.custom-control-input:not(:disabled):active~.custom-control-label::before {
+    background-color: var(--col-primary-light) !important;
+    border-color: var(--col-primary-light) !important;
 }
 
 .custom-checkbox {
@@ -406,9 +438,13 @@ button.btn-blue.edit span {
     width: 100%;
     min-height: 50px;
     align-items: center !important;
-    justify-content: flex-start!important;
+    justify-content: flex-start !important;
     padding-left: 38px;
     cursor: pointer;
+}
+
+.custom-checkbox .custom-control-input:disabled:checked ~ .custom-control-label::before {
+    background-color: var(--col-primary);
 }
 
 .right-radius-none {
@@ -455,13 +491,12 @@ a:hover {
     text-decoration: none;
 }
 
-.added-form-box:hover {
-}
+.added-form-box:hover {}
 
 form {
     width: 100% !important;
-    padding-top:25px;
-    padding-bottom:25px;
+    padding-top: 25px;
+    padding-bottom: 25px;
     display: flex !important;
     flex-direction: row;
     justify-content: flex-start;
@@ -482,15 +517,14 @@ form {
     color: #000;
 }
 
-.card-body .table {
-}
+.card-body .table {}
 
 .card-footer {
     padding: 10px;
 }
 
 .form-group {
-    border:none !important;
+    border: none !important;
     margin: 0px;
 }
 
@@ -508,12 +542,8 @@ button.btn-yellow.left-radius-none.left-border-none.delete-button {
 }
 
 .badge-success {
-    color: #fff;
-    background: #000 !important;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    padding: 4px;
-    font-size: 11px;
+    color: var(--col-primary);
+    background: var(--col-primary-light) !important;
 }
 
 .form-control:focus {
@@ -553,15 +583,6 @@ button {
 
 .btn-yellow .text.toggled {
     opacity: 0;
-}
-
-.btn-black {
-    background: var(--col-primary-bg);
-    color: #fff;
-}
-
-.btn-black:hover {
-    color: #fff;
 }
 
 .btn-gray {
@@ -625,11 +646,13 @@ select.form-control {
     cursor: default;
 }
 
-.carnival-multiselect .row .custom-control-input:disabled, .carnival-multiselect .row .custom-control-input:disabled ~ .custom-control-label {
+.carnival-multiselect .row .custom-control-input:disabled,
+.carnival-multiselect .row .custom-control-input:disabled~.custom-control-label {
     cursor: not-allowed;
 }
 
-.carnival-multiselect .row .custom-control-label::before, .carnival-multiselect .row .custom-control-label::after {
+.carnival-multiselect .row .custom-control-label::before,
+.carnival-multiselect .row .custom-control-label::after {
     width: 20px;
     height: 20px;
     left: -28px;
@@ -652,12 +675,12 @@ select.form-control {
     cursor: not-allowed;
 }
 
-.lampion-file-input .custom-file-input:disabled ~ .custom-file-label {
+.lampion-file-input .custom-file-input:disabled~.custom-file-label {
     background-color: rgba(255, 255, 255, .1);
     color: rgba(255, 255, 255, .8);
 }
 
-.lampion-file-input .custom-file-input:disabled ~ .custom-file-label::after {
+.lampion-file-input .custom-file-input:disabled~.custom-file-label::after {
     display: none;
 }
 
@@ -691,4 +714,81 @@ form .form-input-around {
     background-color: #fff;
     color: rgba(0, 0, 0, .7);
     z-index: 999;
+}
+
+.btn-primary {
+    background-color: var(--col-primary) !important;
+    border-color: var(--col-primary) !important;
+    color: #fff !important;
+}
+
+.btn-primary:focus {
+    box-shadow: 0 0 0 0.2rem rgba(142, 84, 233, .3) !important;
+}
+
+.badge {
+    padding: 6px 10px !important;
+    border-radius: 40px;
+    border: none !important;
+}
+
+.btn svg.icon-tabler {
+    height: 1.4em;
+    margin: 0;
+}
+
+.popover-header {
+    font-size: 13px !important;
+}
+
+.dropdown-menu {
+    border: 1px solid rgba(0, 0, 0, 0.2) !important;
+}
+
+.dropdown-item.active, .dropdown-item:active {
+    background-color: var(--col-primary) !important;
+}
+
+.dropdown-menu .icon-tabler {
+    height: 1em;
+}
+
+.dropdown-menu-arrow {
+    top: -34px;
+    left: 50%;
+    display: block;
+    width: 1rem;
+    height: 0.5rem;
+    margin: 0 0.3rem;
+    position: relative;
+}
+
+.dropdown-menu-arrow:before,
+.dropdown-menu-arrow:after {
+    content: "";
+    position: absolute;
+    display: block;
+    width: 1rem;
+    height: 0.5rem;
+    margin: 0 0.3rem;
+    border-width: 7px 8px;
+    border-style: solid;
+    border-color: transparent;
+    z-index: 1001;
+}
+
+.dropdown-menu-arrow:after {
+    bottom: -18px;
+    right: -8px;
+    border-bottom-color: #fff;
+}
+
+.dropdown-menu-arrow:before {
+    bottom: -17px;
+    right: -8px;
+    border-bottom-color: rgba(0, 0, 0, 0.25);
+}
+
+.list-thead svg {
+    height: 1.2em;
 }

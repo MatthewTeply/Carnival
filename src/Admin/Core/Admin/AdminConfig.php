@@ -47,6 +47,12 @@ class AdminConfig {
         $this->twigArgs['__img__']     = WEB_ROOT . APP . Application::name() . IMG;
         $this->twigArgs['__storage__'] = WEB_ROOT . APP . Application::name() . STORAGE;
 
+        $breadcrumb = [];
+
+        foreach(explode('/', $_GET['url']) as $page) {
+            $breadcrumb[] = $this->translator->read('partials/nav')->get($page);
+        }
+
         $args['__css__']      = $this->twigArgs['__css__'];
         $args['__scripts__']  = $this->twigArgs['__scripts__'];
         $args['__img__']      = $this->twigArgs['__img__'];
@@ -54,7 +60,7 @@ class AdminConfig {
         $args['user']         = $this->user;
         $args['title']        = $this->title;
         $args['logo']         = $this->config->logo;
-        $args['breadcrumbs']  = explode('/', $_GET['url']);
+        $args['breadcrumb']   = $breadcrumb;
         $args['entityName']   = $this->entityName;
         $args['entityConfig'] = $this->entityConfig;
         $args['webroot']      = WEB_ROOT;
@@ -84,7 +90,8 @@ class AdminConfig {
                 'icon'   => $entity->icon ?? null,
                 'title'  => $entity->title ?? $key,
                 'active' => $this->entityName == $key ? true : false,
-                'type'   => $entity->nav_section ?? 'entity'
+                'type'   => $entity->nav_section ?? 'entity',
+                'help'   => $entity->help ?? null
             ];
         }
 
@@ -122,7 +129,7 @@ class AdminConfig {
             return get_class($object);
         });
 
-        if(!$this->ajax) {
+        if(!$this->request->isAjax()) {
             $this->header = $this->view->load('partials/header', $args);
             $this->nav    = $this->view->load('partials/nav'   , $args);
             $this->footer = $this->view->load('partials/footer', $args);

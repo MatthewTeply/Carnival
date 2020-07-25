@@ -6,6 +6,18 @@
 
 {% if popup %}
     <style>
+        .file-box-around {
+            background: #fff;
+        }
+
+        .side-nav {
+            display: none !important;
+        }
+
+        .top-nav {
+            display: none !important;
+        }
+
         .main-content {
             margin: 0 !important;
             height: 100%;
@@ -19,26 +31,28 @@
     <input type="hidden" id="fm-url" value="{{ path('FileManager') }}">
 
     <div class="col-lg-12 headline headline-button ">
-        <div class="icon"><i class="fa-images fas"></i></div>
+        <div class="icon">
+            {{ icon('folders')|raw }}
+        </div>
         <p class="title">
             {{ 'File manager'|trans('files/manager') }}
             <span class="description">{{ description is not null ? description : 'Manage'|trans('global') ~ ' ' ~ 'Files'|trans('files/manager') }}</span>
         </p>
 
         {% if user|hasPermission('createDir') %}
-        <button type="button" class="add-button btn btn-black" id="create-dir" data-toggle="modal" data-target="#create-dir-modal">
-            <span><i class="fas fa-folder-plus"></i></span>
+        <button type="button" class="add-button btn btn-primary" id="create-dir" data-toggle="modal" data-target="#create-dir-modal">
+            <span>{{ icon('folder-plus')|raw }}</span>
         </button>
         {% endif %}
 
-        <button type="button" class="add-button btn btn-black" id="fm-files-upload-btn">
-            <span class="label"><i class="fas fa-upload"></i></span>
+        <button type="button" class="add-button btn btn-primary" id="fm-files-upload-btn">
+            <span class="label">{{ icon('upload')|raw }}</span>
             <span class="loading" style="display:none"><i class="fas fa-circle-notch fa-spin"></i></span>
         </button>
 
         <form action="" id="fm-files-upload-form" enctype="multipart/form-data" style="display:none !important;">
             <input type="file" name="files[]" multiple id="fm-files-upload">
-            <input type="hidden" name="currentDir" value="{{ currentDir }}">
+            <input type="hidden" name="currentDir" id="currentDir" value="{{ currentDir }}">
             <input type="hidden" name="popup" value="{{ popup ? 1 : 0 }}">
         </form>
     </div>
@@ -46,7 +60,7 @@
     <nav class="control-nav">
         <a href="#" class="fm-controls-back">
             <button class="btn btn-gray fm-controls-back-btn" disabled>
-                <i class="fas fa-arrow-left"></i> {{ 'Back'|trans('global') }}
+                {{ icon('arrow-back-up')|raw }} {{ 'Back'|trans('global') }}
             </button>
         </a>
         <div class="fm-controls-path">
@@ -54,16 +68,16 @@
                 <a href="{{ path('FileManager') }}?dir=/{{ popup ? '&popup' : '' }}" class="fm-breadcrumb"
                     data-dir-path=""
                 >
-                    <i class="fas fa-home"></i>
+                    {{ icon('home')|raw }}
                 </a>
 
                 {% if breadcrumbs %}
                     {% for breadcrumb in breadcrumbs %}
-                        <i class="fas fa-angle-right"></i>
-                        <a href="{{ breadcrumb.fullPath }}" class="fm-breadcrumb"
-                            data-dir-path="{{ breadcrumb.relativePath }}"
-                        >
-                            {{ breadcrumb.name }}
+                        {{ icon('chevron-right')|raw }}
+                        <a href="{{ breadcrumb.fullPath }}" class="fm-breadcrumb" data-dir-path="{{ breadcrumb.relativePath }}">
+                            <span>
+                                {{ breadcrumb.name }}
+                            </span>
                         </a>
                     {% endfor %}
                 {% else %}
@@ -73,6 +87,63 @@
             </span>
         </div>
     </nav>
+
+    <div id="dropzone">
+        <div class="dz-message">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-drag-drop-2" width="44" height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                <path stroke="none" d="M0 0h24v24H0z"/>
+                <path d="M16 8v-4h-12v12.01h4" stroke-dasharray=".001 4" />
+                <rect x="8" y="8" width="12" height="12" rx="2" />
+            </svg>
+
+            {{ 'Drop your files here'|trans('files/manager') }}
+        </div>
+
+        {#
+        <div class="dz-preview dz-processing dz-image-preview dz-complete">  <div class="dz-image"><img data-dz-thumbnail="" alt="Screenshot 2019-07-26 at 14.43.09.png" src="data:image/png;base64,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"></div>  <div class="dz-details">    <div class="dz-size"><span data-dz-size=""><strong>0.4</strong> MB</span></div>    <div class="dz-filename"><span data-dz-name="">Screenshot 2019-07-26 at 14.43.09.png</span></div>  </div>  <div class="dz-progress"><span class="dz-upload" data-dz-uploadprogress="" style="width: 100%;"></span></div>  <div class="dz-error-message"><span data-dz-errormessage=""></span></div>  <div class="dz-success-mark">    <svg width="54px" height="54px" viewBox="0 0 54 54" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">      <title>Check</title>      <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">        <path d="M23.5,31.8431458 L17.5852419,25.9283877 C16.0248253,24.3679711 13.4910294,24.366835 11.9289322,25.9289322 C10.3700136,27.4878508 10.3665912,30.0234455 11.9283877,31.5852419 L20.4147581,40.0716123 C20.5133999,40.1702541 20.6159315,40.2626649 20.7218615,40.3488435 C22.2835669,41.8725651 24.794234,41.8626202 26.3461564,40.3106978 L43.3106978,23.3461564 C44.8771021,21.7797521 44.8758057,19.2483887 43.3137085,17.6862915 C41.7547899,16.1273729 39.2176035,16.1255422 37.6538436,17.6893022 L23.5,31.8431458 Z M27,53 C41.3594035,53 53,41.3594035 53,27 C53,12.6405965 41.3594035,1 27,1 C12.6405965,1 1,12.6405965 1,27 C1,41.3594035 12.6405965,53 27,53 Z" stroke-opacity="0.198794158" stroke="#747474" fill-opacity="0.816519475" fill="#FFFFFF"></path>      </g>    </svg>  </div>  <div class="dz-error-mark">    <svg width="54px" height="54px" viewBox="0 0 54 54" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">      <title>Error</title>      <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">        <g stroke="#747474" stroke-opacity="0.198794158" fill="#FFFFFF" fill-opacity="0.816519475">          <path d="M32.6568542,29 L38.3106978,23.3461564 C39.8771021,21.7797521 39.8758057,19.2483887 38.3137085,17.6862915 C36.7547899,16.1273729 34.2176035,16.1255422 32.6538436,17.6893022 L27,23.3431458 L21.3461564,17.6893022 C19.7823965,16.1255422 17.2452101,16.1273729 15.6862915,17.6862915 C14.1241943,19.2483887 14.1228979,21.7797521 15.6893022,23.3461564 L21.3431458,29 L15.6893022,34.6538436 C14.1228979,36.2202479 14.1241943,38.7516113 15.6862915,40.3137085 C17.2452101,41.8726271 19.7823965,41.8744578 21.3461564,40.3106978 L27,34.6568542 L32.6538436,40.3106978 C34.2176035,41.8744578 36.7547899,41.8726271 38.3137085,40.3137085 C39.8758057,38.7516113 39.8771021,36.2202479 38.3106978,34.6538436 L32.6568542,29 Z M27,53 C41.3594035,53 53,41.3594035 53,27 C53,12.6405965 41.3594035,1 27,1 C12.6405965,1 1,12.6405965 1,27 C1,41.3594035 12.6405965,53 27,53 Z"></path>        </g>      </g>    </svg>  </div></div></div>
+        #}
+    </div>
+
+    <script>
+        dropzone = new Dropzone('#dropzone', {
+            url: '{{ path("FileManager") }}/upload',
+            method: 'post',
+            paramName: 'files',
+            uploadMultiple: true,
+            params: {
+                currentDir: '{{ currentDir }}'
+            },
+            queuecomplete: () => {
+                let pageChangeEvent = new CustomEvent('carnival-page-change', {
+                    detail: {
+                        href: '{{ path("FileManager") }}?dir={{ currentDir }}'
+                    }
+                });
+
+                document.querySelector('#dropzone').classList.add('fadeout');
+                window.dispatchEvent(pageChangeEvent);
+            },
+            drop: () => {
+                document.querySelector('.dz-message').style.display = 'none';
+            }
+        });
+
+        window.addEventListener('dragover', function(event) {
+            document.querySelector('#dropzone').style.display = 'block';
+            document.querySelector('.file-box-around').style.display = 'none';
+        });
+
+        window.addEventListener('dragend', function(event) {
+            document.querySelector('#dropzone').style.display = 'none';
+            document.querySelector('.file-box-around').style.display = 'block';
+        });
+    </script>
+
+    {% if popup %}
+        <script>
+            dropzone.params.popup = true;
+        </script>
+    {% endif %}
 
     <div class="file-box-around">
 
@@ -153,7 +224,13 @@
                     <div class="owner-icon">
                         {% if file.synced and file.user is not null %}
                             <a href="{{ path('User') }}/show?id={{ file.user.id }}">
-                                <img src="{{ __webStorage__ ~ file.user.img.relativePath }}" class="user-icon" alt=""> <span>{{ file.user.username }}</span>
+                                <img 
+                                    src="{{  __img__ }}animations/loading.gif" 
+                                    data-src="{{ __webStorage__ ~ file.user.img.relativePath }}" 
+                                    class="lazy user-icon" 
+                                    alt=""
+                                > 
+                                <span>{{ file.user.username }}</span>
                             </a>
                         {% else %}
                             <i class="fas fa-hdd"></i> <span>Server</span>
@@ -182,7 +259,12 @@
 
                     <div class="icon">
                         {% if file.isImg %}
-                            <img src="{{ __webStorage__ ~ file.relativePath }}" alt="">
+                            <img 
+                                src="{{  __img__ }}animations/loading.gif" 
+                                data-src="{{ __webStorage__ ~ file.relativePath }}" 
+                                alt=""
+                                class="lazy"
+                            >
                         {% else %}
                             <i class="fas fa-file"></i>
                         {% endif %}
@@ -335,5 +417,11 @@
         </form>
     </div>
 </div>
+
+<script>
+    lazyload = new LazyLoad();
+
+    lazyload.update();
+</script>
 
 {{ footer }}

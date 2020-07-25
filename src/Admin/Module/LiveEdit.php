@@ -15,6 +15,7 @@ use Lampion\View\View;
 
 use stdClass;
 use Error;
+use Lampion\FileSystem\Path;
 
 class LiveEdit {
 
@@ -29,7 +30,7 @@ class LiveEdit {
         $this->template = $template;
         
         $this->em   = new EntityManager();
-        $this->view = new View(ROOT . APP . 'carnival' . TEMPLATES, 'carnival');
+        $this->view = new View(Path::get('public/templates'), 'carnival');
 
         if(Auth::isLoggedIn()) {
             $this->user = $this->em->find(User::class, unserialize(LampionSession::get('user'))->id);
@@ -168,7 +169,7 @@ class LiveEdit {
         # Replacing static HTML with a liveEdit object
         if(!$editing) {
             # Getting template's contents
-            $template = ROOT . APP . Application::name() . TEMPLATES . $template . '.twig';
+            $template = Path::get('public/templates/' . $template . '.twig');
             $html     = file_get_contents($template);
 
             # Checking for all occurences of the original content
@@ -210,7 +211,7 @@ class LiveEdit {
 
         # Renaming a liveEdit object
         elseif($editing && $name != $nameOriginal) {
-            $template = ROOT . APP . Application::name() . TEMPLATES . $template . '.twig';
+            $template = Path::get('public/templates/' . $template . '.twig');
             $html     = file_get_contents($template);
 
             $html = str_replace('liveEdit.' . $nameOriginal, 'liveEdit.' . $name, $html);
@@ -235,7 +236,7 @@ class LiveEdit {
             'route' => $route
         ])[0];
 
-        $template = ROOT . APP . Application::name() . TEMPLATES . $template . '.twig';
+        $template = Path::get('public/templates/' . $template . '.twig');
         $html = file_get_contents($template);
 
         $html = str_replace('{{ liveEdit.' . $name . '|raw }}', $leEntity->original, $html);

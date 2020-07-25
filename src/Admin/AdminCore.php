@@ -3,12 +3,10 @@
 namespace Carnival\Admin;
 
 use Carnival\Admin\Core\Admin\AdminConfig;
-use Carnival\Admin\Core\Filter\Filter;
 use Lampion\FileSystem\FileSystem;
-use Lampion\Core\Router;
-use Lampion\Database\Query;
-use Lampion\Application\Application;
-use Lampion\Debug\Console;
+use Lampion\Http\Router;
+use Lampion\FileSystem\Path;
+use Lampion\Http\Request;
 use Lampion\Http\Response;
 
 class AdminCore extends AdminConfig {
@@ -26,17 +24,17 @@ class AdminCore extends AdminConfig {
     public $response;
 
     public function __construct() {
-        $this->config = json_decode(file_get_contents(ROOT . APP . 'carnival/' . CONFIG . 'carnival/admin.json'));
+        $this->config = json_decode(file_get_contents(Path::get('config/carnival/admin.json')));
 
-        $this->fs = new FileSystem(ROOT . APP . Application::name() . '/');
+        $this->fs = new FileSystem(Path::get('/'));
 
         $this->response = new Response();
+        $this->request  = new Request();
 
-        $this->entityName = explode('/', $_GET['url'])[0];
+        $this->entityName = explode('/', $this->request->url())[0];
         $this->className  = 'Carnival\Entity\\' . $this->entityName;
         
-        $this->table      = strtolower($this->entityName);
-        $this->table      = Query::tableExists($this->table) ? $this->table : 'entity_' . $this->table;
+        $this->table = 'entity_' . strtolower($this->entityName);
 
         # Setting entity variables
         $this->configEntity();

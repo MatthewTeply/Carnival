@@ -32,6 +32,30 @@ $(document).ready(function () {
         return txt.value;
     }
 
+    function displayBreadcrumb(pages) {
+        document.querySelector('#top-nav-breadcrumb').innerHTML = '';
+        let breadcrumb = document.querySelector('#top-nav-breadcrumb');
+
+        let i = 0;
+        for(page of pages) {
+            i++;
+
+            let li = document.createElement('li');
+
+            let className = 'breadcrumb-item';
+
+            if(i == pages.length) {
+                className += ' active';
+            }
+
+            li.setAttribute('class', className)
+            li.innerHTML = page;
+
+            breadcrumb.appendChild(li);
+
+        }
+    }
+
     function loadPage(href, e = null, el = null, container = null, fade = false) {
         let hrefSplit  = href.split('/');
 
@@ -65,6 +89,7 @@ $(document).ready(function () {
             $.ajax({
                 xhr: function () {
                     var xhr = new window.XMLHttpRequest();
+
                     xhr.upload.addEventListener("progress", function (evt) {
                         if (evt.lengthComputable) {
                             var percentComplete = evt.loaded / evt.total;
@@ -75,6 +100,8 @@ $(document).ready(function () {
                     xhr.addEventListener("progress", function (evt) {
                         if (evt.lengthComputable) {
                             var percentComplete = evt.loaded / evt.total;
+
+
                             //Do something with download progress
                         }
                     }, false);
@@ -107,6 +134,12 @@ $(document).ready(function () {
                         notifier.success(response.success);
                     }
 
+                    let pageChangedEvent = new CustomEvent('carnival-page-changed', {
+                        detail: {
+                            href: response.href
+                        }
+                    });
+
                     if (response.redirect) {
                         window.location.replace(response.redirect);
                     } else {
@@ -116,6 +149,8 @@ $(document).ready(function () {
                             pageIsLoading = false;
 
                             loadPage(href);
+                            window.dispatchEvent(pageChangedEvent);
+
                             return;
                         }
 
@@ -133,8 +168,7 @@ $(document).ready(function () {
                             }
 
                             $('.side-nav .scn-nav-btn.active:not(#nav-btn-' + entityName + ')').removeClass('active');
-                            $('#nav-btn-' + entityName).addClass('active');
-
+                            
                             setTimeout(() => {
                                 $(container ?? '#carnival-container').html(decodeHtml(response.template));
 
@@ -143,6 +177,8 @@ $(document).ready(function () {
                                 }
 
                                 pageLoading(false);
+                                window.dispatchEvent(pageChangedEvent);
+
                             }, 100);
 
                         }
@@ -150,6 +186,8 @@ $(document).ready(function () {
                         if (response.title) {
                             $('title').html($('title').text().split('•')[0] + ' • ' + response.title);
                         }
+
+                        displayBreadcrumb(response.breadcrumb);
 
                         pageIsLoading = false;
                     }

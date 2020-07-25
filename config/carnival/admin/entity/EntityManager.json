@@ -2,7 +2,7 @@
     "EntityManager": {
         "title": "Entity Manager",
         "description": "Manage entities",
-        "icon": "boxes",
+        "icon": "database",
         "nav_section": "settings",
         "permission": ["ROLE_ADMIN"],
         "actions": {

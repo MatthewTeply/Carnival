@@ -94,6 +94,10 @@
     padding: 0;
 }
 
+.table .table-buttons .link svg {
+    margin: 11px;
+}
+
 .table-buttons .link {
     margin-left: 5px;
 }
@@ -126,12 +130,8 @@
     background: none;
 }
 
-.table tfoot .list-pagination .btn .fas.fa-arrow-left {
-    margin-right: 5px;
-}
-
-.table tfoot .list-pagination .btn .fas.fa-arrow-right {
-    margin-left: 5px;
+.table tfoot .list-pagination .btn svg {
+    height: 1.4em;
 }
 
 .table tfoot tr td {
@@ -220,4 +220,8 @@ button.delete-btn {
 button.delete-btn:hover {
     color:#fff;
     background: #c10000;
+}
+
+.batch-action-container {
+    width: 10px !important;
 }

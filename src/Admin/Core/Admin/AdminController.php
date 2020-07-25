@@ -3,12 +3,11 @@
 namespace Carnival\Admin\Core\Admin;
 
 use Carnival\Entity\User;
-use Lampion\Application\Application;
 use Lampion\View\View;
 use Lampion\FileSystem\FileSystem;
+use Lampion\FileSystem\Path;
 use Lampion\Entity\EntityManager;
 use Lampion\Database\Query;
-use Lampion\Debug\Console;
 use Lampion\Http\Request;
 use Lampion\Http\Response;
 use Lampion\Http\Url;
@@ -56,16 +55,14 @@ class AdminController extends AdminConfig {
     
     public function __construct() {
         # Getting config file's JSON, and turning it into an object
-        $this->config = json_decode(file_get_contents(ROOT . APP . 'carnival/' . CONFIG . 'carnival/admin.json'));
-
-        # Is request ajax?
-        $this->ajax = Request::isAjax();
-
+        $this->config = json_decode(file_get_contents(Path::get('config/carnival/admin.json')));
+        
+        $this->request  = new Request();
         $this->response = new Response();
-
+        
         # Initial config
-        $this->view = new View(ROOT . APP . Application::name() . TEMPLATES, 'carnival');
-        $this->fs   = new FileSystem(ROOT . APP . Application::name() . '/');
+        $this->view = new View(Path::get('public/templates'), 'carnival');
+        $this->fs   = new FileSystem(Path::get('/'));
         $this->em   = new EntityManager();
 
         # Getting currently logged in user
@@ -75,11 +72,11 @@ class AdminController extends AdminConfig {
         $this->translator = new Translator(LampionSession::get('lang'));
 
         # Entity variables
-        $this->entityName = explode('/', $_GET['url'])[0];
+        $this->entityName = explode('/', $this->request->url())[0];
         $this->className  = 'Carnival\Entity\\' . $this->entityName;
 
         # Setting referer
-        $this->referer = $_SERVER['HTTP_REFERER'] ?? Url::link($this->entityName . '/list');
+        $this->referer = $this->request->referer() ?? Url::link($this->entityName . '/list');
         
         # DB config
         $this->table = strtolower($this->entityName);
@@ -157,10 +154,18 @@ class AdminController extends AdminConfig {
     }
 
     public function renderTemplate($template) {
-        if($this->ajax) {
+        $breadcrumb = [];
+        $pages      = explode('/', $this->request->url());
+
+        foreach($pages as $page) {
+            $breadcrumb[] = $this->translator->read('partials/nav')->get($page);
+        }
+
+        if($this->request->isAjax()) {
             $this->response->json([
-                'template' => htmlspecialchars($template),
-                'title'    => $this->title
+                'template'   => htmlspecialchars($template),
+                'title'      => $this->title,
+                'breadcrumb' => $breadcrumb
             ]);
         }
 

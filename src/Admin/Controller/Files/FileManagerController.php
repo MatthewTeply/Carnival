@@ -24,7 +24,7 @@ class FileManagerController extends AdminController {
         $this->fs         = new FileSystem();
         $this->translator = new Translator(LampionSession::get('lang'));
 
-        $this->dir = $_GET['dir'] ?? '';
+        $this->dir = $this->request->query('dir') ?? '';
 
         if(strpos($this->dir, '..') !== false) {
             $this->dir = '';
@@ -48,7 +48,7 @@ class FileManagerController extends AdminController {
         $dirs = $this->ls['dirs'];
 
         if(ltrim($this->dir, '/') != '') {
-            $previousDir = explode('/', $_GET['dir']);
+            $previousDir = explode('/', $this->request->query('dir'));
             
             unset($previousDir[sizeof($previousDir) - 1]);
 
@@ -72,8 +72,8 @@ class FileManagerController extends AdminController {
         $breadcrumbFullPath     = Url::link('FileManager') . '?dir=';
         $breadcrumbRelativePath = '';
 
-        if(isset($_GET['dir'])) {
-            foreach(explode('/', ltrim($_GET['dir'], '/')) as $key => $breadcrumb) {
+        if($this->request->hasQuery('dir')) {
+            foreach(explode('/', ltrim($this->request->query('dir'), '/')) as $key => $breadcrumb) {
                 $breadcrumbFullPath     .= '/' . $breadcrumb;
                 $breadcrumbRelativePath .= '/' . $breadcrumb;
     
@@ -94,23 +94,23 @@ class FileManagerController extends AdminController {
             'dirs'        => $dirs,
             'files'       => $files,
             'empty'       => @((sizeof($dirs) == 1 && $dirs[0]['isBack']) && empty($files)) ? true : false,
-            'currentDir'  => $_GET['dir'] ?? null,
+            'currentDir'  => $this->request->query('dir') ?? null,
             'user'        => $this->user,
             'breadcrumbs' => !empty($breadcrumbs[0]['name']) ? $breadcrumbs : null,
-            'popup'       => isset($_GET['popup']),
-            'ajax'        => Request::isAjax()
+            'popup'       => $this->request->hasQuery('popup'),
+            'ajax'        => $this->request->isAjax()
         ]));
     }
 
     public function deleteGet() {
-        $previousDir = explode('/', $_GET['path']);
+        $previousDir = explode('/', $this->request->query('path'));
             
         unset($previousDir[sizeof($previousDir) - 1]);
 
         $previousDir = implode('/', $previousDir);
 
         try {
-            $this->fs->rm($_GET['path'], true);
+            $this->fs->rm($this->request->query('path'), true);
         }
 
         catch(Exception $e) {
@@ -139,12 +139,12 @@ class FileManagerController extends AdminController {
     }
 
     public function createDirPost() {
-        $this->fs->mkdir($_POST['currentDir'] . '/' . $_POST['dirName']);
+        $this->fs->mkdir($this->request->input('currentDir') . '/' . $this->request->input('dirName'));
 
         if(!$this->ajax) {
             Url::redirect('FileManager', [
                 'success' => 'newDir',
-                'dir'     => $_POST['currentDir']
+                'dir'     => $this->request->input('currentDir')
             ]);
         }
 
@@ -152,21 +152,21 @@ class FileManagerController extends AdminController {
             $this->response->json([
                 'href' => Url::link('FileManager', [
                     'success' => 'newDir',
-                    'dir'     => $_POST['currentDir']
+                    'dir'     => $this->request->input('currentDir')
                 ])
             ]);
         }
     }
 
     public function movePost() {
-        $from = $_POST['from'];
-        $to   = $_POST['to'];
+        $from = $this->request->input('from');
+        $to   = $this->request->input('to');
 
         if($this->fs->mv($from, $to)) {
             $this->response->json([
                 'success' => $this->translator->read('files/manager')->get('File moved successfuly!'),
                 'href'    => Url::link('FileManager', [
-                    'dir' => $_POST['currentDir']
+                    'dir' => $this->request->input('currentDir')
                 ])
             ]);
         }
@@ -180,14 +180,14 @@ class FileManagerController extends AdminController {
 
     public function uploadPost() {
         $files      = [];
-        $currentDir = $_POST['currentDir']; 
+        $currentDir = $this->request->hasInput('currentDir') ? $this->request->input('currentDir') : ''; 
 
-        for($i = 0; $i < sizeof($_FILES['files']['name']); $i++) {
-            $files[$i]['name']     = $_FILES['files']['name'][$i];
-            $files[$i]['type']     = $_FILES['files']['type'][$i];
-            $files[$i]['tmp_name'] = $_FILES['files']['tmp_name'][$i];
-            $files[$i]['error']    = $_FILES['files']['error'][$i];
-            $files[$i]['size']     = $_FILES['files']['size'][$i];
+        for($i = 0; $i < sizeof($this->request->file('files')['name']); $i++) {
+            $files[$i]['name']     = $this->request->file('files')['name'][$i];
+            $files[$i]['type']     = $this->request->file('files')['type'][$i];
+            $files[$i]['tmp_name'] = $this->request->file('files')['tmp_name'][$i];
+            $files[$i]['error']    = $this->request->file('files')['error'][$i];
+            $files[$i]['size']     = $this->request->file('files')['size'][$i];
         }
 
         foreach($files as $file) {
@@ -198,7 +198,7 @@ class FileManagerController extends AdminController {
             'dir' => $currentDir
         ];
 
-        if($_POST['popup'] != 0) {
+        if($this->request->input('popup') != 0) {
             $getParams['popup'] = '';
         }
 

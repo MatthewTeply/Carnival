@@ -6,6 +6,7 @@ use Carnival\Admin\Core\Admin\AdminController;
 use Lampion\Application\Application;
 use Lampion\Entity\EntityCreator;
 use Lampion\FileSystem\FileSystem;
+use Lampion\FileSystem\Path;
 use Lampion\Form\Form;
 use Lampion\Http\Url;
 
@@ -16,7 +17,7 @@ class EntityManagerController extends AdminController {
     public function __construct() {
         parent::__construct();
 
-        $this->fs = new FileSystem(ROOT . APP . Application::name() . APP_VAR . 'entity/');
+        $this->fs = new FileSystem(Path::get('var/entity/'));
     }
 
     public function listGet() {

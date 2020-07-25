@@ -3,10 +3,7 @@
 namespace Carnival\Admin\Action\Admin;
 
 use Carnival\Admin\Core\Admin\AdminController;
-use Carnival\Entity\Article;
-use Error;
 use Lampion\Database\Query;
-use Lampion\Debug\Console;
 
 class ListAction extends AdminController {
     public function display() {
@@ -15,19 +12,19 @@ class ListAction extends AdminController {
         // TODO: Default limit, currently fixed to 25
         $limit = $this->entityConfig->actions->list->limit ?? 25;
 
-        $sortBy    = $this->entityConfig->actions->list->sortBy ?? null;
+        $sortBy    = $this->entityConfig->actions->list->sortBy    ?? null;
         $sortOrder = $this->entityConfig->actions->list->sortOrder ?? null;
 
-        $sortBy    = $_GET['sortBy'] ?? $sortBy;
-        $sortOrder = $_GET['sortOrder'] ?? $sortOrder;
+        $sortBy    = $this->request->query('sortBy')    ?? $sortBy;
+        $sortOrder = $this->request->query('sortOrder') ?? $sortOrder;
 
         $sortBy = $metadata->{$sortBy}->mappedBy ?? $sortBy; 
 
         $sortString = $sortBy ? ' ORDER BY ' . $sortBy . ' ' . $sortOrder : null;
-        $queryString = 'SELECT id FROM ' . $this->table . $sortString . ' LIMIT ' . $limit . ' OFFSET ' . (isset($_GET['page']) ? ($_GET['page'] - 1) * $limit : 0);
+        $queryString = 'SELECT id FROM ' . $this->table . $sortString . ' LIMIT ' . $limit . ' OFFSET ' . ($this->request->hasQuery('page') ? ($this->request->query('page') - 1) * $limit : 0);
 
         # If entity's name is reserved in SQL, try entity prefix
-        $ids = $_GET['ids'] ?? Query::raw($queryString);
+        $ids = $this->request->query('ids') ?? Query::raw($queryString);
 
         $entityCount = Query::select($this->table, ['COUNT(*)'])[0]['COUNT(*)'];
 
@@ -110,7 +107,7 @@ class ListAction extends AdminController {
             'columns'      => $columns ?? array_keys((array)$this->entityConfig->actions->list->fields),
             'listEntities' => $entities,
             'resultsCount' => $entityCount,
-            'page'         => $_GET['page'] ?? 1,
+            'page'         => $this->request->query('page') ?? 1,
             'pagesCount'   => ceil($entityCount/$limit),
             'title'        => $this->title,
             'entityName'   => $this->entityName,
@@ -122,13 +119,14 @@ class ListAction extends AdminController {
                 'delete'   => $this->entityConfig->actions->delete->label ?? null,
                 'edit'     => $this->entityConfig->actions->edit->label   ?? null
             ],
-            'sortBy'          => $_GET['sortBy'] ?? $sortBy,
+            'sortBy'          => $this->request->query('sortBy') ?? $sortBy,
             'sortOrder'       => $sortOrder,
-            'sortString'      => isset($sortBy) ? '&sortBy=' . ($_GET['sortBy'] ?? $sortBy) . '&sortOrder=' . $sortOrder : '',
+            'sortString'      => isset($sortBy) ? '&sortBy=' . ($this->request->query('sortBy') ?? $sortBy) . '&sortOrder=' . $sortOrder : '',
             'description'     => $this->description,
             'new'             => isset($this->entityConfig->actions->new)    ? is_object($this->entityConfig->actions->new)    : true,
             'edit'            => isset($this->entityConfig->actions->edit)   ? is_object($this->entityConfig->actions->edit)   : true,
             'delete'          => isset($this->entityConfig->actions->delete) ? is_object($this->entityConfig->actions->delete) : true,
+            'batch'           => $this->entityConfig->batch ?? true,
             'customTemplates' => $customTemplates
         ]);
 

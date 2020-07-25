@@ -1,48 +1,68 @@
 <style>
     .file-type-preview {
-        display: none;
-        margin: -12px;
-        margin-top: 5px;
-        width: calc(100% + 24px) !important;
         object-fit: cover !important;
-        max-height: 300px;
+        max-height: 100px;
+        border: 1px solid #ccc;
+        margin: 0 2px;
+        border-radius: 3px;
     }
 
     .fm-open {
         overflow: hidden;
+        border: 1px dashed #ccc;
+        width: 100px;
+        height: 100px;
+        font-size: 25px;
+        color: #aaa;
+        margin-right: 10px;
+    }
+
+    .file-input-around {
+        border: 1px solid #ccc;
+        border-radius: 3px;
+        margin: 0 5px;
+        padding: 15px;
+    }
+
+    .file-input-around .field-label {
+        transform: translate(-7px, -8px);
+    }
+
+    .preview-img-container {
+        display: inline-block;
+        position: relative;
+    }
+
+    .preview-img-remove-btn {
+        position: absolute;
+        top: -5px;
+        right: -5px;
+        border-radius: 100%;
+        background: #fff;
+        color: var(--col-danger);
+        height: 20px;
+        width: 20px;
+        border: none;
+        box-shadow: 1px 1px 3px #aaa;
     }
 </style>
 
-{% if value|length > 0 %}
-    {% for key, file in value %}
-        <div class="form-input-around col-lg-12">
-            <button type="button" class="btn btn-yellow fm-open" data-url="{{ path('FileManager') }}?popup" {{ attr.disabled ? 'disabled="disabled"' : '' }}>
-                {% if file is null or file == false %}
-                    <i class="fas fa-folder-open"></i> <span class="file-type-label">Select file</span>
-                {% else %}
-                    <i class="fas fa-folder-open" style="display:none;"></i> <span class="file-type-label">{{ file.filename }}</span>
-                {% endif %}
+<div class="form-input-around col-lg-12 file-input-around">
+    <label class="field-label">{{ label }}</label>
 
-                <input type="hidden" name="{{ name }}[value]" value="{{ file.id ?? '' }}">
-
-                {% if file.relativePath is defined %}
-                    <style>
-                        .file-type-preview {
-                            display: block;
-                        }
-                    </style>
-                {% endif %}
-
-                <img src="{{ file.relativePath is defined ? __webStorage__ ~ file.relativePath : '' }}" alt="" class="file-type-preview">
-            </button>
-        </div>
-    {% endfor %}
-{% else %}
-<div class="form-input-around col-lg-12">
-    <button type="button" class="btn btn-yellow fm-open" data-url="{{ path('FileManager') }}?popup" {{ attr.disabled ? 'disabled="disabled"' : '' }}>
-        <i class="fas fa-folder-open"></i> <span class="file-type-label">Select file</span>
-        <input type="hidden" name="{{ name }}[value]">
-        <img src="" alt="" class="file-type-preview">
+    <button type="button" class="btn fm-open" data-url="{{ path('FileManager') }}?popup" {{ attr.disabled ? 'disabled="disabled"' : '' }}>
+        <i class="fas fa-plus"></i></span>
+        <input type="hidden" name="{{ name }}[value]" value="{{ ids|json_encode }}">
     </button>
+
+    <span class="image-previews">
+        {% if value[0] is not null %}
+            {% for key, file in value %}
+                <div class="preview-img-container">
+                    <img src="{{ file.relativePath is defined ? __webStorage__ ~ file.relativePath : '' }}" alt="" class="file-type-preview">
+                    <button class="preview-img-remove-btn" data-index="{{ key }}"><i class="fas fa-times"></i></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    </span>
 </div>
-{% endif %}

@@ -169,17 +169,24 @@
     color: var(--col-primary);
 }
 
-.fm-controls-path i.fas.fa-home {
+.fm-controls-path svg.icon-tabler {
+    height: 1.2em;
+    margin: 0;
     color: #000;
 }
 
-.fm-controls-path i.fas.fa-home:hover {
+.fm-controls-path svg.icon-tabler-home:hover {
     color: var(--col-primary);
 }
 
-.fm-controls-path i.fas.fa-angle-right {
+.fm-controls-path svg.icon-tabler-chevron-right {
     color: rgba(0, 0, 0, .2);
-    margin: 0 5px;
+    width: 1em;
+}
+
+.fm-breadcrumb span {
+    display: inline-block;
+    transform: translateY(2px);
 }
 
 .dir-empty {
@@ -259,4 +266,74 @@
 
 .delete-file-modal .file-uses .table {
     margin-top: 10px;
+}
+
+.add-button svg {
+    margin: 0;
+    height: 1.4em;
+}
+
+#dropzone {
+    width: 100%;
+    height: 50vh;
+    border: 3px dashed #ddd;
+    margin: 10px;
+    border-radius: 5px;
+    display: none;
+}
+
+#dropzone.fadeout {
+    animation: fadeout .3s ease-in-out;
+    animation-fill-mode: forwards; 
+}
+
+#dropzone .dz-message {
+    text-align: center;
+    border: none;
+    background: none;
+    margin-top: 22vh;
+    font-size: 24px;
+}
+
+#dropzone .dz-preview {
+    position: relative;
+    display: inline-block;
+    width: 120px;
+    margin: 1em;
+}
+
+#dropzone .dz-image {
+    margin-bottom: 5px;
+}
+
+#dropzone .dz-preview .dz-progress {
+    display: block;
+    height: 15px;
+    border: 1px solid #ddd;
+    margin-top: 5px;
+    border-radius: 5px;
+}
+
+#dropzone .dz-preview .dz-progress .dz-upload {
+    display: block;
+    height: 100%;
+    width: 0;
+    background: var(--col-primary);
+    border-radius: 5px;
+}
+
+#dropzone .dz-preview .dz-error-mark, #dropzone .dz-preview .dz-success-mark {
+    position: absolute;
+    display: none;
+    left: 30px;
+    top: 30px;
+    width: 54px;
+    height: 58px;
+    left: 50%;
+    margin-left: -27px;
+}
+
+@keyframes fadeout {
+    from {opacity: 1}
+    to {opacity: 0;}
 }

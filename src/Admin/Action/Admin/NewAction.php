@@ -91,11 +91,11 @@ class NewAction extends AdminController {
 
         # Post
         foreach($fields as $field) {
-            $entity->$field = $_POST[$field];
+            $entity->$field = $this->request->input($field);
         }
 
         # Files
-        foreach($_FILES as $key => $file) {
+        foreach($this->request->all()->files as $key => $file) {
             if(!empty($file)) {
                 $entity->$key = APP . LampionSession::get('app') . STORAGE . $this->fs->upload($file, '');
             }
@@ -103,7 +103,7 @@ class NewAction extends AdminController {
 
         $this->em->persist($entity);
 
-        if(!$this->ajax) {
+        if(!$this->request->isAjax()) {
             Url::redirect($this->entityName, [
                 'success' => 'new'
             ]);

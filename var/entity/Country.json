@@ -1,1 +1,0 @@
-{"Country":{"general":{"title":"Country","icon":"flag","description":"Manage countries","permission":["ROLE_ADMIN"]},"fields":{"name":{"type":"varchar","metadata":{"length":"255","nullable":"false"}},"flag":{"type":"file","metadata":{"nullable":"false"}}}}}

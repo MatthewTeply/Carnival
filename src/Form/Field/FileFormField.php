@@ -15,11 +15,21 @@ class FileFormField extends FormField {
             $options['value'] = [$options['value']];
         }
 
+        if(isset($options['value'][0]) && $options['value'][0] != null)  {
+            foreach($options['value'] as $file) {
+                $options['ids'][] = $file->id;
+            }
+        }
+
+        else {
+            $options['ids'] = [];
+        }
+
         return $this->template('file', $options);
     }
 
     public function submit($data) {
-        return json_encode(!is_array($data) ? [$data] : $data);
+        return $data;
     }
 
 }

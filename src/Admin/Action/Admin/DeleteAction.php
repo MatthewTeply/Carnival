@@ -10,11 +10,11 @@ use Lampion\Http\Url;
 class DeleteAction extends AdminController {
 
     public function display() {
-        $entity = $this->em->find($this->className, $_GET['id']);
+        $entity = $this->em->find($this->className, $this->request->query('id'));
 
         $this->em->destroy($entity);
 
-        if(!$this->ajax) {
+        if(!$this->request->isAjax()) {
             Url::redirect($this->entityName, [
                 'success' => 'delete'
             ]);

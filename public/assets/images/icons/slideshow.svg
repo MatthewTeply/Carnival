@@ -1,22 +1,12 @@
-<?xml version="1.0"?>
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve" width="512px" height="512px" class=""><g><g>
-	<g>
-		<path d="M381.156,122.88H130.844c-9.426,0-17.067,7.64-17.067,17.067v232.107c0,9.426,7.64,17.067,17.067,17.067h250.311    c9.426,0,17.067-7.64,17.067-17.067V139.947C398.222,130.52,390.582,122.88,381.156,122.88z M364.089,354.987H147.911V157.013    h216.178V354.987z" data-original="#000000" class="active-path" data-old_color="#000000" fill="#FFFFFF"/>
-	</g>
-</g><g>
-	<g>
-		<path d="M73.956,151.324c-9.427,0-17.067,7.64-17.067,17.067v175.218c0,9.427,7.64,17.067,17.067,17.067    c9.426,0,17.067-7.64,17.067-17.067V168.391C91.022,158.965,83.382,151.324,73.956,151.324z" data-original="#000000" class="active-path" data-old_color="#000000" fill="#FFFFFF"/>
-	</g>
-</g><g>
-	<g>
-		<path d="M17.067,179.769C7.64,179.769,0,187.409,0,196.836v118.329c0,9.426,7.64,17.067,17.067,17.067    c9.427,0,17.067-7.64,17.067-17.067V196.836C34.133,187.409,26.493,179.769,17.067,179.769z" data-original="#000000" class="active-path" data-old_color="#000000" fill="#FFFFFF"/>
-	</g>
-</g><g>
-	<g>
-		<path d="M438.044,151.324c-9.426,0-17.067,7.64-17.067,17.067v175.218c0,9.427,7.64,17.067,17.067,17.067    c9.427,0,17.067-7.64,17.067-17.067V168.391C455.111,158.965,447.471,151.324,438.044,151.324z" data-original="#000000" class="active-path" data-old_color="#000000" fill="#FFFFFF"/>
-	</g>
-</g><g>
-	<g>
-		<path d="M494.933,179.769c-9.426,0-17.067,7.64-17.067,17.067v118.329c0,9.426,7.64,17.067,17.067,17.067S512,324.591,512,315.164    V196.836C512,187.409,504.36,179.769,494.933,179.769z" data-original="#000000" class="active-path" data-old_color="#000000" fill="#FFFFFF"/>
-	</g>
-</g></g> </svg>
+<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-slideshow" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="15" y1="6" x2="15.01" y2="6" />
+  <rect x="3" y="3" width="18" height="14" rx="3" />
+  <path d="M3 13l4 -4a3 5 0 0 1 3 0l 4 4" />
+  <path d="M13 12l2 -2a3 5 0 0 1 3 0l 3 3" />
+  <line x1="8" y1="21" x2="8.01" y2="21" />
+  <line x1="12" y1="21" x2="12.01" y2="21" />
+  <line x1="16" y1="21" x2="16.01" y2="21" />
+</svg>
+
+

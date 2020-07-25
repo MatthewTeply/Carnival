@@ -1,1 +1,0 @@
-{"PromoCode":{"general":{"title":"Promo k\u00f3dy","icon":"certificate","description":"Manage promo codes","permission":["ROLE_ADMIN"]},"fields":{"code":{"type":"varchar","metadata":{"nullable":"false","length":"255"}},"amount":{"type":"int","metadata":{"nullable":"false","length":"3"}}}}}

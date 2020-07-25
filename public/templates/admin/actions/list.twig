@@ -17,9 +17,9 @@
     <div class="col-lg-12 headline headline-button ">
         <div class="icon">
             {% if entity.icon is not null %}
-                <i class="fas fa-{{ entity.icon }}"></i>
+                {{ icon(entity.icon)|raw }}
             {% else %}
-                <i class="fas fa-cube"></i>
+                {{ icon('box')|raw }}
             {% endif %}
         </div>
         <p class="title">
@@ -29,7 +29,7 @@
         
         {% if new and user|hasPermission('new') %}
             <a href="{{ path(entityName) }}/new">
-                <button class="add-button btn btn-black float-right" id="open-form">
+                <button class="add-button btn btn-primary float-right" id="open-form">
                     <span> <i class="fas fa-plus"></i></span>
                 </button>
             </a>
@@ -41,13 +41,24 @@
             <div class="empty-content"><p>{{ 'Nothing here'|trans('action/list') }}</p></div>
         {% else %}
             <table class="table">
-                <thead>
+                <thead class="list-thead">
                     <tr>
+                        {% if batch %}
+                            <th class="batch-action-container">
+                                <input
+                                    type="checkbox"
+                                    id="batch-action-all"
+                                >
+                            </th>
+                        {% endif %}
                         {% for column in columns %}
                             <th>
                                 <a class="{{ sortBy == column.name ? 'active' : '' }}" href="{{ path(entityName) }}/list?sortBy={{ column.name }}&sortOrder={{ sortBy == column.name ? column.sortOrder : 'DESC' }}">
-                                    {{ column.label|trans('entity/' ~ entityName) }} 
-                                    <i class="list-sort-order-arrow {{ sortBy == column.name ? 'active fas fa-sort-' ~ (sortOrder == 'DESC' ? 'down' : 'up') : 'fas fa-sort' }}"></i>
+                                    {{ column.label|trans('entity/' ~ entityName) }}
+
+                                    <span class="{{ sortBy == column.name ? 'active' : '' }}">
+                                        {{ icon(sortBy == column.name ? (sortOrder == 'DESC' ? 'sort-descending' : 'sort-ascending') : 'arrows-sort')|raw }}
+                                    </span>
                                 </a>
                             </th>
                         {% endfor %}
@@ -57,6 +68,16 @@
                 <tbody>
                     {% for listEntity in listEntities %}
                         <tr>
+                            {% if batch %}
+                                <td class="batch-action-container">
+                                    <input
+                                        type="checkbox"
+                                        class="batch-action"
+                                        id="batch-action-{{ listEntity.id }}"
+                                        data-id="{{ listEntity.id }}"
+                                    >
+                                </td>
+                            {% endif %}
                             {% for column in columns %}
                                 <td>
                                     {{ listEntity[column.name] }}
@@ -64,10 +85,10 @@
                             {% endfor %}
                             <td><div class="table-buttons">
                                 {% if edit and user|hasPermission('edit') %}
-                                    <a href="{{ path(entityName) }}/edit?id={{ listEntity.id }}" class="link edit-btn"><i class="fa-edit fas"></i></a>
+                                    <a href="{{ path(entityName) }}/edit?id={{ listEntity.id }}" class="link edit-btn">{{ icon('edit')|raw }}</a>
                                 {% endif %}
                                 {% if delete and user|hasPermission('delete') %}
-                                    <button data-toggle="modal" data-target="#delete-entity-modal-{{ listEntity.id }}" class="btn link delete-btn"><i class="far fa-trash-alt"></i></button>
+                                    <button data-toggle="modal" data-target="#delete-entity-modal-{{ listEntity.id }}" class="btn link delete-btn">{{ icon('trash')|raw }}</button>
                                 {% endif %}
                             </td>
                         </tr>
@@ -75,14 +96,14 @@
                 </tbody>
                 <tfoot>
                     <tr>
-                        <td>
+                        <td colspan="{{ batch ? 2 : 1 }}">
                             {{ resultsCount }} {{ 'Results'|trans('action/list') }}
                         </td>
                         <td class="text-right list-pagination" colspan="{{ (columns|length - 1) > 0 ? columns|length : 1 }}">
                             <div class="btn-group" role="group" aria-label="Basic example">
-                                <a href="{{ path(entityName) }}/list?page={{ page - 1 }}{{ sortString }}" {{ (page == 1) ? 'class="btn disabled"' : 'class="btn"' }}><i class="fas fa-arrow-left"></i> {{ 'Previous'|trans('action/list') }}</a>
+                                <a href="{{ path(entityName) }}/list?page={{ page - 1 }}{{ sortString }}" {{ (page == 1) ? 'class="btn disabled"' : 'class="btn"' }}>{{ icon('arrow-narrow-left')|raw }} {{ 'Previous'|trans('action/list') }}</a>
                                 <div class="btn page-counter">{{ page }} / {{ pagesCount }}</div>
-                                <a href="{{ path(entityName) }}/list?page={{ page + 1 }}{{ sortString }}" {{ (page == pagesCount) ? 'class="btn disabled"' : 'class="btn"' }}>{{ 'Next'|trans('action/list') }} <i class="fas fa-arrow-right"></i></a>
+                                <a href="{{ path(entityName) }}/list?page={{ page + 1 }}{{ sortString }}" {{ (page == pagesCount) ? 'class="btn disabled"' : 'class="btn"' }}>{{ 'Next'|trans('action/list') }} {{ icon('arrow-narrow-right')|raw }}</a>
                             </div>
                         </td>
                     </tr>

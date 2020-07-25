@@ -3,7 +3,6 @@
 namespace Carnival\Admin\Action\Admin;
 
 use Carnival\Admin\Core\Admin\AdminController;
-use Lampion\Debug\Console;
 use Lampion\Http\Url;
 use Lampion\Form\Form;
 use Lampion\Misc\Util;
@@ -18,7 +17,7 @@ class EditAction extends AdminController {
     public function __construct() {
         parent::__construct();
 
-        $this->entityId = $_GET['id'];
+        $this->entityId = $this->request->query('id');
 
         $this->action = Url::link($this->entityName) . '/edit?id=' . $this->entityId;
         $this->entityConfig = $this->entityConfig->actions->edit ?? null;
@@ -98,20 +97,20 @@ class EditAction extends AdminController {
 
     public function submit() {
         $fields = $this->entityConfig->fields ?? $this->entityColumns;
-        $entity = $this->em->find($this->className, $_GET['id']);
+        $entity = $this->em->find($this->className, $this->request->query('id'));
 
         foreach($fields as $key => $field) {
             if($field->type == 'boolean') {
-                if(!isset($_POST[$key])) {
-                    $_POST[$key] = 'false';
+                if(!$this->request->hasInput($key)) {
+                    $this->request->input($key, 'false');
                 }
             }
 
-            $entity->$key = $_POST[$key];
+            $entity->$key = $this->request->input($key);
         }
 
         # Files
-        foreach($_FILES as $key => $file) {
+        foreach($this->request->all()->files as $key => $file) {
             if(!empty($file['name'])) {
                 $entity->$key = APP . LampionSession::get('app') . STORAGE . $this->fs->upload($file, '');
             }
@@ -119,7 +118,7 @@ class EditAction extends AdminController {
 
         $this->em->persist($entity);
 
-        if(!$this->ajax) {
+        if(!$this->request->isAjax()) {
             Url::redirect($this->entityName, [
                 'success' => 'edit'
             ]);

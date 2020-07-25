@@ -1,15 +1,12 @@
 <?php
 
-use Lampion\Core\Router;
+use Lampion\Http\Router;
 use Lampion\Http\Request;
 use Lampion\Http\Response;
+use Lampion\Http\Url;
 use Lampion\User\Auth;
 
 use Carnival\Admin\AdminCore;
-use Carnival\Entity\Liveedit;
-use Lampion\Core\Cookie;
-use Lampion\Database\Query;
-use Lampion\Http\Url;
 
 $router = new Router();
 
@@ -24,8 +21,6 @@ if(isset($_GET['authToken']))  { $token = $_GET['authToken']; }
 if(Auth::isLoggedIn($token)) {
     $ac = new AdminCore();
     $ac->registerRoutes($router);
-    
-    $router->get('dashboard', 'Carnival\\Admin\\Controller\\Common\\DashboardController::index');
 }
 
 else {
@@ -33,18 +28,11 @@ else {
 }
 
 $router
-    ->get('liveedit/{id}', function(Request $req, Response $res) {
-        @$content = Query::select('liveedit', ['content'], [
-            'le_id' => ['=', $req->params['id']]
-        ])[0]['content'];
-        
-        echo htmlspecialchars_decode($content);
-    })
     ->get("login", "Carnival\Controller\User\LoginController::index")
     ->get('logout', function(Request $req, Response $res) {
         Auth::logout();
 
-        if(Request::isAjax()) {
+        if($req->isAjax()) {
             $res->json([
                 'redirect' => Url::link('login')
             ]);
