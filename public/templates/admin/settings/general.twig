@@ -1,0 +1,101 @@
+{{ header }}
+{{ nav }}
+
+<link rel="stylesheet" href="{{ __css__ }}admin/settings/general.css">
+
+<div class="main-container row">
+
+    <div class="col col-12">
+        <div class="main-content">
+            <div class="col-lg-12 headline headline-button ">
+                <div class="icon">
+                    {{ icon('settings')|raw }}
+                </div>
+                <p class="title">
+                    {{ 'General settings'|trans('settings/general') }}
+                    <span class="description">{{ 'Manage settings'|trans('settings/general') }}</span>
+                </p>
+
+                <a href="{{ path('GeneralSettings') }}/save">
+                    <button class="add-button btn btn-primary float-right">
+                        <span>{{ icon('device-floppy')|raw }}</span>
+                    </button>
+                </a>
+            </div>
+
+            <nav class="settings-side-nav col-2 nav flex-column nav-pills" id="settings-tabs">
+                {% macro displaySettingMenuItem(setting, key) %}
+                    <a href="#settings-{{ key }}" id="settings-{{ key }}-tab" class="nav-link {{ key == 0 ? 'active' : '' }}" data-toggle="pill" role="tab">{{ setting.icon is defined ? icon(setting.icon)|raw : '' }} {{ setting.label }}</a>
+                {% endmacro %}
+
+                {% for key, setting in settings|toArray %}
+                    {{ _self.displaySettingMenuItem(setting, key) }}
+                {% endfor %}
+            </nav>
+        
+            <form class="body col-10 tab-content" id="settings-tabsContent">
+                {% macro displaySettingContent(setting, key) %}
+                    {% if setting.children is defined %}                            
+                        {% if setting.isTab %}
+                            <div class="settings-tab tab-pane fade {{ key == 0 ? 'show active' : '' }}" id="settings-{{ key }}">
+                        {% endif %}
+
+                            <section class="settings-section">
+                                {% if not setting.isTab %}
+                                    <h1>{{ setting.label }}</h1>
+                                {% endif %}
+
+                                {% for key, child in setting.children|toArray %}
+                                    {{ _self.displaySettingContent(child, key) }}
+                                {% endfor %}
+                            </section>
+
+                        {% if setting.isTab %}
+                            </div>
+                        {% endif %}
+                    {% else %}
+                        <p>{{ setting.field }}</p>                        
+                    {% endif %}
+                {% endmacro %}
+
+                {% for key, setting in settings|toArray %}
+                    {{ _self.displaySettingContent(setting, key) }}
+                {% endfor %}
+            </form>
+        </div>
+    </div>
+
+    {#
+    <div class="col col-2">
+        <div class="card main-content timeline-container">
+            <div class="card-header">
+                <b>Timeline</b>
+            </div>
+            <div class="card-body">
+                
+                {% if timeline|length != 0 %}
+                    <ul class="timeline">
+                        {% for timelineItem in timeline %}
+                            <li class="timeline-item {{ timelineItem.type }}">
+                                <small class="timeline-date">{{ timelineItem.created|date('d.m. Y - H:i:s') }}</small>
+                                <b class="timeline-title">{{ timelineItem.title }}</b>
+                                <p class="timeline-body">
+                                    {{ timelineItem.content|raw }}
+                                </p>
+                            </li>
+                        {% endfor %}
+                        <li class="timeline-item">
+                        </li>
+                    </ul>
+                {% else %}
+                    Nic...
+                {% endif %}
+
+            </div>
+        </div>
+    </div>
+    #}
+
+</div>
+
+{{ footer }}

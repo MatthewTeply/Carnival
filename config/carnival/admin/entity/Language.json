@@ -1,0 +1,29 @@
+{
+    "Language": {
+        "title": "Languages",
+        "icon": "flag",
+        "description": "Manage languages",
+        "permission": ["ROLE_ADMIN", "ROLE_MODERATOR"],
+        "nav_section": "settings",
+        "actions": {
+            "list": {
+                "fields": {
+                    "icon": {
+                        "type": "file",
+                        "label": "Icon",
+                        "template": "image"
+                    },
+                    "name": {
+                        "type": "string",
+                        "label": "Name"
+                    },
+                    "code": {
+                        "type": "string",
+                        "label": "Code"
+                    }
+                }
+            },
+            "delete": { "controller": "Carnival\\Admin\\Core\\Admin\\Translation::delete" }
+        }
+    }
+}

@@ -2,7 +2,7 @@
     "User": {
         "title": "Uživatelé",
         "icon": "users",
-        "nav_section": "user",
+        "nav_section": "settings",
         "permission": ["ROLE_ADMIN"],
         "description": "Zde administrátoři můžou vytvářet, mazat a upravovat uživatelské účty",
         "sortable": true,

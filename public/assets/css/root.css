@@ -1,12 +1,15 @@
 :root {
-    --col-primary: rgb(142, 84, 233);
-    --col-primary-light: rgb(242, 234, 255);
+    --col-primary: #8e54e9;
+    --col-primary-light: #f3ebff;
     --col-primary-bg: linear-gradient(90deg, rgba(0, 132, 255, 1) 0%, rgba(71, 160, 244, 1) 100%);
     --col-side-nav: #191927;
     --col-second: #2d2d2d;
     --border-primary: 1px solid rgb(241, 241, 241);
 
+    --danger: #FF5666;
+
     --nav-border-active: #fff;
+    --mc-margin: 15px;
 }
 
 body {
@@ -24,21 +27,27 @@ body {
     cursor: pointer !important;
 }
 
-.main-content {
-    --mc-margin: 15px;
-    margin: 10px var(--mc-margin);
-    position: relative;
+.main-container {
     margin-left: calc(200px + var(--mc-margin));
-    margin-right: var(--mc-margin)
-        /*calc(70px + var(--mc-margin))*/
-    ;
+    margin-right: var(--mc-margin);
+    margin-bottom: var(--mc-margin);
+}
+
+.main-container .col {
+    padding: 0 5px !important;
+}
+
+.main-content {
+    position: relative;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     align-content: flex-start;
     background-color: #fff;
     border-radius: 5px;
+    border: none;
     border-bottom: 1px solid #ddd;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, .1);
 }
 
 .main-content.toggled {
@@ -377,6 +386,7 @@ button.btn-blue.edit span {
     justify-content: center;
     align-items: center;
     cursor: pointer;
+    padding-left: 26px;
 }
 
 .form-check-input {
@@ -655,7 +665,7 @@ select.form-control {
 .carnival-multiselect .row .custom-control-label::after {
     width: 20px;
     height: 20px;
-    left: -28px;
+    left: 0;
     top: 5px;
 }
 
@@ -791,4 +801,89 @@ form .form-input-around {
 
 .list-thead svg {
     height: 1.2em;
+}
+
+.language-container {
+    border: 1px solid #ddd;
+    padding: 15px 10px;
+    width: 100%;
+    border-radius: 3px;
+}
+
+.language-icon {
+    height: 1em;
+    margin-right: 4px;
+}
+
+.language-tabs {
+    border: 1px solid #ccc;
+    border-bottom: none !important;
+    background-color: rgba(0,0,0,.03);
+    border-top-left-radius: 5px !important;
+    border-top-right-radius: 5px !important;
+    padding: 3px;
+    padding-bottom: 0;
+    z-index: 10;
+}
+
+.language-tabs .nav-item {
+    z-index: 10;
+    margin-right: 1px;
+}
+
+.language-tabs .nav-item a {
+    transition: .1s;
+    border-bottom: none !important;
+    border-color: transparent !important;
+    color: rgba(0, 0, 0, .5);
+}
+
+.language-tabs .nav-item a:hover {
+    background-color: rgba(0, 0, 0, .05) !important;
+}
+
+.language-tabs .nav-item a:focus, 
+.language-tabs .nav-item a.active
+{
+    border-color: #ccc !important;
+    color: #000;
+}
+
+.language-container .form-control {
+    border-top-left-radius: 0 !important;
+    border-top-right-radius: 0 !important;
+    margin-bottom: 0 !important;
+}
+
+.language-container textarea.form-control {
+    height: 15em;
+    z-index: -10;
+}
+
+.global-language-switch-container {
+    border: none;
+    border-bottom: 1px solid #ccc !important;
+    justify-content: center;
+    margin: -20px;
+    padding-top: 10px;
+    margin-bottom: 20px;
+    background-color: #fff;
+}
+
+.nav-pills .nav-link, .nav-pills > .nav-link {
+    color: #666;
+}
+
+.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+    background: none;
+    color: #000;
+}
+
+.nav-pills .nav-link svg, .nav-pills > .nav-link svg {
+    height: 1.2em;
+    transform: translateY(-2px);
+}
+
+.nav-pills .nav-link.active svg, .nav-pills .show > .nav-link svg {
+    color: var(--col-primary);
 }

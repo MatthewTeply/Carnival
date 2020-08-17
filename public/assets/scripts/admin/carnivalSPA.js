@@ -136,7 +136,8 @@ $(document).ready(function () {
 
                     let pageChangedEvent = new CustomEvent('carnival-page-changed', {
                         detail: {
-                            href: response.href
+                            href: href,
+                            route: response.route
                         }
                     });
 

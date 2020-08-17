@@ -2,7 +2,7 @@
 
 namespace Carnival\Admin\Controller\Files;
 
-use Carnival\Admin\Core\Admin\AdminController;
+use Carnival\Admin\Core\Controller;
 use Exception;
 use Lampion\FileSystem\FileSystem;
 use Lampion\Http\Request;
@@ -10,7 +10,7 @@ use Lampion\Session\Lampion as LampionSession;
 use Lampion\Language\Translator;
 use Lampion\Http\Url;
 
-class FileManagerController extends AdminController {
+class FileManagerController extends Controller {
 
     # Public:
     public $fs;

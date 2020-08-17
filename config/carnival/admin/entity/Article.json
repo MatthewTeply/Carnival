@@ -1,0 +1,1 @@
+{"Article":{"title":"Articles","icon":"news","description":"Manage articles","permission":["ROLE_ADMIN","ROLE_MODERATOR","ROLE_AUTHOR"]}}

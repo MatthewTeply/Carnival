@@ -16,48 +16,50 @@
     }
 </style>
 
-<div class="main-content">
-    <div class="col-lg-12 headline headline-button ">
-        <div class="icon">
-            {% if icon is not null %}
-                {{ icon(icon)|raw }}
-            {% else %}
-                {{ icon('box')|raw }}
+<div class="main-container">
+    <div class="main-content">
+        <div class="col-lg-12 headline headline-button ">
+            <div class="icon">
+                {% if icon is not null %}
+                    {{ icon(icon)|raw }}
+                {% else %}
+                    {{ icon('box')|raw }}
+                {% endif %}
+            </div>
+            <p class="title">
+                {{ title ?? entityName|trans('entity/' ~ entityName) }}
+                <span
+                    class="description">{{ description is not null ? description : 'Manage'|trans('global') ~ ' ' ~ entityName|trans('entity/' ~ entityName) }}</span>
+            </p>
+    
+            <a href="{{ referer }}">
+                <button class="btn btn-gray close-button">
+                    <span><i class="fas fa-times"></i></span>
+                </button>
+            </a>
+    
+            {% if user|hasPermission('delete') %}
+                <a href="{{ path(entityName) }}/delete?id={{ entityId }}">
+                    <button type="button" class="btn btn-danger add-button">
+                        <i class="fas fa-trash-alt"></i>
+                    </button>
+                </a>
+            {% endif %}
+    
+            {% if user|hasPermission('edit') %}
+                <a href="{{ path(entityName) }}/edit?id={{ entityId }}">
+                    <button type="button" class="btn btn-primary add-button">
+                        <i class="fas fa-pencil-alt"></i>
+                    </button>
+                </a>
             {% endif %}
         </div>
-        <p class="title">
-            {{ title ?? entityName|trans('entity/' ~ entityName) }}
-            <span
-                class="description">{{ description is not null ? description : 'Manage'|trans('global') ~ ' ' ~ entityName|trans('entity/' ~ entityName) }}</span>
-        </p>
-
-        <a href="{{ referer }}">
-            <button class="btn btn-gray close-button">
-                <span><i class="fas fa-times"></i></span>
-            </button>
-        </a>
-
-        {% if user|hasPermission('delete') %}
-            <a href="{{ path(entityName) }}/delete?id={{ entityId }}">
-                <button type="button" class="btn btn-danger add-button">
-                    <i class="fas fa-trash-alt"></i>
-                </button>
-            </a>
-        {% endif %}
-
-        {% if user|hasPermission('edit') %}
-            <a href="{{ path(entityName) }}/edit?id={{ entityId }}">
-                <button type="button" class="btn btn-primary add-button">
-                    <i class="fas fa-pencil-alt"></i>
-                </button>
-            </a>
-        {% endif %}
-    </div>
-
-    <div class="body">
-        <div class="card">
-            <div class="card-body">
-                {{ form.render() }}
+    
+        <div class="body">
+            <div class="card">
+                <div class="card-body">
+                    {{ form.render() }}
+                </div>
             </div>
         </div>
     </div>

@@ -1,0 +1,31 @@
+{
+    "general": {
+        "isTab": true,
+        "label": "General",
+        "icon": "settings",
+        "children": {
+            "darkTheme": {
+                "label": "Dark theme",
+                "field": "checkbox"
+            }
+        }
+    },
+    "emails": {
+        "isTab": true,
+        "label": "Emails",
+        "icon": "mail-opened",
+        "children": {
+            "adminEmail": {
+                "label": "Admin email",
+                "description:": "Any important notifications, notices and error reports are going to be sent to this email address.",
+                "field": "text",
+                "placeholder": "example@gmail.com"
+            },
+            "adminEmailDisplay": {
+                "label": "Display admin email",
+                "description:": "Determines whether the admin email is going to be visible at the login page.",
+                "field": "checkbox"
+            }
+        }
+    }
+}

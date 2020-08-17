@@ -1,10 +1,12 @@
-window.createDirModal = new Vue({
-    el: '#create-dir-modal',
-    delimiters: ['${', '}'],
-    data: {
-        dirName: ''
-    }
-});
+if(document.querySelector('#create-dir-modal') !== null) {
+    window.createDirModal = new Vue({
+        el: '#create-dir-modal',
+        delimiters: ['${', '}'],
+        data: {
+            dirName: ''
+        }
+    });
+}
 
 let mainContentElement = document.querySelector('.main-content');
 let notifier = new AWN();

@@ -1,10 +1,10 @@
 {
     "City": {
-        "title": "City",
-        "icon": "building-community",
-        "description": "List of cities",
-        "help": "Here <b>you</b> can add cities to your heart's content.",
+        "title": "Cities",
+        "icon": "box",
+        "description": "Manage cities",
         "permission": ["ROLE_ADMIN", "ROLE_MODERATOR"],
-        "batch": true
+        "batch": true,
+        "help": "Add some cities, why not"
     }
 }

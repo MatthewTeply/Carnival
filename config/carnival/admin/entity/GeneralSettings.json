@@ -1,0 +1,18 @@
+{
+    "GeneralSettings": {
+        "title": "General settings",
+        "description": "Manage settings",
+        "icon": "settings",
+        "nav_section": "settings",
+        "nav_display": false,
+        "permission": ["ROLE_ADMIN", "ROLE_USER"],
+        "actions": {
+            "list": {
+                "controller": "Carnival\\Admin\\Controller\\Settings\\GeneralController::list"
+            },
+            "save": {
+                "controller": "Carnival\\Admin\\Controller\\Settings\\GeneralController::save"
+            }
+        }
+    }
+}

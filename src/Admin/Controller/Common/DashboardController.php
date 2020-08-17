@@ -1,11 +1,10 @@
 <?php
 namespace Carnival\Admin\Controller\Common;
 
-use Carnival\Admin\Core\Admin\AdminController;
+use Carnival\Admin\Core\Controller;
 use Carnival\Admin\GoogleAnalytics;
-use Lampion\Debug\Console;
 
-class DashboardController extends AdminController {
+class DashboardController extends Controller {
 
     public function listGet() {
         $ga = new GoogleAnalytics();

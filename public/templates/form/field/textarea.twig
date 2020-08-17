@@ -1,0 +1,51 @@
+<div class="{{ attr.class }} form-input-around">
+    <label class="field-label">{{ label }}</label>
+    
+    {% if metadata.translatable is defined and metadata.translatable == 'true' %}
+        <div class="language-container">
+            <ul class="nav nav-tabs language-tabs" id="{{ name }}-lang" role="tablist">
+                {% for key, language in languages %}
+                    <li class="nav-item">
+                        <a class="nav-link language-tab language-{{ language.code }}-tab {{ key == 0 ? 'active' : '' }}" id="home-tab" data-toggle="tab" href="#{{ name }}-lang-{{ language.code }}" role="tab" aria-controls="{{ name }}-lang-{{ language.code }}" aria-selected="true">
+                            <img src="{{ __webStorage__ ~ language.icon.relativePath }}" class="language-icon" alt="">
+                            {{ language.name }}
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+
+            <div class="tab-content" id="{{ name }}-langContent">
+                {% for key, language in languages %}
+                    <div
+                        id="{{ name }}-lang-{{ language.code }}" 
+                        class="tab-pane {{ key == 0 ? 'show active' : '' }}" 
+                    >
+                        <textarea 
+                            name="{{ name }}[value][{{ language.code }}]" 
+                            type="{{ type }}" 
+                            class="form-control" 
+                            id="{{ attr.id }}" 
+                            placeholder="{{ attr.placeholder }} ({{ language.name }})"
+                            {% if attr.disabled %}
+                                disabled="disabled"
+                            {% endif %}
+                        >{{ value[language.code] }}</textarea>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    {% else %}
+        <textarea
+            name="{{ name }}[value]" 
+            cols="30" 
+            rows="10" 
+            class="form-control" 
+            id="{{ attr.id }}" 
+            placeholder="{{ attr.placeholder }}"
+            {% if attr.disabled %}
+                disabled="disabled"
+            {% endif %}
+        >{{ value }}</textarea>
+    {% endif %}
+    
+</div>

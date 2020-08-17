@@ -2,15 +2,14 @@
 
 namespace Carnival\Admin\Controller\Dev;
 
-use Carnival\Admin\Core\Admin\AdminController;
-use Lampion\Application\Application;
+use Carnival\Admin\Core\Controller;
 use Lampion\Entity\EntityCreator;
 use Lampion\FileSystem\FileSystem;
 use Lampion\FileSystem\Path;
 use Lampion\Form\Form;
 use Lampion\Http\Url;
 
-class EntityManagerController extends AdminController {
+class EntityManagerController extends Controller {
 
     public $fs;
 

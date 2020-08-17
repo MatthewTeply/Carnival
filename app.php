@@ -6,7 +6,7 @@ use Lampion\Http\Response;
 use Lampion\Http\Url;
 use Lampion\User\Auth;
 
-use Carnival\Admin\AdminCore;
+use Carnival\Admin\Bootstrap as Admin;
 
 $router = new Router();
 
@@ -19,16 +19,16 @@ if(isset($_POST['authToken'])) { $token = $_POST['authToken']; }
 if(isset($_GET['authToken']))  { $token = $_GET['authToken']; }
 
 if(Auth::isLoggedIn($token)) {
-    $ac = new AdminCore();
+    $ac = new Admin();
     $ac->registerRoutes($router);
 }
 
 else {
-    $router->get(DEFAULT_HOMEPAGE, function(Request $req, Response $res) { $res->redirect('login'); });
+    $router->get('*', function(Request $req, Response $res) { $res->redirect('login'); });
 }
 
 $router
-    ->get("login", "Carnival\Controller\User\LoginController::index")
+    ->get("login", "Carnival\Admin\Controller\User\LoginController::index")
     ->get('logout', function(Request $req, Response $res) {
         Auth::logout();
 
@@ -42,6 +42,9 @@ $router
             $res->redirect('login');
         }
     })
-    ->post("login", "Carnival\Controller\User\LoginController::login")
+    ->post("login", "Carnival\Admin\Controller\User\LoginController::login")
+    ->get('testApp', function(Request $req, Response $res) {
+        $res->send('This is Carnival!');
+    })
     ->listen();
 

@@ -22,7 +22,6 @@ function particlesInit() {
 		var n = '<div class="particle" style="top:' + getRandomInt(15, 95) + '%; left:' + getRandomInt(5,95) + '%; width:'
 		+ size + 'px; height:' + size + 'px; animation-delay:' + (getRandomInt(0,30)/10) + 's; background-color:rgba('
 		+ getRandomInt(235, 255) + ',' + getRandomInt(235, 255) + ',' + getRandomInt(235, 255) + ',' + (getRandomInt(235, 255)/10) + ');"></div>';
-		console.log("Particle " + i + ": " + n);
 		var node = document.createElement("div");
 		node.innerHTML = n;
 		generator.appendChild(node);

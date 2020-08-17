@@ -1,38 +1,64 @@
 {{ header }}
 {{ nav }}
 
-<div class="main-content">
-    <div class="col-lg-12 headline headline-button ">
-        <div class="icon">
-            {% if icon is not null %}
-                {{ icon(icon)|raw }}
-            {% else %}
-                {{ icon('box')|raw }}
-            {% endif %}
-        </div>
-        <p class="title">
-            {{ title ?? entityName|trans('entity/' ~ entityName) }}
-            <span class="description">{{ description is not null ? description : 'Manage'|trans('global') ~ ' ' ~ entityName|trans('entity/' ~ entityName) }}</span>
-        </p>
-
-        <a href="{{ referer }}">
-            <button class="btn btn-gray close-button">
-                <span><i class="fas fa-times"></i></span>
+<div class="main-container">
+    <div class="main-content">
+        <div class="col-lg-12 headline headline-button ">
+            <div class="icon">
+                {% if icon is not null %}
+                    {{ icon(icon)|raw }}
+                {% else %}
+                    {{ icon('box')|raw }}
+                {% endif %}
+            </div>
+            <p class="title">
+                {{ title ?? entityName|trans('entity/' ~ entityName) }}
+                <span class="description">{{ description is not null ? description : 'Manage'|trans('global') ~ ' ' ~ entityName|trans('entity/' ~ entityName) }}</span>
+            </p>
+    
+            <a href="{{ referer }}">
+                <button class="btn btn-gray close-button">
+                    <span><i class="fas fa-times"></i></span>
+                </button>
+            </a>
+    
+            <button class="btn btn-primary add-button" id="form-submit-btn">
+                <i class="fas fa-check"></i>
             </button>
-        </a>
-
-        <button class="btn btn-primary add-button" id="form-submit-btn">
-            <i class="fas fa-check"></i>
-        </button>
-    </div>
-
-    <div class="body">
-        <div class="card">
-            <div class="card-body">
-                {{ form.render() }}
+        </div>
+    
+        <div class="body">
+            <div class="card">
+                <div class="card-body">
+    
+                    {% if hasTranslatables %}
+                        <ul class="nav nav-tabs language-tabs global-language-switch-container" id="{{ name }}-lang" role="tablist">
+                            {% for key, language in languages %}
+                                <li class="nav-item">
+                                    <a class="nav-link global-language-switch {{ key == 0 ? 'active' : '' }}" id="home-tab" data-language-code="{{ language.code }}" data-toggle="tab" href="#{{ name }}-lang-{{ language.code }}" role="tab" aria-controls="{{ name }}-lang-{{ language.code }}" aria-selected="true">
+                                        <img src="{{ __webStorage__ ~ language.icon.relativePath }}" class="language-icon" alt="">
+                                        {{ language.name }}
+                                    </a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+    
+                    {{ form.render() }}
+                </div>
             </div>
         </div>
     </div>
 </div>
+
+<script>
+    $('.global-language-switch').click(function() {
+        $('.language-' + $(this).attr('data-language-code') + '-tab').tab('show');
+    });
+
+    $('.language-tab').click(function() {
+        $('.global-language-switch').removeClass('active');
+    });
+</script>
 
 {{ footer }}

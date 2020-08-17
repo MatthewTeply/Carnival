@@ -4,79 +4,81 @@
 <link href="{{ __css__ }}admin/actions/list.css" rel="stylesheet">
 <link href="{{ __css__ }}admin/settings/translate.css" rel="stylesheet">
 
-<div class="main-content" id="app">
-    <div class="col-lg-12 headline headline-button ">
-        <div style="background-image: url('{{ __img__ }}icons/text-document.svg')" class="icon"></div>
-        <p class="title">
-            {{ 'Translations'|trans('settings/translate') }}
-            <span class="description">{{ description is not null ? description : 'Manage'|trans('global') ~ ' ' ~ 'Translations'|trans('settings/translate') }}</span>
-        </p>
-
-        <a href="{{ path('Translate') }}/list">
-            <button class="btn btn-link close-button" id="open-form">
-                <span><i class="fas fa-times"></i></span>
-            </button>
-        </a>
-    </div>
-
-    <div class="card">
-        <div class="card-header">
-            <div>{{ 'Translation'|trans('settings/translate') }}: <b v-text="filename"></b></div>
+<div class="main-container">
+    <div class="main-content" id="app">
+        <div class="col-lg-12 headline headline-button ">
+            <div style="background-image: url('{{ __img__ }}icons/text-document.svg')" class="icon"></div>
+            <p class="title">
+                {{ 'Translations'|trans('settings/translate') }}
+                <span class="description">{{ description is not null ? description : 'Manage'|trans('global') ~ ' ' ~ 'Translations'|trans('settings/translate') }}</span>
+            </p>
+    
+            <a href="{{ path('Translate') }}/list">
+                <button class="btn btn-link close-button" id="open-form">
+                    <span><i class="fas fa-times"></i></span>
+                </button>
+            </a>
         </div>
-        <div class="card-body">
-            <form action="{{ path('Translate') }}/new" method="POST">
-                <b>{{ 'Filename'|trans('settings/translate') }}</b>
-                <input type="text" name="filename" class="form-control" placeholder="{{ 'Filename'|trans('settings/translate') }}" v-model="filename">
-
-                <b>{{ 'Directory'|trans('settings/translate') }}</b>
-                <div id="section-autocomplete" class="form-input-around">
-                    <input class="autocomplete-input form-control" placeholder="{{ 'Directory'|trans('settings/translate') }}" name="dir">
-                    <ul class="autocomplete-result-list"></ul>
-                </div>
-                  
-                {#
-                <select name="section" class="form-control">
-                    <option v-for="section in sections" v-bind:value="section"></option>
-                </select>
-                #}
-
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>{{ 'Keyword'|trans('settings/translate') }}</th>
-                            <th class="middle-col"></th>
-                            <th>{{ 'Translation'|trans('settings/translate') }}</th>
-                            <th class="actions-col"></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr v-for="(item, key) in items">
-                            <td>
-                                <input type="text" class="form-control" v-bind:name="'items[' + key + '][keyword]'" v-model="item.keyword">
-                            </td>
-                            <td class="middle-col">
-                                <i class="fas fa-long-arrow-alt-right"></i>
-                            </td>
-                            <td>
-                                <input type="text" class="form-control" v-bind:name="'items[' + key + '][translation]'" v-model="item.translation">
-                            </td>
-                            <td class="actions-col">
-                                <button type="button" class="btn btn-danger delete-row" @click="deleteRow(key)"><i class="fas fa-minus-circle"></i> {{ 'Delete'|trans('global') }}</button>
-                            </td>
-                        </tr>
-                        <tr class="add-row-row">
-                            <td colspan="4">
-                                <button type="button" class="btn btn-primary" @click="addRow"><i class="fas fa-plus-circle"></i> {{ 'New'|trans('global') }}</button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-
-                <button type="submit" class="btn btn-yellow">{{ 'New'|trans('global') }}</button>
-            </form>
+    
+        <div class="card">
+            <div class="card-header">
+                <div>{{ 'Translation'|trans('settings/translate') }}: <b v-text="filename"></b></div>
+            </div>
+            <div class="card-body">
+                <form action="{{ path('Translate') }}/new" method="POST">
+                    <b>{{ 'Filename'|trans('settings/translate') }}</b>
+                    <input type="text" name="filename" class="form-control" placeholder="{{ 'Filename'|trans('settings/translate') }}" v-model="filename">
+    
+                    <b>{{ 'Directory'|trans('settings/translate') }}</b>
+                    <div id="section-autocomplete" class="form-input-around">
+                        <input class="autocomplete-input form-control" placeholder="{{ 'Directory'|trans('settings/translate') }}" name="dir">
+                        <ul class="autocomplete-result-list"></ul>
+                    </div>
+                      
+                    {#
+                    <select name="section" class="form-control">
+                        <option v-for="section in sections" v-bind:value="section"></option>
+                    </select>
+                    #}
+    
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>{{ 'Keyword'|trans('settings/translate') }}</th>
+                                <th class="middle-col"></th>
+                                <th>{{ 'Translation'|trans('settings/translate') }}</th>
+                                <th class="actions-col"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="(item, key) in items">
+                                <td>
+                                    <input type="text" class="form-control" v-bind:name="'items[' + key + '][keyword]'" v-model="item.keyword">
+                                </td>
+                                <td class="middle-col">
+                                    <i class="fas fa-long-arrow-alt-right"></i>
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control" v-bind:name="'items[' + key + '][translation]'" v-model="item.translation">
+                                </td>
+                                <td class="actions-col">
+                                    <button type="button" class="btn btn-danger delete-row" @click="deleteRow(key)"><i class="fas fa-minus-circle"></i> {{ 'Delete'|trans('global') }}</button>
+                                </td>
+                            </tr>
+                            <tr class="add-row-row">
+                                <td colspan="4">
+                                    <button type="button" class="btn btn-primary" @click="addRow"><i class="fas fa-plus-circle"></i> {{ 'New'|trans('global') }}</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+    
+                    <button type="submit" class="btn btn-yellow">{{ 'New'|trans('global') }}</button>
+                </form>
+            </div>
         </div>
+    
     </div>
-
 </div>
 
 <script src="https://unpkg.com/@trevoreyre/autocomplete-js"></script>
