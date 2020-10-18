@@ -3,6 +3,13 @@ $(document).ready(function () {
     const appName      = $('#meta-appName').val();
     const appIsDefault = $('#meta-appIsDefault').val();
 
+    var progressBar = new ProgressBar.Line('#carnival-spa-progress-bar', {
+        color: '#51BBFE',
+        duration: 1000,
+        easing: 'easeInOut',
+        strokeWidth: .15
+    });
+
     let notifier = new AWN();
 
     let carnivalLink = webroot + 'carnival/';
@@ -18,11 +25,23 @@ $(document).ready(function () {
         }
 
         if (loading) {
+            progressBar.animate(.75);
+
+            /*
             $('.logo-inner').hide();
             $('.page-loading').show();
+            */
         } else {
+            progressBar.animate(1);
+
+            setTimeout(() => {
+                progressBar.set(0);
+            }, 1200);
+
+            /*
             $('.page-loading').hide();
             $('.logo-inner').show();
+            */
         }
     }
 
@@ -137,7 +156,8 @@ $(document).ready(function () {
                     let pageChangedEvent = new CustomEvent('carnival-page-changed', {
                         detail: {
                             href: href,
-                            route: response.route
+                            route: response.route,
+                            data: response
                         }
                     });
 

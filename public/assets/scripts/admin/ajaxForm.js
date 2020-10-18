@@ -28,7 +28,8 @@ $(document).ready(function() {
                     if(response.href) {
                         let pageChangeEvent = new CustomEvent('carnival-page-change', {
                             detail: {
-                                href: response.href
+                                href: response.href,
+                                data: response
                             }
                         });
 

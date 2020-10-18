@@ -7,8 +7,12 @@ use Lampion\Http\Url;
 use Lampion\User\Auth;
 
 use Carnival\Admin\Bootstrap as Admin;
+use Lampion\Application\Application;
 
-$router = new Router();
+use Reflector\Bootstrap as Reflector;
+
+$app    = new Application;
+$router = new Router;
 
 // TODO: Remove this, idiot
 $_SESSION['Lampion']['lang'] = 'cs';
@@ -21,15 +25,8 @@ if(isset($_GET['authToken']))  { $token = $_GET['authToken']; }
 if(Auth::isLoggedIn($token)) {
     $ac = new Admin();
     $ac->registerRoutes($router);
-}
 
-else {
-    $router->get('*', function(Request $req, Response $res) { $res->redirect('login'); });
-}
-
-$router
-    ->get("login", "Carnival\Admin\Controller\User\LoginController::index")
-    ->get('logout', function(Request $req, Response $res) {
+    $router->get('logout', function(Request $req, Response $res) {
         Auth::logout();
 
         if($req->isAjax()) {
@@ -41,10 +38,26 @@ $router
         else {
             $res->redirect('login');
         }
-    })
-    ->post("login", "Carnival\Admin\Controller\User\LoginController::login")
-    ->get('testApp', function(Request $req, Response $res) {
-        $res->send('This is Carnival!');
-    })
-    ->listen();
+    });
+}
 
+else {
+    Url::redirectOnce('login');
+}
+
+$router
+    ->get("login", "Carnival\Admin\Controller\User\LoginController::index")
+    ->post("login", "Carnival\Admin\Controller\User\LoginController::login");
+
+$app->router($router);
+
+$app->listen();
+
+if(ENVIRONMENT == 'dev') {
+    $reflector = new Reflector;
+
+    $reflector->db       = $_SESSION['Lampion']['DB'];
+    $reflector->carnival = true;
+
+    $reflector->display();
+}

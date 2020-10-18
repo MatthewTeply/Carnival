@@ -64,7 +64,7 @@ class Config {
         $args['webroot']      = WEB_ROOT;
         $args['app']          = [
             'name'      => Application::name(),
-            'isDefault' => Application::name() == DEFAULT_APP
+            'isDefault' => (int)(Application::name() == DEFAULT_APP)
         ];
         $args['environment'] = ENVIRONMENT;
         

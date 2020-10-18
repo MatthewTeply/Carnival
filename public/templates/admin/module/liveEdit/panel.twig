@@ -1,7 +1,54 @@
+<link rel="stylesheet" href="{{ __css__ }}vendor/bootstrap/bootstrap.css">
 <link rel="stylesheet" href="{{ __css__ }}admin/module/liveEdit/panel.css">
 <link rel="stylesheet" href="{{ __css__ }}admin/notifications.css">
 
-<div class="card le-panel" id="le-panel">
+<div class="navbar-le">
+    <input type="hidden" id="le-meta-route" value="{{ route }}">
+    <input type="hidden" id="le-meta-url-scan" value="{{ path('le/scan') }}">
+    <input type="hidden" id="le-meta-url-set" value="{{ path('le/set') }}">
+    <input type="hidden" id="le-meta-url-fm" value="{{ path('carnival/FileManager') }}?popup">
+    <input type="hidden" id="le-meta-template" value="{{ template }}">
+    <input type="hidden" id="le-meta-editing" value="0">
+    <input type="hidden" id="le-meta-web-storage" value="{{ __webStorage__ }}">
+
+    <div class="menu">
+        <img src="{{ __img__ }}logo.png" class="logo">
+        <ul class="nav nav-tabs" role="tablist">
+            <li class="nav-item"> 
+                <a class="nav-link active" href="#tab1" data-toggle="tab" role="tab" aria-controls="tab1" aria-expanded="true">Formátování</a> 
+            </li>             
+
+            <li class="nav-item"> 
+                <a class="nav-link" href="#tab2" data-toggle="tab" role="tab" aria-controls="tab2" aria-expanded="true">Jazyk</a> 
+            </li>
+            
+            <li class="nav-item"> 
+                <a class="nav-link" href="{{ path('carnival') }}" data-toggle="tab" role="tab" aria-controls="tab2" aria-expanded="true">Zpět do adminu</a> 
+            </li>  
+        </ul>
+        <div class="tab-content">
+            <div class="active tab-pane" role="tabpanel" aria-labelledby="tab1-tab" id="tab1">
+                
+            </div>
+            <div class="tab-pane" role="tabpanel" aria-labelledby="tab2-tab" id="tab2">
+                <p>Tab 2 content goes here...</p>
+            </div>
+        </div>
+    </div>
+    <div class="menu-settings">
+        <div class="user">
+            <img src="{{ __webStorage__ }}{{ user.img.relativePath }}">
+        </div>
+    </div>
+</div>
+
+<button class="le-save" disabled>
+    <div class="icon">
+        {{ icon('device-floppy')|raw }}
+    </div>
+</button>
+
+<!-- <div class="card le-panel" id="le-panel">
     <div class="card-header" v-on:click="visible = !visible">
         <b>LivEdit control panel</b>
     </div>
@@ -67,34 +114,20 @@
             </table>
         </form>
     </div>
-</div>
+</div> -->
 
 <textarea id="le-nodes-json" style="display:none;">
     {{ nodes|toArray|json_encode }}
 </textarea>
 
-<script src="{{ __scripts__ }}vue.js"></script>
-<script src="{{ __scripts__ }}jquery.min.js"></script>
-<script src="{{ __scripts__ }}admin/notifications.js"></script>
-<script>
+<script src="{{ __scripts__ }}vendor/vue.js"></script>
+<script src="{{ __scripts__ }}vendor/jquery.min.js"></script>
+<script src="{{ __scripts__ }}vendor/notifications.js"></script>
+<script src="{{ __scripts__ }}vendor/ckeditor/ckeditor.js"></script>
 
-    window.leNodesList = new Vue({
-        el: '#le-panel',
-        delimiters: ['${', '}'],
-        data: {
-            visible: false,
-            nodes: JSON.parse(document.querySelector('#le-nodes-json').innerHTML.replace(/(\r\n|\n|\r)/gm, ""))
-        },
-        methods: {
-            togglePanel: () => {
-                this.visible = !this.visible;
+<script>CKEDITOR.disableAutoInline = true;</script>
 
-                console.log(this.visible);
-            }
-        }
-    });
-
-</script>
+<script src="{{ __scripts__ }}admin/module/liveEdit/scan.js"></script>
 <script src="{{ __scripts__ }}admin/module/liveEdit/select.js"></script>
 <script src="{{ __scripts__ }}admin/module/liveEdit/set.js"></script>
 <script src="{{ __scripts__ }}admin/module/liveEdit/delete.js"></script>

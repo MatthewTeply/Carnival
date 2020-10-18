@@ -1,3 +1,12 @@
+.main-content {
+    animation: slideIn .7s ease-in-out;
+    animation-fill-mode: forwards; 
+}
+
+.no-carnival-anim {
+    animation: none !important;
+}
+
 .empty-content {
     width: 100%;
     color: #000;
@@ -36,6 +45,7 @@
     top: 0;
     z-index: 10;
     background: #F7F7F7;
+    text-align: left;
 }
 
 .table tfoot tr td {
@@ -240,7 +250,7 @@ button.delete-btn:hover {
 
 .batch-action-container {
     width: 50px !important;
-    text-align: center;
+    text-align: center !important;
 }
 
 .results-count {
@@ -317,6 +327,7 @@ button.delete-btn:hover {
     padding-bottom: 10px;
     position: sticky;
     top: 10px;
+    animation-duration: .8s;
 }
 
 .timeline-container .card-header {
@@ -341,4 +352,19 @@ button.delete-btn:hover {
 
 .timeline-container .card-body span.text-danger {
     cursor: not-allowed;
+}
+
+@keyframes slideIn {
+    0% {
+        opacity: .2;
+        transform: translateY(8em);
+    }
+
+    70% {
+        transform: translateY(0);
+    }
+
+    100% {
+        opacity: 1;
+    }
 }

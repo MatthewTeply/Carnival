@@ -381,7 +381,6 @@ button.btn-blue.edit span {
 .custom-control-label {
     color: #000;
     margin: 0;
-    height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -417,7 +416,7 @@ button.btn-blue.edit span {
     height: 25px;
     content: "";
     left: -34px;
-    top: 13px;
+    top: 0;
 }
 
 .custom-control-input:checked~.custom-control-label::before {

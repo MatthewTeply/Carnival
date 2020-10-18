@@ -7,23 +7,28 @@
         <meta name="description" content="">
         <meta name="author" content="">
         <title>Carnival CMS</title>
-        <link href="{{ __css__ }}bootstrap/bootstrap.css" rel="stylesheet">
+        <link href="{{ __css__ }}vendor/bootstrap/bootstrap.css" rel="stylesheet">
         <link href="{{ __css__ }}root.css" rel="stylesheet">
         <link href="{{ __css__ }}admin/user/login.css" rel="stylesheet">
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:400,500,600,700,800,900,300,200&subset=latin-ext,latin">
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
     </head>
-    <body style="background-color: #000;">
+    <body style="background:linear-gradient(90deg, rgba(142,84,233,1) 0%, rgba(171,86,237,1) 100%);">
         <div id="particleGenerator"></div>
         <div class="login-content">
             <form class="login-form" action="{{ path('login') }}" method="POST">
+                <div class="logo">
+                <img src="{{ __img__ }}logo_invert.png" alt="">
+                </div>
                 <div class="headline col-lg-12">
                     <h2>Přihlášení</h2>
                 </div>
                 <div class="col-lg-12 form-input-around">
+                    <label>Přihlašovací jméno</label>
                     <input type="text" class="form-control" placeholder="Přihlašovací jméno" name="username">
                 </div>
                 <div class="col-lg-12 form-input-around">
+                    <label>Heslo</label>
                     <input type="password" class="form-control" placeholder="Heslo" name="pwd">
                 </div>
                 <div class="col-lg-6 form-input-around">
@@ -32,20 +37,13 @@
                 <div class="col-lg-6 form-input-around">
                     <button type="submit" class="btn-yellow full-width">
                         <span>Přihlásit se</span>
-                        <span class="loader"><div class="loader loader--style3" title="2">
-            <svg version="1.1" id="loader-1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30px" height="30px" viewbox="0 0 50 50" style="enable-background:new 0 0 50 50;" xml:space="preserve">
-                <path fill="#000" d="M43.935,25.145c0-10.318-8.364-18.683-18.683-18.683c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615c8.072,0,14.615,6.543,14.615,14.615H43.935z">
-                    <animateTransform attributetype="xml" attributename="transform" type="rotate" from="0 25 25" to="360 25 25" dur="0.6s" repeatcount="indefinite"/>
-                </path>
-            </svg>
-        </div></span>
                     </button>
                 </div>
             </form>
         </div>
         <div class="login-footer">
             <span class="version">v 1.0</span>
-            <span class="contact"><a href="#">Kontakt</a></span>
+            <a href="mailto:jakubmatuska@hotmail.com"><span class="contact"><span>Našel jsem chybu</span></span></a>
         </div>
         <script src="{{ __scripts__ }}jquery.min.js"></script>
         <script src="{{ __scripts__ }}popper.js"></script>

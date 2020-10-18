@@ -121,7 +121,7 @@ $('body').on('dblclick', '.file', function() {
     let filePreview = $(this).attr('data-file-preview');
     let filePath    = $(this).attr('data-file-path');
 
-    window.opener.insertFileId(id, fileName, filePreview, filePath);
+    window.opener.insertFile(id, fileName, filePreview, filePath);
     window.close();
 });
 
@@ -180,7 +180,7 @@ $('body').on('change', '#fm-files-upload', function(e) {
 
 $('body').on('click', '.menu-toggle-container .toggler', function() {
     $(this).toggleClass('fa-ellipsis-h');    
-    $(this).toggleClass('fa-times');  
+    $(this).toggleClass('fa-times');
 
     $(this).siblings('.content').toggle();
 });

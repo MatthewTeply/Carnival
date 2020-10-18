@@ -1,75 +1,76 @@
-$(document).ready(function() {
+$(document).ready(function () {
 
-    $('#le-set-form').submit(function(e) {
+    function checkEditedNodes() {
+        if($('.le-edited').length == 0) {
+            $('.le-save').attr('disabled', true);
+        }
+
+        else {
+            $('.le-save').removeAttr('disabled');
+        }
+    }
+
+    $('.le-save').click(function (e) {
         e.preventDefault();
 
         let notifier = new AWN();
 
-        let data = $(this).serializeArray();
-        
-        let route                = data[0]['value'];
-        let url                  = data[1]['value'];
-        let template             = data[2]['value'];
-        let editing              = data[3]['value'];
-        let name                 = data[4]['value'];
-        let nameOriginal         = data[5]['value'];
-        let content              = data[6]['value'];
-        let contentOriginalOuter = data[7]['value'];
-        let contentOriginalInner = data[8]['value'];
+        // Metadata
+        let route = $('#le-meta-route').val();
+        let url   = $('#le-meta-url-set').val();
 
-        $.ajax({
-            url: url,
-            method: 'POST',
-            data: {
-                route,
-                name,
-                content,
-                template,
-                contentOriginalOuter,
-                contentOriginalInner,
-                editing,
-                nameOriginal
-            },
-            success: function(response) {
-                try {
-                    response = JSON.parse(response);
+        $('.le-edited').each(function (index) {
+            let _this = $(this);
 
-                    if(response.error) {
-                        notifier.alert(response.error);
-                    }
+            let name    = $(this).attr('data-le-name');
+            let type    = $(this).attr('data-le-type');
+            let content = '';
 
-                    else {
-                        $('.le-selected').html(response.content);
-                        $('#le-set-form').hide();
-
-                        window.leNodesList.nodes = response.nodes;
-                    }
-                }
-
-                catch(e) {
-                    console.error(response);
-                    notifier.alert(response);
-                }
-
-                $('.le-selected').each(function(index, previousEl) {
-                    previousEl = $(previousEl);
-        
-                    previousEl.removeClass('le-selected');
-                });
-                $('#le-set-tr').hide();
+            switch (type) {
+                case undefined:
+                case 'text':
+                    content = $(this).html();
+                    break;
+                case 'img':
+                    content = $(this).attr('src').split($('#le-meta-web-storage').val())[1];
+                    break;
             }
+
+            // TODO: Going to do scan instead of whatever this is
+            /*
+            let contentOriginalOuter = data[7]['value'];
+            let contentOriginalInner = data[8]['value'];
+            */
+
+            $.ajax({
+                url: url,
+                method: 'POST',
+                data: {
+                    name,
+                    route,
+                    content,
+                    type
+                },
+                success: function (response) {
+                    try {
+                        response = JSON.parse(response);
+
+                        if(response.error) {
+                            notifier.alert(response.error);
+                        } else {
+                            _this.removeClass('le-edited');
+                            delete originalContentObject[_this.attr('data-le-name')];
+
+                            checkEditedNodes();
+                        }
+                    } catch (e) {
+                        console.error(response);
+                        notifier.alert(response);
+                    }
+                }
+            });
+
         });
-    });
-
-    $('#le-set-cancel').click(function() {
-        $('.le-selected').each(function(index, previousEl) {
-            previousEl = $(previousEl);
-
-            previousEl.html($('#le-set-content-original-inner').val());
-            previousEl.removeClass('le-selected');
-        });
-
-        $('#le-set-form').hide();
     });
 
 });

@@ -1,8 +1,10 @@
 <link href="{{ __css__ }}admin/partials/nav.css" rel="stylesheet">
 
-<input type="hidden" id="meta-webroot" value="{{ webroot }}">
+<input type="hidden" id="meta-webroot" value="{{ app.isDefault ? webroot : webroot ~ app.name ~ '/' }}">
 <input type="hidden" id="meta-appName" value="{{ app.name }}">
 <input type="hidden" id="meta-appIsDefault" value="{{ app.isDefault }}">
+
+<div id="carnival-spa-progress-bar"></div>
 
 <nav class="side-nav">
     <div class="nav-fixed-buttons">
@@ -253,7 +255,7 @@
 
             <button data-container="body" data-toggle="popover" data-placement="bottom" data-content="
                     <span>{{ 'When this timer runs out, you will be logged out. Time can be configured in settings. Time gets reset by clicking.'|trans('partials/nav') }}</span>
-                    <a href='{{ path('EntityManager') }}' class='btn btn-block mt-2 btn-light popover-close'>{{ 'Open settings'|trans('partials/nav') }}</a>
+                    <a href='{{ path('GeneralSettings') }}' class='btn btn-block mt-2 btn-light popover-close'>{{ 'Open settings'|trans('partials/nav') }}</a>
                 " class="btn fixed-right-item nav-logout-timer-container popover-link-stay">
                 <span id="nav-logout-timer">
                     00:00:00

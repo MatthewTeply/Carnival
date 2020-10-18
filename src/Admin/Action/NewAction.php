@@ -182,7 +182,10 @@ class NewAction extends Controller {
             $this->response->json([
                 'href' => Url::link($this->entityName, [
                     'success' => 'new'
-                ])
+                ]),
+                'debug' => [
+                    'db' => $_SESSION['Lampion']['DB']
+                ]
             ]);
         }
     }

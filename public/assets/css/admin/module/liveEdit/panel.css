@@ -1,15 +1,240 @@
-
 body {
-    padding-bottom: 100px;
+    padding-top: 4em;
 }
 
-.le-panel {
+.navbar-le {
+    background: linear-gradient(90deg, rgba(142,84,233,1) 0%, rgba(171,86,237,1) 100%);
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 5px 25px;
+    top: 0;
+    position: fixed;
+    width: 100%;
+}
+
+img.logo {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    margin-right: 15px;
+}
+
+.user img {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+}
+
+.navbar-le .menu {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.navbar-le .menu ul {
+    margin-bottom: 0;
+    padding-left: 0;
+    border: none;
+}
+
+.navbar-le .menu ul li {
+    list-style-type: none;
+    padding: 0px;
+    color: #fff;
+    font-weight: 600;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    border: none !important;
+}
+
+.dropdown-content.toggled {
+    display: flex;
+}
+
+.dropdown-content .text-transform {
+    border-radius: 5px;
+    border: 1px solid rgba(171,86,237,0.5);
+    width: 25px;
+    height: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 15px;
+    cursor: pointer;
+}
+
+.navbar-le .menu ul li.active:after {
+    content: "";
+    position: absolute;
+    width: 20px;
+    bottom: 0;
+    height: 15px;
+    border-style: solid;
+    border-width: 0 12.5px 9px 12.5px;
+    border-color: transparent transparent #ECEEF5 transparent;
+}
+
+.menu-settings {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.menu-lang span {
+    color: #fff;
+    font-weight: 600;
+}
+
+.menu-lang ul:after {
+    content: "";
+    position: absolute;
+    width: 20px;
+    top: -15px;
+    height: 15px;
+    border-style: solid;
+    border-width: 0 12.5px 9px 12.5px;
+    border-color: transparent transparent #ECEEF5 transparent;
+}
+
+.text-transform svg {
+    width: 17px;
+}
+
+.clicked {
+    color: red;
+}
+
+.tab-content {
+    width: 100%;
+    top: 60px;
+    left: 0;
+    right: 0;
+    padding: 10px 25px;
+    background-color: #fff;
+    position: absolute;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, .1);
+}
+
+.nav-link {
+    background-color: transparent !important;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 60px;
+    border: none !important;
+    color: #fff;
+    font-weight: 700;
+}
+
+.nav-link.active {
+    border: 0px solid transparent;
+    color: #dfccf9 !important;
+}
+
+/*
+.nav-link.active::before {
+    content: "";
+    position: absolute;
+    width: 20px;
+    bottom: 0;
+    height: 15px;
+    border-style: solid;
+    border-width: 0 12.5px 9px 12.5px;
+    border-color: transparent transparent #ECEEF5 transparent;
+}
+*/
+
+.tab-content p {
+    margin-bottom: 0;
+}
+
+a:hover {
+    color: inherit;
+}
+
+.nav-tabs .nav-link:hover,
+.nav-tabs .nav-link:focus {
+    border: none;
+}
+
+.le-node {
+    border: 1px dotted rgb(182, 182, 182);
+    background-color: rgb(248, 248, 248);
+    outline: 0;
+}
+
+.le-node:hover {
+    position: relative;
+    border: 1px dotted rgb(20, 79, 156);
+    background-color: rgb(239, 246, 255);
+    cursor: pointer;
+}
+
+.le-node:focus {
+    border: 1px dotted rgb(20, 156, 49);
+    background-color: rgb(220, 255, 226);
+    cursor: text;
+    position: relative;
+}
+
+img.le-node {
+    padding: 5px;
+}
+
+.le-edited {
+    background-color: rgb(255, 247, 228) !important;
+    border: 1px dotted rgb(255, 215, 121) !important;
+}
+
+.le-save {
+    transition: .4s ease-in-out;
+    background: #8e54e9;
+    color: #fff;
+    border: none;
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    position: fixed;
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, .5);
+    right: 20px;
+    bottom: 20px;
+}
+
+.le-save:disabled {
+    filter: grayscale(100%);
+}
+
+.le-save .icon {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.le-save .icon svg {
+    height: 2em;
+    width: 2em;
+}
+
+/* .le-panel {
     position: fixed !important;
     bottom: 0px !important;
     left: 0;
     right: 0;
     border-radius: 0 !important;
     z-index: 999;
+}
+
+.le-node {
+    border: 1px dotted rgb(182, 182, 182);
+    background-color: rgb(248, 248, 248) !important;
+    outline: 0;
 }
 
 .le-panel .card-header {
@@ -20,8 +245,8 @@ body {
 
 .le-hovered {
     position: relative;
-    border: 1px solid rgb(20, 79, 156) !important;
-    background-color: rgb(141, 188, 250) !important;
+    border: 1px dotted rgb(20, 79, 156) !important;
+    background-color: rgb(239, 246, 255) !important;
     cursor: pointer;
 }
 
@@ -40,9 +265,9 @@ body {
 }
 
 .le-selected {
-    border: 1px solid rgb(20, 156, 49) !important;
-    background-color: rgb(141, 250, 159) !important;
-    cursor: pointer;
+    border: 1px dotted rgb(20, 156, 49) !important;
+    background-color: rgb(220, 255, 226) !important;
+    cursor: text;
     position: relative;
 }
 
@@ -58,6 +283,12 @@ body {
     background-color: rgb(20, 156, 49) !important;
     border-top-left-radius: 3px;
     border-top-right-radius: 3px;
+}
+
+
+.le-edited {
+    background-color: rgb(255, 247, 228) !important;
+    border: 1px dotted rgb(255, 215, 121) !important;
 }
 
 #le-set-tr {
@@ -148,4 +379,4 @@ button.blue-button {
 button.blue-button:hover {
     color: #fff;
     opacity:0.9;
-}
+} */

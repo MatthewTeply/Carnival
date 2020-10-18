@@ -1,100 +1,101 @@
-$(document).ready(function() {
+var selectedImage = null;
+var originalContentObject = {};
 
-    let originalContent;
+// Filemanager handler
+function insertFile(id, fileName, filePreview, filePath) {
+    selectedImage[0].src = document.querySelector('#le-meta-web-storage').value + filePath;
+    
+    if(selectedImage[0].src == originalContentObject[selectedImage.attr('data-le-name')]) {
+        selectedImage.removeClass('le-edited');
+    }
 
-    $(document).on('mouseover', '.le-container *', function(e) {
-        e.preventDefault();
+    else {
+        selectedImage.addClass('le-edited');
+        $('.le-save').removeAttr('disabled');
+    }
+}
 
-        let el = $(e.target);
-
-        if(el.hasClass('le-node-container')) {
-            el.parent().trigger('mouseover');
-            return false;
-        }
-
-        $('.le-hovered').each(function(index, previousEl) {
-            previousEl = $(previousEl);
-
-            previousEl.removeClass('le-hovered');
-        });
-
-
-        let leName = $(this).find('.le-node-container').attr('data-le-name') ?? null;
-        el.attr('data-before', leName ?? 'Unnamed')
-
-        el.addClass('le-hovered');
-    });
-
-    $(document).on('click', '.le-container *', function(e) {
-        e.preventDefault();
-
-        let el = $(e.target);
-
-        if(el.hasClass('le-node-container')) {
-            el.parent().click();
-            return false;
-        }
-
-        $('.le-selected').each(function(index, previousEl) {
-            previousEl = $(previousEl);
-
-            previousEl.html($('#le-set-content-original-inner').val());
-            previousEl.removeClass('le-selected');
-        });
-
-        $('#le-set-name').val('');
-
-        let leName = $(this).find('.le-node-container').attr('data-le-name') ?? null;
-
-        el.removeClass('le-hovered');
-        el.removeAttr('data-before')
-
-        if(el.attr('class') == '') {
-            el.removeAttr('class');
-        }
-
-        el.removeAttr('data-before');
-
-        if(el.find('.le-node-container').length !== 0) {
-            el = el.find('.le-node-container');
-        }
-
-        $('#le-set-content').val(el[0].innerHTML);
-        $('#le-set-content-original-outer').val(el[0].outerHTML);
-        $('#le-set-content-original-inner').val(el[0].innerHTML);
-
-        el.addClass('le-selected');
-        el.attr('data-before', leName ?? 'Unnamed');
-
-        originalContent = el.html();
-
-        $('#le-set-form').show();
-        window.leNodesList.visible = true;
-
-        // Determine whether element is being edited or created
-        if(leName) {
-            $('#le-set-editing').val(1);
-            $('#le-name-original').val(leName);
-
-            $('#le-set-content').focus();
+function checkEditedNodes(el = null) {
+    if(el) {
+        if(el.html() == originalContentObject[el.attr('data-le-name')]) {
+            el.removeClass('le-edited');
         }
 
         else {
-            $('#le-set-editing').val(0);
-            $('#le-name-original').val('');
+            el.addClass('le-edited');
+            $('.le-save').removeAttr('disabled');
+        }
+    }
 
-            $('#le-set-name').focus();
+    if($('.le-edited').length == 0) {
+        $('.le-save').attr('disabled', true);
+    }
+
+    else {
+        $('.le-save').removeAttr('disabled');
+    }
+}
+
+$(document).ready(function() {
+
+    function makeid(length) {
+        var result           = '';
+        var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        var charactersLength = characters.length;
+        for ( var i = 0; i < length; i++ ) {
+           result += characters.charAt(Math.floor(Math.random() * charactersLength));
+        }
+        return result;
+    }
+
+    $(document).on('input', '.le-selected', function() {
+        checkEditedNodes($(this));
+    });
+
+    $(document).on('blur', '.le-selected', function() {
+        $(this).removeClass('le-selected');
+
+        checkEditedNodes();
+    });
+
+    $(document).on('click', '.le-node', function(e) {
+        e.preventDefault();
+
+        let el = $(e.target);
+
+        // Assign original content if it is not already assigned
+        if(originalContentObject[el.attr('data-le-name')] === undefined) {
+            switch(el.attr('data-le-type')) {
+                case undefined:
+                case 'text':
+                    originalContentObject[el.attr('data-le-name')] = el.html();
+                    break;
+                case 'img':
+                    originalContentObject[el.attr('data-le-name')] = el.attr('src');
+                    break;
+            }
+
         }
 
-        $('#le-set-name').val(leName);
-    });
+        if(el.hasClass('le-selected')) {
+            return false;
+        }
 
-    $('#le-set-content').on('keydown keyup', function() {
-        $('.le-selected').html($(this).val());
-    });
+        switch(el.attr('data-le-type')) {
+            case undefined:
+            case 'text':
+                $(this).on('blur', function() {
+                    checkEditedNodes($(this));
+                });
+                break;
+            case 'img':
+                selectedImage = el;
+                break;
+        }
 
-    $('#le-set-name').on('keydown keyup', function() {
-        $('.le-selected').attr('data-before', $(this).val() ?? 'Unnamed');
+        if(!el.is(':focus')) {
+            el.focus();
+        }
     });
 
     $(document).on('click', '.le-edit', function() {

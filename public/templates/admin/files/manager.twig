@@ -31,7 +31,7 @@
 {% endif %}
 
 <div class="row main-container">
-    <div class="main-content">
+    <div class="main-content {{ (currentDir|length != 0 and currentDir != '') ? 'no-carnival-anim' : '' }}">
         <input type="hidden" id="current-dir" value="{{ currentDir }}{{ popup ? '&popup' : '' }}">
         <input type="hidden" id="fm-url" value="{{ path('FileManager') }}">
     

@@ -2,8 +2,11 @@
 
 namespace Carnival\Admin\Core;
 
+use Carnival\Admin\Core\Manager\Translation;
+
 use Carnival\Entity\Language;
 use Carnival\Entity\User;
+
 use Lampion\View\View;
 use Lampion\FileSystem\FileSystem;
 use Lampion\FileSystem\Path;
@@ -178,7 +181,10 @@ class Controller extends Config {
                 'template'   => htmlspecialchars($template),
                 'title'      => $this->title,
                 'breadcrumb' => $breadcrumb,
-                'route'      => $this->request->urlBase()
+                'route'      => $this->request->urlBase(),
+                'debug'      => [
+                    'db' => $_SESSION['Lampion']['DB']
+                ]
             ]);
         }
 

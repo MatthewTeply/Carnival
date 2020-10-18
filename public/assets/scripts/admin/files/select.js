@@ -4,7 +4,7 @@ let fileLabel;
 let filePreviewImg;
 let icon;
 
-function insertFileId(id, fileName, filePreview, filePath) {
+function insertFile(id, fileName, filePreview, filePath) {
     let dir = filePath.split('/' + fileName)[0];
 
     let idArray = idInp.value != '' ? JSON.parse(idInp.value) : [];
@@ -13,14 +13,15 @@ function insertFileId(id, fileName, filePreview, filePath) {
 
     idInp.value = JSON.stringify(idArray);
 
-    let previewContainer = document.createElement('span');
-    let previewImg = new Image();
+    let previewContainer    = document.createElement('span');
     let previewImgRemoveBtn = document.createElement('button');
+    let previewImg          = new Image();
 
     previewImg.src = filePreview;
     previewImg.setAttribute('class', 'file-type-preview');
 
     previewImgRemoveBtn.innerHTML = '<i class="fas fa-times"></i>';
+
     previewImgRemoveBtn.setAttribute('class', 'preview-img-remove-btn');
     previewImgRemoveBtn.setAttribute('type', 'button');
     previewImgRemoveBtn.setAttribute('data-index', idArray.length - 1);
@@ -50,13 +51,14 @@ $(document).ready(function() {
     });
 
     $('body').on('click', '.preview-img-remove-btn', function() {
-        let input = $(this).parent().parent().siblings('.fm-open').find('input')[0];
+        let input     = $(this).parent().parent().siblings('.fm-open').find('input')[0];
         let container = $(this).parent();
-        let idArray = JSON.parse(input.value);
+        let idArray   = JSON.parse(input.value);
 
         idArray.splice($(this).attr('data-index'), 1);
 
         input.value = JSON.stringify(idArray);
+        
         container.remove();
     });
 
