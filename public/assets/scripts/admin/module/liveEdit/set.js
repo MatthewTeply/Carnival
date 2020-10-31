@@ -3,10 +3,12 @@ $(document).ready(function () {
     function checkEditedNodes() {
         if($('.le-edited').length == 0) {
             $('.le-save').attr('disabled', true);
+            $('.le-unsaved').hide();
         }
 
         else {
             $('.le-save').removeAttr('disabled');
+            $('.le-unsaved').show();
         }
     }
 
@@ -22,9 +24,10 @@ $(document).ready(function () {
         $('.le-edited').each(function (index) {
             let _this = $(this);
 
-            let name    = $(this).attr('data-le-name');
-            let type    = $(this).attr('data-le-type');
-            let content = '';
+            let name          = $(this).attr('data-le-name');
+            let type          = $(this).attr('data-le-type');
+            let content       = '';
+            let interlanguage = 0;
 
             switch (type) {
                 case undefined:
@@ -33,6 +36,8 @@ $(document).ready(function () {
                     break;
                 case 'img':
                     content = $(this).attr('src').split($('#le-meta-web-storage').val())[1];
+                    interlanguage = $('#le-image-controls-interlanguage-' + _this.attr('id')).is(':checked') ? 1 : 0;
+
                     break;
             }
 
@@ -49,7 +54,8 @@ $(document).ready(function () {
                     name,
                     route,
                     content,
-                    type
+                    type,
+                    interlanguage
                 },
                 success: function (response) {
                     try {
@@ -59,6 +65,11 @@ $(document).ready(function () {
                             notifier.alert(response.error);
                         } else {
                             _this.removeClass('le-edited');
+
+                            if(type == 'img') {
+                                $('.le-image-controls-clear-' + _this.attr('id')).attr('disabled', true);
+                            }
+
                             delete originalContentObject[_this.attr('data-le-name')];
 
                             checkEditedNodes();

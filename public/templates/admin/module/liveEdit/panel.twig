@@ -1,4 +1,5 @@
 <link rel="stylesheet" href="{{ __css__ }}vendor/bootstrap/bootstrap.css">
+<link rel="stylesheet" href="{{ __css__ }}vendor/cropper.min.css">
 <link rel="stylesheet" href="{{ __css__ }}admin/module/liveEdit/panel.css">
 <link rel="stylesheet" href="{{ __css__ }}admin/notifications.css">
 
@@ -11,110 +12,62 @@
     <input type="hidden" id="le-meta-editing" value="0">
     <input type="hidden" id="le-meta-web-storage" value="{{ __webStorage__ }}">
 
-    <div class="menu">
-        <img src="{{ __img__ }}logo.png" class="logo">
-        <ul class="nav nav-tabs" role="tablist">
-            <li class="nav-item"> 
-                <a class="nav-link active" href="#tab1" data-toggle="tab" role="tab" aria-controls="tab1" aria-expanded="true">Formátování</a> 
-            </li>             
+    <nav class="navbar navbar-le-top">
+        <a href="{{ path('carnival') }}"><img src="{{ __img__ }}logo.png" class="logo"></a>
 
-            <li class="nav-item"> 
-                <a class="nav-link" href="#tab2" data-toggle="tab" role="tab" aria-controls="tab2" aria-expanded="true">Jazyk</a> 
+        <ul class="nav">
+            <li class="nav-item">
+                <button class="btn btn-sm btn-link le-save" disabled>{{ icon('device-floppy')|raw }} Uložit</button>
             </li>
-            
-            <li class="nav-item"> 
-                <a class="nav-link" href="{{ path('carnival') }}" data-toggle="tab" role="tab" aria-controls="tab2" aria-expanded="true">Zpět do adminu</a> 
-            </li>  
+
+            <li class="nav-item">
+                <a href="{{ path('carnival') }}" class="btn btn-sm btn-link">{{ icon('ghost')|raw }} Zpět do adminu</a>
+            </li>
         </ul>
-        <div class="tab-content">
-            <div class="active tab-pane" role="tabpanel" aria-labelledby="tab1-tab" id="tab1">
-                
-            </div>
-            <div class="tab-pane" role="tabpanel" aria-labelledby="tab2-tab" id="tab2">
-                <p>Tab 2 content goes here...</p>
-            </div>
+
+        <div class="le-page-name">
+            {{ name ?? route }}
+            <span class="le-unsaved">
+                - Neuloženo
+            </span>
         </div>
+
+        <ul class="nav float-right">
+            <li class="nav-item">
+                <a href="{{ path('carnival') }}">{{ icon('user')|raw }}{{ user.username }}</a>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="menu nav navbar-le-bottom">
+
+        <li class="nav-item">
+            <div class="dropdown">
+                <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" role="button"
+                    aria-expanded="true">
+                    <img src="{{ storage('carnival:' ~ current_language.icon.relativePath) }}" alt=""
+                        class="language-icon"> {{ current_language.name }}
+                </a>
+
+                <div class="dropdown-menu">
+                    {% for language in languages %}
+                    {% if language.id != current_language.id %}
+                    <a href="{{ path('le/language/change') }}?code={{ language.code }}" class="dropdown-item">
+                        <img src="{{ storage('carnival:' ~ language.icon.relativePath) }}" alt=""
+                            class="language-icon"> {{ language.name }}
+                    </a>
+                    {% endif %}
+                    {% endfor %}
+                    <div class="dropdown-divider"></div>
+                    <a href="{{ path('carnival/Language') }}" class="dropdown-item">Nastavení jazyků</a>
+                </div>
+            </div>
+        </li>
+        
+        <div id="ckeditor-controls"></div>
     </div>
-    <div class="menu-settings">
-        <div class="user">
-            <img src="{{ __webStorage__ }}{{ user.img.relativePath }}">
-        </div>
-    </div>
+
 </div>
-
-<button class="le-save" disabled>
-    <div class="icon">
-        {{ icon('device-floppy')|raw }}
-    </div>
-</button>
-
-<!-- <div class="card le-panel" id="le-panel">
-    <div class="card-header" v-on:click="visible = !visible">
-        <b>LivEdit control panel</b>
-    </div>
-    <div class="card-body" v-show="visible">
-        <form id="le-set-form" action="" method="POST">
-            <input type="hidden" name="route" value="{{ route }}">
-            <input type="hidden" name="url" value="{{ path('le/set') }}">
-            <input type="hidden" name="template" value="{{ template }}">
-            <input type="hidden" name="editing" value="0" id="le-set-editing">
-
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Jméno</th>
-                        {#<th>Obsah</th>#}
-                        <th>Uživatel</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr id="le-set-tr">
-                        <td>
-                            <input name="name" id="le-set-name" type="text" class="form-control" placeholder="Name">
-                            <input type="hidden" name="nameOriginal" value="" id="le-name-original">
-                        </td>
-                        <td>
-                            <textarea name="content" id="le-set-content" class="form-control" placeholder="Content (TODO: WYSIWYG)"></textarea>
-                            <input type="hidden" name="contentOriginalOuter" id="le-set-content-original-outer">
-                            <input type="hidden" name="contentOriginalInner" id="le-set-content-original-inner">
-                        </td>
-                        <td>
-                            <input type="text" class="form-control" disabled="disabled" value="{{ user.username }}">
-                        </td>
-                        <td>
-                            <button type="button" id="le-set-cancel" class="btn btn-yellow">Zrušit</button>
-                            <button type="submit" class="btn blue-button">Potvrdit</button>
-                        </td>
-                    </tr>
-                    <tr v-for="node in nodes">
-                        <td>
-                            ${ node.name }
-                        </td>
-                        {#
-                        <td v-html="node.contentClean" class='le-list-content-td'>
-                        </td>
-                        #}
-                        <td>
-                            ${ node.user }
-                        </td>
-                        <td>
-                            <button type="button" class="btn blue-button le-edit" v-bind:data-edit-le-name="node.name">Upravit</button>
-                            <button type="button" class="btn btn-yellow le-delete"
-                                v-bind:data-delete-le-name="node.name" 
-                                data-delete-le-url="{{ path('le/delete') }}"
-                                data-delete-le-route="{{ route }}"
-                                data-delete-le-template="{{ template }}"
-                            >
-                                Smazat
-                            </button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </form>
-    </div>
-</div> -->
 
 <textarea id="le-nodes-json" style="display:none;">
     {{ nodes|toArray|json_encode }}
@@ -124,8 +77,14 @@
 <script src="{{ __scripts__ }}vendor/jquery.min.js"></script>
 <script src="{{ __scripts__ }}vendor/notifications.js"></script>
 <script src="{{ __scripts__ }}vendor/ckeditor/ckeditor.js"></script>
+<script src="{{ __scripts__ }}vendor/popper.js"></script>
+<script src="{{ __scripts__ }}vendor/bootstrap.min.js"></script>
+<script src="{{ __scripts__ }}vendor/cropper.min.js"></script>
+<script src="{{ __scripts__ }}vendor/jquery-cropper.min.js"></script>
 
-<script>CKEDITOR.disableAutoInline = true;</script>
+<script>
+    CKEDITOR.disableAutoInline = true;
+</script>
 
 <script src="{{ __scripts__ }}admin/module/liveEdit/scan.js"></script>
 <script src="{{ __scripts__ }}admin/module/liveEdit/select.js"></script>

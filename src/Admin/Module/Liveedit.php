@@ -28,9 +28,13 @@ class Liveedit {
     private $em;
     private $view;
 
+    public $routeNames;
+
     public function __construct(string $route = null, $template = null) {
         $this->route    = $route;
         $this->template = $template;
+
+        $this->routeNames = [];
         
         $this->em   = new EntityManager();
         $this->view = new View(Path::get('carnival:public/templates'), 'carnival');
@@ -54,7 +58,8 @@ class Liveedit {
                     $req->input('name'),
                     $req->input('route'),
                     $req->input('content'),
-                    $req->input('type')
+                    $req->input('type'),
+                    (bool)$req->input('interlanguage')
                 )
             );
 
@@ -103,16 +108,27 @@ class Liveedit {
 
             exit;
         });
+
+        $router->get('le/language/change', function(Request $req, Response $res) {
+            $_SESSION['Lampion']['language'] = $req->query('code');
+
+            header('Location: ' . $_SERVER['HTTP_REFERER']);
+        });
     }
 
     public function panel() {
         # If user is logged in, display control panel
         if(Auth::isLoggedIn()) {
             $this->view->render('admin/module/liveEdit/panel', [
-                'nodes'    => $this->get($this->route),
-                'user'     => $this->user,
-                'route'    => $this->route,
-                'template' => $this->template
+                'nodes'            => $this->get($this->route),
+                'user'             => $this->user,
+                'route'            => $this->route,
+                'template'         => $this->template,
+                'languages'        => $this->em->all(Language::class),
+                'current_language' => $this->em->findBy(Language::class ,[
+                    'code' => $_SESSION['Lampion']['language']
+                ])[0],
+                'name' => $this->routeNames[$this->route] ?? null
             ]);
         }
     }
@@ -124,93 +140,84 @@ class Liveedit {
             'code' => $_SESSION['Lampion']['language']
         ])[0];
 
+        $entitiesAll = $this->em->findBy(LEEntity::class, [
+            'route' => $this->route ?? $route
+        ]);
+
         $entities = $this->em->findBy(LEEntity::class, [
             'route'    => $this->route ?? $route,
             'language' => $language
         ], 'name', 'ASC');
 
         if(empty($entities)) {
-            return [];
+            $entities = $this->em->findBy(LEEntity::class, [
+                'route'    => $this->route ?? $route
+            ], 'name', 'ASC');
+
+            if(empty($entities)) {
+                return [];
+            }
         }
 
         # Making LiveEdit node's name the index
         foreach($entities as $entity) {
             $nodes->{$entity->name}               = $entity;
-            $nodes->{$entity->name}->contentClean = $entity->content;
-            $nodes->{$entity->name}->content      = $entity->content;
+            $nodes->{$entity->name}->contentClean = $entity->language == $language ? $entity->content : $entity->original;
+            $nodes->{$entity->name}->content      = $entity->language == $language ? $entity->content : $entity->original;
 
             # Get rid of the original, as it is not needed and only causes JSON parsing issues
             unset($nodes->{$entity->name}->original);
         }
 
+        # If current language doesn't have all entities for current route, add them
+        if(sizeof($entitiesAll) != $entities) {
+            foreach($entitiesAll as $entity) {
+                if(!isset($entities[$entity->name])) {
+                    $entities[$entity->name] = $this->em->find(LEEntity::class, $entity->id);
+                }
+            }
+        }
+
         return $nodes;
     }
 
-    public function set(string $name, string $route, $content, string $type) {
+    public function set(string $name, string $route, $content, string $type, bool $interlanguage = false) {
         if(!Auth::isLoggedIn()) {
             // TODO: Error handling
             throw new Error('You are not logged in!');
             exit;
         }
 
-        $language = $this->em->findBy(Language::class, [
-            'code' => $_SESSION['Lampion']['language']
-        ])[0];
-
-        # -- SETTING ENTITY -- #
-
-        $leEntity = $this->em->findBy(LEEntity::class, [
-            'name'     => $name,
-            'route'    => $route,
-            'language' => $language
-        ])[0];
-
-        /*
-        # Checking for duplicate name
-        if(!$editing && $leEntity) {
-            return json_encode([
-                'error' => 'Node with this name already exists!'
+        if(!$interlanguage) {
+            $language = $this->em->findBy(Language::class, [
+                'code' => $_SESSION['Lampion']['language']
+            ])[0];
+    
+            # -- SETTING ENTITY -- #
+    
+            $leEntities = $this->em->findBy(LEEntity::class, [
+                'name'     => $name,
+                'route'    => $route,
+                'language' => $language
             ]);
         }
 
-        # Editing an existing node
         else {
-            $leEntity = $leEntity[0];
-        }
-        */
-
-        # If node is being edited, replace it's original content
-        /*
-        if($editing) {
-            $content = str_replace($contentOriginal['inner'], $content, $leEntity->content);
-        }
-        */
-
-        $leEntity->name    = $name;
-        $leEntity->route   = $route;
-        $leEntity->content = $content;
-        $leEntity->type    = $type;        
-        $leEntity->user    = $this->user;
-
-        # -- TEMPLATE EDITING -- #
-
-        /*
-        if(!$editing) {
-            
+            $leEntities = $this->em->findBy(LEEntity::class, [
+                'name'     => $name,
+                'route'    => $route
+            ]);
         }
 
-        # Renaming a liveEdit object
-        elseif($editing && $name != $nameOriginal) {
-            $template = Path::get('public/templates/' . $template . '.twig');
-            $html     = file_get_contents($template);
-
-            $html = str_replace('liveEdit.' . $nameOriginal, 'liveEdit.' . $name, $html);
-
-            file_put_contents($template, $html);
+        foreach($leEntities as $leEntity) {
+            $leEntity->name    = $name;
+            $leEntity->route   = $route;
+            $leEntity->content = $content;
+            $leEntity->type    = $type;        
+            $leEntity->user    = $this->user;
+    
+            $this->em->persist($leEntity);
         }
-        */
-
-        $this->em->persist($leEntity);
 
         return json_encode([
             'content' => $this->em->findBy(LEEntity::class, [
@@ -278,34 +285,40 @@ class Liveedit {
         }
         */
 
-        $element = substr($html, $allpos[0], strlen($contentOriginal['outer']));
-
-        $attrString = '';
-        $attrString .= ' id="' . $leEntity->name . '"';
-        $attrString .= ' data-le-name="' . $leEntity->name . '"';
-
-        if(empty($type)) {
-            $attrString += ' data-le-type="' . $leEntity->type . '"';
+        // If $allpos[0] is not set, that means node is being scanned with a different language, which means that template does
+        // not have to be rewritten
+        if(isset($allpos[0])) {
+            $element = substr($html, $allpos[0], strlen($contentOriginal['outer']));
+    
+            $attrString = '';
+            $attrString .= ' id="' . $leEntity->name . '"';
+            $attrString .= ' data-le-name="' . $leEntity->name . '"';
+            $attrString .= ' {{ liveEdit.' . $name . '.isInterlanguage() }}';
+            $attrString .= ' {{ liveEdit.' . $name . '.isCorrectLanguage() }}';
+    
+            if(empty($type)) {
+                $attrString .= ' data-le-type="' . $leEntity->type . '"';
+            }
+    
+            $attrString .= '>';
+    
+            $element = \Lampion\Utilities\General::strReplaceFirst('>', $attrString, $element);
+    
+            switch($leEntity->type) {
+                case 'text':
+                    $element = str_replace($contentOriginal['inner'], '{{ liveEdit.' . $name . '|raw }}', $element);
+                    break;
+                case 'img':
+                    preg_match_all('/(src="[^"]*")|[^"]*/m', $element, $src, PREG_SET_ORDER, 0);
+                    
+                    $element = str_replace($src[2], '{{ storage(\'carnival:\' ~ liveEdit.' . $name . '|raw) }}', $element);
+                    break;
+            }
+    
+            $html = str_replace($contentOriginal['outer'], $element, $html);
+    
+            file_put_contents($template, $html);
         }
-
-        $attrString .= '>';
-
-        $element = \Lampion\Utilities\General::strReplaceFirst('>', $attrString, $element);
-
-        switch($leEntity->type) {
-            case 'text':
-                $element = str_replace($contentOriginal['inner'], '{{ liveEdit.' . $name . '|raw }}', $element);
-                break;
-            case 'img':
-                preg_match_all('/(src="[^"]*")|[^"]*/m', $element, $src, PREG_SET_ORDER, 0);
-                
-                $element = str_replace($src[2], '{{ storage(\'carnival:\' ~ liveEdit.' . $name . '|raw) }}', $element);
-                break;
-        }
-
-        $html = str_replace($contentOriginal['outer'], $element, $html);
-
-        file_put_contents($template, $html);
     }
 
     public function delete(string $name, string $route, string $template) {

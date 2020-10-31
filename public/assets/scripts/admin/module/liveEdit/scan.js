@@ -16,16 +16,107 @@ $(document).ready(function() {
             case 'text':
                 el.attr('contenteditable', true);
                 
-                CKEDITOR.inline(el.attr('id'));
+                CKEDITOR.inline(el.attr('id'), {
+                    sharedSpaces: {
+                        top: 'ckeditor-controls'
+                    },
+                    skin: 'office2013'
+                });
 
                 break;
             case 'img':
-                el.click(function() {
-                    fm = window.open($('#le-meta-url-fm').val(), 'File manager', 'location=no,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,height=600,width=1024');
-                    if (window.focus) {fm.focus()}
+                /*
+                el.cropper({
+                    viewMode: 2,
+                    center: true,
+                    restore: false,
+                    responsive: true,
+                    background: false,
+                    crop: function(event) {
+                    }
                 });
+                */
+
+                var controlsContainer             = document.createElement('div');
+                var controlsChooseImageBtn        = document.createElement('button');
+                var controlsClearImageBtn         = document.createElement('button');
+                var controlsInterlanguageCheckBox = document.createElement('input');
+
+                // Choose Image
+                controlsChooseImageBtn.innerHTML = 'Vybrat obrázek';
+                controlsChooseImageBtn.classList.add('btn');
+                controlsChooseImageBtn.classList.add('btn-sm');
+                controlsChooseImageBtn.classList.add('btn-primary');
+                controlsChooseImageBtn.classList.add('le-image-controls-choose');
+                controlsChooseImageBtn.setAttribute('data-image-id', el.attr('id'));
+
+                // Clear Image
+                controlsClearImageBtn.innerHTML = 'Resetovat obrázek';
+                controlsClearImageBtn.classList.add('btn');
+                controlsClearImageBtn.classList.add('btn-sm');
+                controlsClearImageBtn.classList.add('btn-warning');
+                controlsClearImageBtn.classList.add('le-image-controls-clear');
+                controlsClearImageBtn.classList.add('le-image-controls-clear-' + el.attr('id'));
+                controlsClearImageBtn.setAttribute('disabled', true);
+                controlsClearImageBtn.setAttribute('data-original-src', el.attr('src'));
+                controlsClearImageBtn.setAttribute('data-image-id', el.attr('id'));
+
+                // Interlanguage
+                var controlsInterlanguageContainer = document.createElement('div');
+
+                controlsInterlanguageContainer.classList.add('le-image-controls-interlanguage-container');
+                controlsInterlanguageContainer.classList.add('float-right');
+
+                controlsInterlanguageCheckBox.setAttribute('type', 'checkbox');
+                controlsInterlanguageCheckBox.setAttribute('id', 'le-image-controls-interlanguage-' + el.attr('id'));
+                controlsInterlanguageCheckBox.classList.add('le-image-controls-interlanguage');
+
+                if(el.attr('data-le-interlanguage') !== undefined) {
+                    controlsInterlanguageCheckBox.setAttribute('checked', true);
+                }
+
+                var controlsInterlanguageLabel = document.createElement('label');
+
+                controlsInterlanguageLabel.innerHTML = 'Pro všechny jazyky';
+                controlsInterlanguageLabel.setAttribute('for', controlsInterlanguageCheckBox.getAttribute('id'));
+
+                controlsInterlanguageContainer.appendChild(controlsInterlanguageCheckBox);
+                controlsInterlanguageContainer.appendChild(controlsInterlanguageLabel);
+
+                // Clear Image Event
+                var originalSrc = el[0].src;
+
+                // Container
+                controlsContainer.appendChild(controlsChooseImageBtn);
+                controlsContainer.appendChild(controlsClearImageBtn);
+                controlsContainer.appendChild(controlsInterlanguageContainer);
+                
+                controlsContainer.classList.add('le-image-controls-container');
+
+                el[0].outerHTML += controlsContainer.outerHTML;
+
                 break;
         }
+
+        // Choose Image Event
+        $('.le-image-controls-choose').click(function() {
+            fm = window.open($('#le-meta-url-fm').val(), 'File manager', 'location=no,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,height=600,width=1024');
+            if (window.focus) {fm.focus()}
+        });
+
+        // Clear Image Event
+        $('.le-image-controls-clear').click(function() {
+            $('#' + $(this).attr('data-image-id'))
+                .attr('src', $(this).attr('data-original-src'))
+                .removeClass('le-edited');
+
+            $(this).attr('disabled', true);
+
+            if($('.le-edited').length == 0) {
+                $('.le-save').attr('disabled', true);
+            }
+            
+        });
     }
 
     // Initial scan
@@ -35,7 +126,7 @@ $(document).ready(function() {
         let _this = $(this);
 
         // Node is not registered, register it
-        if($(this).attr('data-le-name') === undefined) {
+        if($(this).attr('data-le-name') === undefined || $(this).attr('data-le-language-incorrect') !== undefined) {
             let content = '';
             let contentOriginal = {};
 
@@ -67,7 +158,7 @@ $(document).ready(function() {
                 data: {
                     template: $('#le-meta-template').val(),
                     route: $('#le-meta-route').val(),
-                    name: 'le' + makeid(10),
+                    name: $(this).attr('data-le-language-incorrect') !== undefined ? $(this).attr('data-le-name') : 'le' + makeid(10),
                     content: content,
                     contentOriginal: contentOriginal,
                     type: _this.attr('data-le-type') ?? ''

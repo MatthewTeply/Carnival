@@ -2,6 +2,7 @@
 
 namespace Carnival\Entity;
 
+use Lampion\Entity\EntityManager;
 use Lampion\User\Auth;
 
 class Liveedit {
@@ -49,6 +50,29 @@ class Liveedit {
 
     public function getUser() {
         return $this->user->username ?? '';
+    }
+
+    public function isCorrectLanguage() {
+        if($_SESSION['Lampion']['language'] != $this->language->code) {
+            return 'data-le-language-incorrect';
+        }
+    }
+
+    public function isInterlanguage() {
+        $em = new EntityManager;
+
+        $nodes = $em->findBy(self::class, [
+            'name'  => $this->name,
+            'route' => $this->route
+        ]);
+
+        foreach($nodes as $key => $node) {
+            if($key != 0 && $node->content != $nodes[$key - 1]->content) {
+                return false;
+            }
+        }
+
+        return 'data-le-interlanguage';
     }
 
     public function __toString() {

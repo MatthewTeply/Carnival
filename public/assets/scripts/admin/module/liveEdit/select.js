@@ -3,6 +3,8 @@ var originalContentObject = {};
 
 // Filemanager handler
 function insertFile(id, fileName, filePreview, filePath) {
+    selectedImage = $('#' + selectedImage);
+
     selectedImage[0].src = document.querySelector('#le-meta-web-storage').value + filePath;
     
     if(selectedImage[0].src == originalContentObject[selectedImage.attr('data-le-name')]) {
@@ -11,7 +13,11 @@ function insertFile(id, fileName, filePreview, filePath) {
 
     else {
         selectedImage.addClass('le-edited');
+
+        $('.le-image-controls-clear-' + selectedImage.attr('id')).removeAttr('disabled');
+
         $('.le-save').removeAttr('disabled');
+        $('.le-unsaved').show();
     }
 }
 
@@ -24,15 +30,18 @@ function checkEditedNodes(el = null) {
         else {
             el.addClass('le-edited');
             $('.le-save').removeAttr('disabled');
+            $('.le-unsaved').show();
         }
     }
 
     if($('.le-edited').length == 0) {
         $('.le-save').attr('disabled', true);
+        $('.le-unsaved').hide();
     }
 
     else {
         $('.le-save').removeAttr('disabled');
+        $('.le-unsaved').show();
     }
 }
 
@@ -48,7 +57,7 @@ $(document).ready(function() {
         return result;
     }
 
-    $(document).on('input', '.le-selected', function() {
+    $(document).on('input', '.le-node', function() {
         checkEditedNodes($(this));
     });
 
@@ -56,6 +65,10 @@ $(document).ready(function() {
         $(this).removeClass('le-selected');
 
         checkEditedNodes();
+    });
+
+    $(document).on('click', '.le-image-controls-choose', function() {
+        selectedImage = $(this).attr('data-image-id');
     });
 
     $(document).on('click', '.le-node', function(e) {
@@ -89,7 +102,7 @@ $(document).ready(function() {
                 });
                 break;
             case 'img':
-                selectedImage = el;
+                //selectedImage = el.attr('data-image-id');
                 break;
         }
 
